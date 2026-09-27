@@ -182,3 +182,12 @@ body.ui-idle #chapters-pop{display:none}
 @media(max-width:600px){#notes{font-size:16px}#notes .n-two{grid-template-columns:1fr}#notes dl>div{grid-template-columns:1fr;gap:4px}#notes .n-log details p{padding-left:0}#notes .n-top{grid-template-columns:1fr auto}#notes .n-kicker{font-size:11px}}
 @media(prefers-reduced-motion:reduce){#notes{scroll-behavior:auto}}
 @media(max-width:600px){#notes h2{font-size:30px}#notes h2 span{display:block;font-size:.72em}#notes .n-top{padding-top:14px;padding-bottom:12px}#notes section{scroll-margin-top:120px}#notes .close{padding:10px 12px}}
+#memory-ui{position:fixed;left:24px;bottom:24px;z-index:11;display:flex;align-items:center;gap:12px;padding:10px 14px;background:color-mix(in srgb,var(--paper) 80%,transparent);color:var(--ink);font:600 12px/1.1 var(--mono);text-transform:uppercase;letter-spacing:.06em;backdrop-filter:blur(6px);transition:opacity .9s,transform .9s}
+#memory-ui small{display:block;font:400 10px/1.4 var(--mono);opacity:.75;text-transform:none;letter-spacing:.02em}
+#memory-ui input{width:150px;accent-color:var(--red)}
+#memory-ui output{min-width:9.5em;font-weight:500;text-transform:none;letter-spacing:0}
+body.ui-idle #memory-ui{opacity:0;transform:translateY(12px);pointer-events:none}
+@media(max-width:700px){#memory-ui{left:12px;right:12px;bottom:118px;justify-content:space-between}#memory-ui input{flex:1;width:auto}#memory-ui output{min-width:7em}}
+#memory-ui{display:grid;grid-template-columns:auto 1fr;grid-template-areas:"l o" "i i";gap:8px 14px;width:236px;padding:10px 14px 12px}
+#memory-ui label{grid-area:l}#memory-ui output{grid-area:o;min-width:0;text-align:right;align-self:center}#memory-ui input{grid-area:i;width:100%}
+@media(max-width:700px){#memory-ui{width:auto;left:12px;right:12px;bottom:118px}}

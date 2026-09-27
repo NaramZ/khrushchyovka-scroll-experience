@@ -1,6 +1,6 @@
 # ДОМА / DOMA — a spatial journal
 
-An interactive 3D scroll experience for Case Study 08 (Typography & Design): a Soviet panel tower, its stairwell and one late‑Soviet flat; a construction site where a 1‑464‑type block is assembled panel by panel; and an ending where the same room is built and furnished again in the new building. Four seasons, a first‑person walk mode and a painterly gaussian look.
+A personal HCI project about emotion and memory in Soviet panel housing: everyone had the same flat, and the small differences made it home. Built for Case Study 08 (Typography & Design): a Soviet panel tower, its stairwell and one late‑Soviet flat; a construction site where a 1‑464‑type block is assembled panel by panel; and an ending where the same room is built and furnished again in the new building. Four seasons, a first‑person walk mode and a painterly gaussian look.
 
 ## How to run it
 
@@ -27,6 +27,7 @@ The first load takes a few seconds while the city is built.
 - **Autumn ▾** (top bar): season, indoor haze, and the gaussian paint (splat level, brush strokes, brush size, focus). Settings are remembered.
 - **Walk ◉** (or `G`): first person. Click to look around, `W A S D` to move, `Shift` to run, `Esc` frees the mouse, `G` or `Esc` again to leave.
 - **Free camera** (or `F`): orbit, pan, zoom, `W A S D`, `Q / E`.
+- **Memory** (bottom left): fades the whole scene from “Now” to “Only the shape”, like a memory: colour drains, brush strokes grow, sound muffles, and only the building’s outline stays.
 - **As designed ↔ as lived**: a slider that appears inside the flat.
 - **Field notes**: start here — the project outline, proofs of concept, MVP and reflection, working log, sources and controls. `M` toggles sound.
 

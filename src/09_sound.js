@@ -8,7 +8,7 @@
 const SND={ctx:null,on:false,userOff:false};try{SND.userOff=localStorage.getItem('doma-sound')==='off'}catch{}
 function noiseBuf(ctx,sec,kind='white'){const b=ctx.createBuffer(1,ctx.sampleRate*sec,ctx.sampleRate),d=b.getChannelData(0);let v=0;for(let i=0;i<d.length;i++){const w=Math.random()*2-1;if(kind==='brown'){v=(v+w*.02)*.985;d[i]=v*3.5}else d[i]=w}return b}
 function impulse(ctx,sec,decay){const len=ctx.sampleRate*sec,b=ctx.createBuffer(2,len,ctx.sampleRate);for(let c=0;c<2;c++){const d=b.getChannelData(c);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,decay)*(i<ctx.sampleRate*.012?.2:1)}return b}
-function initAudio(){if(SND.ctx)return;const ctx=SND.ctx=new(window.AudioContext||window.webkitAudioContext)();const master=SND.master=ctx.createGain();master.gain.value=0;master.connect(ctx.destination);
+function initAudio(){if(SND.ctx)return;const ctx=SND.ctx=new(window.AudioContext||window.webkitAudioContext)();const master=SND.master=ctx.createGain();master.gain.value=0;const memF=SND.memF=ctx.createBiquadFilter();memF.type='lowpass';memF.frequency.value=20000;master.connect(memF);memF.connect(ctx.destination);
  // rooms: a long, bright stair reverb and a small, soft flat
  const stairVerb=ctx.createConvolver();stairVerb.buffer=impulse(ctx,2.6,2.2);const stairWet=ctx.createGain();stairWet.gain.value=.55;stairVerb.connect(stairWet);stairWet.connect(master);SND.stairVerb=stairVerb;
  const roomVerb=ctx.createConvolver();roomVerb.buffer=impulse(ctx,.45,3);const roomWet=ctx.createGain();roomWet.gain.value=.25;roomVerb.connect(roomWet);roomWet.connect(master);SND.roomVerb=roomVerb;
@@ -63,7 +63,7 @@ function doorThud(){const c=SND.ctx,t=c.currentTime+.01,b=c.createBufferSource()
 const _sp0=new THREE.Vector3(),_sfw=new THREE.Vector3(),_rpOld=new THREE.Vector3(4.12,Y+1.78,3.5),_rpNew=toWorld(8.45,AY+1.2,3.7);let stepAcc=0,doorT=18;
 function soundUpdate(dt){if(!SND.ctx)return;const c=SND.ctx,now=c.currentTime,L=c.listener,p=camera.position;camera.getWorldDirection(_sfw);
  if(L.positionX){L.positionX.value=p.x;L.positionY.value=p.y;L.positionZ.value=p.z;L.forwardX.value=_sfw.x;L.forwardY.value=_sfw.y;L.forwardZ.value=_sfw.z;L.upX.value=0;L.upY.value=1;L.upZ.value=0}else{L.setPosition(p.x,p.y,p.z);L.setOrientation(_sfw.x,_sfw.y,_sfw.z,0,1,0)}
- SND.master.gain.setTargetAtTime(SND.on?.9:0,now,.4);
+ SND.master.gain.setTargetAtTime(SND.on?.9*(1-.35*MEMORY.v):0,now,.4);SND.memF.frequency.setTargetAtTime(20000*Math.pow(.04,Math.pow(MEMORY.v,.8)),now,.3);
  const inKitchen=zone==='flat'&&p.x>1.65&&p.x<4.2&&p.z>3.1&&p.z<5.7,inFlat=zone==='flat',inStair=zone==='stair',outside=!inFlat&&!inStair;
  // in the new flat across the road the radio has come with the family: it plays from the stenka once the lamp is on
  const nf=zone==='newflat',rp=nf?_rpNew:_rpOld;if(SND.pan.positionX){SND.pan.positionX.value=rp.x;SND.pan.positionY.value=rp.y;SND.pan.positionZ.value=rp.z}else SND.pan.setPosition(rp.x,rp.y,rp.z);

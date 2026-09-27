@@ -1,6 +1,6 @@
 # ДОМА / DOMA — a spatial journal
 
-A personal HCI project about emotion and memory in Soviet panel housing: everyone had the same flat, and the small differences made it home. Written up as a journal entry; made for a Typography & Design course (Case Study 08): a Soviet panel tower, its stairwell and one late‑Soviet flat; a construction site where a 1‑464‑type block is assembled panel by panel; and an ending where the same room is built and furnished again in the new building. Four seasons, a first‑person walk mode and a painterly gaussian look.
+A personal HCI project about emotion and memory in Soviet panel housing: everyone had the same flat, and the small differences made it home. By Naram Ziady and Sami. Made for a Typography & Design course (Case Study 08): a Soviet panel tower, its stairwell and one late‑Soviet flat; a construction site where a 1‑464‑type block is assembled panel by panel; and an ending where the same room is built and furnished again in the new building. Four seasons, a first‑person walk mode and a painterly gaussian look.
 
 ## How to run it
 
@@ -29,7 +29,7 @@ The first load takes a few seconds while the city is built.
 - **Free camera** (or `F`): orbit, pan, zoom, `W A S D`, `Q / E`.
 - **Memory** knob (bottom left; drag it round, scroll over it, or use the arrow keys): fades the whole scene from “Now” to “Only the shape”, like a memory: colour drains, brush strokes grow, sound muffles, and only the building’s outline stays.
 - **As designed ↔ as lived**: a slider that appears inside the flat.
-- **Journal**: the written entry, in the style of the journal on naramziady.com: the question behind it, designing for memory, what got scrapped, by the numbers, what I'd do differently, sources and controls. `M` toggles sound.
+- **Journal**: “Someone else’s home”, the written entry: a walk through the rooms and what each one meant, how we made it, sources and controls. `M` toggles sound.
 
 ## Sound
 Click or press a key once and the sound starts (browsers need a gesture). The kitchen radio uses the recordings in `audio/`; they are also embedded in `index.html`, so the page works on its own.

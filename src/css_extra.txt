@@ -212,8 +212,6 @@ body.ui-idle #memory-ui{opacity:0;transform:translateY(12px);pointer-events:none
 @media(max-width:700px){#memory-ui{left:12px;right:auto;bottom:118px}#memory-ui .dial{width:64px;height:64px}}
 @media(prefers-reduced-motion:reduce){#memory-ui .knob,#memory-ui .arc{transition:none}}
 /* ── field notes as a journal entry (ink #141414 on paper #F2EFE9) ── */
-#notes{--n-ink:#141414;--n-paper:#f2efe9;--n-card:#e7e3da;--n-muted:#4a4843;--n-rule:#1414142e}
-#notes::backdrop{background:#f2efe9}
 #notes h2{text-transform:none;font-size:clamp(34px,4.6vw,56px);letter-spacing:0}
 #notes .n-tag{margin:0 0 18px;font:500 13px/1.5 var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--n-muted)}
 #notes .n-how{padding:14px 18px;background:var(--n-card);border-left:4px solid var(--n-accent);margin-bottom:40px}
@@ -243,3 +241,24 @@ body.ui-idle #memory-ui{opacity:0;transform:translateY(12px);pointer-events:none
 #notes .n-meta dt{font:600 12px/1.6 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--n-muted)}
 #notes .n-meta dd{font:400 15px/1.5 var(--mono)}
 @media(max-width:700px){#notes .n-turn{grid-template-columns:1fr;gap:6px}#notes .n-turn b{transform:rotate(90deg);justify-self:start}#notes .n-pairs li{grid-template-columns:1fr;gap:4px}#notes .n-stats{grid-template-columns:repeat(2,minmax(0,1fr))}#notes .n-rules td:first-child{white-space:normal}}
+/* ── the journal entry: its own voice — warm paper, a serif to read in, rooms named in Russian ── */
+#notes{--n-ink:#1f1c17;--n-paper:#efe9dd;--n-card:#e6dfd0;--n-muted:#56504a;--n-rule:#1f1c172b;--n-accent:#9a3220;font:400 19px/1.7 'Source Serif 4',Georgia,serif}
+#notes::backdrop{background:#efe9dd}
+#notes h2{font:italic 500 clamp(34px,4.4vw,54px)/1.05 'Source Serif 4',Georgia,serif;text-transform:none;letter-spacing:-.01em}
+#notes .n-kicker{font-family:var(--mono)}
+#notes .n-toc a{font-family:'IBM Plex Sans',sans-serif}
+#notes .n-lede{font-size:24px;line-height:1.5;margin-bottom:18px}
+#notes .n-how{margin:26px 0 56px;padding:12px 0 12px 18px;background:none;border-left:3px solid var(--n-accent);font:italic 400 18px/1.6 'Source Serif 4',serif;color:var(--n-muted)}
+#notes .n-room h3,#notes #n-refs h3{display:block;margin:0 0 16px;font:600 clamp(28px,3vw,36px)/1.1 'Source Serif 4',Georgia,serif;text-transform:none;letter-spacing:-.005em}
+#notes h3 small{display:block;margin-bottom:8px;font:500 13px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--n-accent)}
+#notes .n-room{padding-bottom:40px}
+#notes .n-room p:last-child{margin-bottom:0}
+#notes h4{font-family:var(--mono)}
+#notes .n-small{font-size:16px;line-height:1.6}
+#notes .n-links{font-size:17px}
+#notes .n-keys{font:400 15px/1.5 'IBM Plex Sans',sans-serif}
+#notes .n-figs figcaption{font:500 13px/1.4 var(--mono);text-transform:uppercase;letter-spacing:.04em}
+#notes .n-sign{margin:44px 0 6px;font:italic 400 22px/1.5 'Source Serif 4',serif;color:var(--n-ink)}
+#notes .n-credit{font:500 13px/1.5 var(--mono);letter-spacing:.04em;color:var(--n-muted);margin-bottom:28px}
+#notes .n-close-end{font-family:var(--mono)}
+@media(max-width:600px){#notes{font-size:17px}#notes .n-lede{font-size:20px}}

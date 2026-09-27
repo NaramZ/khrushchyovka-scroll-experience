@@ -1,0 +1,152 @@
+<dialog id="notes" aria-labelledby="notes-title">
+<div class="n-top"><p class="n-kicker">ДОМА · Case Study 08 — Typography &amp; Design</p><h2 id="notes-title">Field notes <span lang="ru">/ Полевые заметки</span></h2><button class="close" type="button">Close <span aria-hidden="true">×</span></button></div>
+<div class="n-body">
+<nav class="n-toc" aria-label="Field notes contents"><p class="n-toc-h">Contents</p><ol>
+<li><a href="#n-start">Start here</a></li>
+<li><a href="#n-outline">Project outline</a></li>
+<li><a href="#n-process">Process &amp; proofs of concept</a></li>
+<li><a href="#n-mvp">MVP &amp; reflection</a></li>
+<li><a href="#n-log">Working log</a></li>
+<li><a href="#n-why">Why it looked like this</a></li>
+<li><a href="#n-refs">Sources &amp; credits</a></li>
+<li><a href="#n-controls">Controls</a></li>
+</ol></nav>
+<main class="n-main">
+
+<section id="n-start" aria-labelledby="h-start">
+<h3 id="h-start"><span class="n-num">01</span> Start here</h3>
+<p class="n-lede">One repeated structure, countless private worlds. ДОМА is a walk from the scale of the microdistrict into a single late-Soviet flat, and then across the road to watch the same flat being built again.</p>
+<div class="n-card"><p class="n-card-h">If you only read one thing</p><ul>
+<li><b>What it is:</b> an interactive 3D journal about the standard Soviet prefab flat: the panel-housing system engineered to give every family a home of its own.</li>
+<li><b>What to do:</b> close these notes and scroll. Nine chapters take about five minutes. You can also walk the flat yourself (<kbd>G</kbd>) or fly around (<kbd>F</kbd>).</li>
+<li><b>What to notice:</b> the flat <i>as designed</i> versus <i>as lived</i>, the plan on the landing, and the ending, where the same room is built and furnished again in another building.</li>
+</ul></div>
+<p>It is an artistic composite of late-Soviet mass housing, not a measured reconstruction of any one building. The light is borrowed from the Zone: the damp, green-grey overcast of late-seventies Soviet cinema. Choose a season from the toolbar to change it.</p>
+<div class="n-figs">
+<figure><img src="{IMG0}" alt="Reference photograph: a district of panel blocks among autumn trees" loading="lazy"><figcaption><span>01 · Source image</span><b>The district</b>Concrete, repetition, autumn trees.</figcaption></figure>
+<figure><img src="{IMG1}" alt="Reference photograph: a worn stairwell threshold with painted walls and metal rails" loading="lazy"><figcaption><span>02 · Source image</span><b>The threshold</b>Faded paint, metalwork, a shared passage.</figcaption></figure>
+<figure><img src="{IMG2}" alt="Reference photograph: a living room with a wall carpet, timber furniture and books" loading="lazy"><figcaption><span>03 · Source image</span><b>The living room</b>Carpet, timber, books, warm light.</figcaption></figure>
+<figure><img src="{IMG3}" alt="Reference photograph: a small kitchen in daily use" loading="lazy"><figcaption><span>04 · Source image</span><b>The kitchen</b>A small room with many uses.</figcaption></figure>
+</div>
+</section>
+
+<section id="n-outline" aria-labelledby="h-outline">
+<h3 id="h-outline"><span class="n-num">02</span> Project outline</h3>
+<p class="n-sub">The brief: pick an iconic design and the mind behind it; outline, test, build and reflect.</p>
+<h4>The design</h4>
+<p>The standard Soviet prefab flat: the large-panel housing system that, after the 1955 decree “On the Elimination of Excesses in Design and Construction”, set out to give every family a flat of its own. Its template is usually credited to engineer <b>Vitaly Lagutenko</b>’s K-7 series (Workshop No. 7, Mosproekt). Series such as <b>1-464</b> (Giprostroiindustriya, 1958–59) carried the same kit of factory-made panels across the country. The tribute is to the work, not the name: a method that turned housing into an assembly of parts.</p>
+<h4>Problem statement</h4>
+<p class="n-quote">Mass housing is remembered as grey repetition — a design whose brilliance is hidden by its own ordinariness. How can an audience <i>feel</i> why a standard kit of concrete panels was radical, and how people turned an identical flat into a home, rather than just being told?</p>
+<div class="n-two">
+<div><h4>Key questions</h4><ol>
+<li>Can a standard be humane? What did the system decide, and what did residents decide?</li>
+<li>How do you show a <i>method</i> rather than a monument?</li>
+<li>Can spatial storytelling (scrolling, walking, sound) convey scale, repetition and intimacy in one piece?</li>
+<li>How much atmosphere is needed before documentation turns into memory?</li></ol></div>
+<div><h4>Assumptions</h4><ul>
+<li>The audience knows little about Soviet housing and meets it in a desktop browser.</li>
+<li>A composite, carefully sourced flat communicates more than a measured replica of one address.</li>
+<li>Restraint (short texts placed in space) keeps attention on the building.</li>
+<li>Figures come from published sources and are marked where schematic.</li></ul></div>
+</div>
+<h4>Chosen approach</h4>
+<p>An interactive 3D spatial journal in the browser. A scroll-driven walk moves from the microdistrict, up the stairwell and through flat № 6, then across the road to watch a new block assembled panel by panel. Text floats in the scene like placards in a museum; the palette follows the overcast light of Tarkovsky’s <i>Stalker</i>; gaussian splats carry atmosphere and a painterly look. Comparisons make the argument: the flat <i>as designed</i> and <i>as lived</i>; flat № 6 beside a typical 1-464 plan and a kommunalka room. Sound (a radio in the kitchen, footsteps in the stairwell) places the visitor inside.</p>
+<h4>Timeline</h4>
+<ol class="n-steps">
+<li><b>Research</b><span>Reference photographs, the 1955 decree, K-7 and 1-464, plans, construction method.</span></li>
+<li><b>POC 1–2</b><span>Point-cloud world; then a solid, realistic rebuild with one real flat and a stair that climbs.</span></li>
+<li><b>POC 3–4</b><span>The gaussian look: a textured world scan (rejected), then painterly brush strokes (kept).</span></li>
+<li><b>POC 5</b><span>Mood and interaction: <i>Stalker</i> palette, seasons, first-person walk, type in the scene.</span></li>
+<li><b>MVP</b><span>Museum-walk text, as designed ↔ as lived, plans, the construction site, sound, the new flat.</span></li>
+<li><b>Next</b><span>User tests, source check, performance on low-end machines, final reflection.</span></li>
+</ol>
+</section>
+
+<section id="n-process" aria-labelledby="h-process">
+<h3 id="h-process"><span class="n-num">03</span> Process &amp; proofs of concept</h3>
+<p class="n-sub">What was tried, and what each test decided.</p>
+<dl class="n-poc">
+<div><dt>Point cloud</dt><dd>A world made only of splats read as noise. <b>Learned:</b> forms must stay solid.</dd></div>
+<div><dt>Solid rebuild</dt><dd>Realism and a coherent plan made the flat believable; the dead-end corridor and stair were cut. <b>Kept.</b></dd></div>
+<div><dt>World scan</dt><dd>Splats on every surface looked like a strange texture, not memory. <b>Rejected.</b></dd></div>
+<div><dt>Painterly strokes</dt><dd>Repainting each frame in oriented gaussian strokes kept colour whole and matched the reference. <b>Kept</b>, with sliders.</dd></div>
+<div><dt>Type in the scene</dt><dd>Large wall-mounted plates felt pasted on; short floating fragments along the route read as a museum walk. <b>Kept.</b></dd></div>
+</dl>
+</section>
+
+<section id="n-mvp" aria-labelledby="h-mvp">
+<h3 id="h-mvp"><span class="n-num">04</span> MVP &amp; reflection</h3>
+<h4>Minimum viable product</h4>
+<ul>
+<li>Nine chapters, from the block to the construction site and a housewarming in the new flat, reachable by scroll or the Chapters menu.</li>
+<li>Walk, free camera, four seasons that change the light indoors and out, indoor haze and paint controls.</li>
+<li>As designed ↔ as lived; the plan placard; the assembly of a 1-464-type section with flat № 6 inside it.</li>
+<li>Positional sound; these field notes with sources.</li>
+</ul>
+<h4>Reflection, so far</h4>
+<p>The most important decisions were subtractive: removing texture from the splats, shortening every text, letting the interface recede. Realism made the space believable; feeling came from light, pacing and restraint. Next: watch five people use it without instructions, note where they get lost or stop reading, verify every figure against a second source, and test on a mid-range laptop.</p>
+</section>
+
+<section id="n-log" aria-labelledby="h-log">
+<h3 id="h-log"><span class="n-num">05</span> Working log <span lang="ru" class="n-ru">/ Журнал</span></h3>
+<p class="n-sub">Seven iterations, oldest first. Open any entry to read it.</p>
+<div class="n-log">
+<details><summary><span>№ 001</span> The scan</summary><p>The first version treated everything as a point cloud. The block was there, but it dissolved: every wall and cushion read as dots, and the rooms floated as three disconnected boxes joined by a corridor that led nowhere.</p></details>
+<details><summary><span>№ 002</span> Solid first, air second</summary><p>Surfaces became real materials again; the gaussian splats moved off the walls and into the air — leaves, far-off towers dissolving in haze, dust hanging indoors. The three boxes became one plausible two-room flat off a single landing, and the stair was rebuilt to climb, flight after flight, to the roof.</p></details>
+<details><summary><span>№ 003</span> The Zone</summary><p>Golden hour felt like a postcard, so the light went cold and wet: overcast, cyan-green, lifted blacks, puddles on the asphalt. Four seasons change the place itself — snow on every sill, spring blossom, June’s poplar fluff, autumn litter. The indoor haze became a dial, and the flat became something you can walk through yourself.</p></details>
+<details><summary><span>№ 004</span> Paint, not texture</summary><p>A first attempt scattered textured splats over every surface; it read as a strange pattern rather than a memory. Studying painterly scan walkthroughs showed the real idea: the whole frame is repainted in soft, overlapping gaussian brush strokes that follow the image itself, so colour stays whole and forms stay readable while everything else melts. An autofocus keeps what you look at crisp. Splat level, stroke visibility, brush size and focus are yours to set.</p></details>
+<details><summary><span>№ 005</span> Words in the world</summary><p>The captions left the page. Each chapter is set as type in the place it describes, and it assembles as you arrive and comes apart as you leave. Its colours are sampled from the frame, so the type wears the season and the room. The rest of the interface steps back when you stop reaching for it.</p></details>
+<details><summary><span>№ 006</span> A museum walk, and the method</summary><p>Long captions became short fragments hung along the way, like placards in a gallery. The flat can be seen as designed — bare walls, standard fittings — or as lived; a plan on the landing sets it beside a typical 1-464 flat and a kommunalka room. After the balcony the walk crosses the road to a construction site, because the brilliance of this design was never one building but the method. Sound joined in: a radio in the kitchen, footsteps in the stairwell, weather outside.</p></details>
+<details><summary><span>№ 007</span> The same room, beginning again</summary><p>The site follows the real sequence: foundation, then each floor as slabs, wall panels with windows fitted, interior walls, a bathroom cabin lowered whole, the stair, the facade. The walk now ends inside the new block: you climb in through the living-room window and watch the flat become the room you stood in — whitewash, parquet, paper, then the family’s things one by one, until the lamp comes on and the radio starts again. The kitchen is lit like a memory, soft and milky, as if someone were dreaming it. The seasons stopped being four kinds of overcast: summer has a high sun and warm light pouring in; spring is fresh and bright; autumn keeps the <i>Stalker</i> grey; winter is cold daylight with the lamps on early. The balcony got its steel railing back.</p></details>
+</div>
+</section>
+
+<section id="n-why" aria-labelledby="h-why">
+<h3 id="h-why"><span class="n-num">06</span> Why it looked like this <span lang="ru" class="n-ru">/ Почему так</span></h3>
+<dl class="n-why">
+<div><dt>Mass housing</dt><dd>A 1955 decree against “excesses” ended ornament; from 1957 the promise was a separate flat for every family. Factory-made panels made that possible at speed, and made every block alike.</dd></div>
+<div><dt>The stairwell</dt><dd>Washable oil paint to shoulder height, whitewash above; a lift only where the norms demanded it, above five storeys.</dd></div>
+<div><dt>The kitchen</dt><dd>Planned tiny on the assumption that cooking would move to canteens; it became the heart of the home and of late-night conversation instead.</dd></div>
+<div><dt>The carpet and the stenka</dt><dd>Warmth and sound-proofing for thin panel walls, but also status and savings in an economy of shortages; the wall unit showed off crystal and subscription book sets.</dd></div>
+<div><dt>The bedroom set and the pillows</dt><dd>Furniture came as a matching set after long waiting lists; the lace-covered pyramid of pillows travelled from village dowries into city flats.</dd></div>
+<div><dt>The balcony</dt><dd>Cellar, attic, pantry and drying room in one, and, glazed by hand, the only way to grow a standard flat.</dd></div>
+</dl>
+</section>
+
+<section id="n-refs" aria-labelledby="h-refs">
+<h3 id="h-refs"><span class="n-num">07</span> Sources &amp; credits</h3>
+<h4>Sources</h4>
+<ul class="n-links">
+<li><a href="https://en.wikipedia.org/wiki/Khrushchevka" target="_blank" rel="noopener">Khrushchevka — Wikipedia</a></li>
+<li><a href="https://ru.wikipedia.org/wiki/1-464" target="_blank" rel="noopener" lang="ru">Серия 1-464 — Википедия</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Panel_buildings_in_Russia" target="_blank" rel="noopener">Panel buildings in Russia — Wikipedia</a></li>
+</ul>
+<h4>Further reading</h4>
+<ul class="n-links">
+<li><a href="https://lixmuseum.by/en/our-projects/the-khrushchev-s-of-the-60-s/the-situation-meant-the-interior/" target="_blank" rel="noopener">Lida Museum — furniture and the Khrushchyovka interior</a></li>
+<li><a href="https://etm.lt/audio-guide-transcript/" target="_blank" rel="noopener">Energy and Technology Museum — apartment exhibition</a></li>
+</ul>
+<h4>Credits</h4>
+<ul>
+<li><b>Mood:</b> the overcast, water-heavy palette of late-1970s Soviet art cinema, in particular Tarkovsky’s <i>Stalker</i> (1979). Independent study, unaffiliated.</li>
+<li><b>Reference images:</b> supplied for this project; original photographers and building identification unverified.</li>
+<li><b>Sound:</b> kitchen radio, period broadcasts of Radio Mayak (1970), Radio Rodina and Radio Peace and Progress, supplied for this project (provenance unverified). All other sound is synthesised.</li>
+<li><b>Technique:</b> one continuous, fully modelled environment (a twelve-storey panel tower, its stair core and one furnished flat) with physically based materials and weather computed in the materials. Gaussian splats carry foliage, haze, snow, rain and dust; a painterly layer re-draws each frame as gaussian brush strokes aligned with the image (an anisotropic Kuwahara filter).</li>
+</ul>
+</section>
+
+<section id="n-controls" aria-labelledby="h-controls">
+<h3 id="h-controls"><span class="n-num">08</span> Controls</h3>
+<table class="n-keys"><caption class="sr">Keyboard and mouse controls</caption>
+<thead><tr><th scope="col">Action</th><th scope="col">How</th></tr></thead><tbody>
+<tr><td>Travel the journey</td><td>Scroll, or open <b>Chapters</b> to jump</td></tr>
+<tr><td>Walk the flat</td><td><kbd>G</kbd> or <b>Walk</b>, click to look, <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> to move, <kbd>Shift</kbd> to run, <kbd>Esc</kbd> frees the mouse</td></tr>
+<tr><td>Free camera</td><td><kbd>F</kbd> or <b>Free camera</b>: drag to orbit, right-drag to pan, <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd>, <kbd>Q</kbd>/<kbd>E</kbd> up and down</td></tr>
+<tr><td>Season, haze, paint</td><td>The season button (▾) in the toolbar</td></tr>
+<tr><td>As designed ↔ as lived</td><td>Slider at the bottom, inside the flat</td></tr>
+<tr><td>Sound on / off</td><td><kbd>M</kbd> or <b>Sound</b></td></tr>
+</tbody></table>
+<p class="n-end"><button class="close n-close-end" type="button">Close the notes and continue <span aria-hidden="true">→</span></button></p>
+</section>
+
+</main></div></dialog>

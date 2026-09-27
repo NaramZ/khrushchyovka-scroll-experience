@@ -211,3 +211,35 @@ body.ui-idle #memory-ui{opacity:0;transform:translateY(12px);pointer-events:none
 #memory-ui output{font:500 13px/1.2 var(--mono);text-align:left;min-width:8.5em}
 @media(max-width:700px){#memory-ui{left:12px;right:auto;bottom:118px}#memory-ui .dial{width:64px;height:64px}}
 @media(prefers-reduced-motion:reduce){#memory-ui .knob,#memory-ui .arc{transition:none}}
+/* ── field notes as a journal entry (ink #141414 on paper #F2EFE9) ── */
+#notes{--n-ink:#141414;--n-paper:#f2efe9;--n-card:#e7e3da;--n-muted:#4a4843;--n-rule:#1414142e}
+#notes::backdrop{background:#f2efe9}
+#notes h2{text-transform:none;font-size:clamp(34px,4.6vw,56px);letter-spacing:0}
+#notes .n-tag{margin:0 0 18px;font:500 13px/1.5 var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--n-muted)}
+#notes .n-how{padding:14px 18px;background:var(--n-card);border-left:4px solid var(--n-accent);margin-bottom:40px}
+#notes .n-turn{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;margin:22px 0 24px;font:600 19px/1.35 'IBM Plex Sans',sans-serif}
+#notes .n-turn span{padding:16px 18px;border:1.5px solid var(--n-ink)}
+#notes .n-turn span:first-child{color:var(--n-muted);border-style:dashed;text-decoration:line-through;text-decoration-thickness:1px}
+#notes .n-turn b{font:500 24px var(--mono);color:var(--n-accent)}
+#notes .n-pull{margin:26px 0 8px;padding-left:18px;border-left:3px solid var(--n-accent);font:500 16px/1.6 var(--mono);color:var(--n-ink)}
+#notes .n-pairs{list-style:none;padding:0;margin:18px 0}
+#notes .n-pairs li{display:grid;grid-template-columns:220px minmax(0,1fr);gap:18px;padding:14px 0;margin:0;border-top:1px solid var(--n-rule)}
+#notes .n-pairs li:last-child{border-bottom:1px solid var(--n-rule)}
+#notes .n-rules,#notes .n-keys{width:100%;border-collapse:collapse;font-size:16px;margin:8px 0 6px}
+#notes .n-rules th{text-align:left;font:600 13px/1 var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--n-muted);padding:0 12px 10px 0;border-bottom:1.5px solid var(--n-ink)}
+#notes .n-rules td{padding:14px 14px 14px 0;border-bottom:1px solid var(--n-rule);vertical-align:top}
+#notes .n-rules td:first-child{font:600 14px/1.4 var(--mono);text-transform:uppercase;letter-spacing:.03em;width:30%;white-space:nowrap}
+#notes .n-log{margin-top:20px}
+#notes .n-log details p,#notes .n-log ol{padding:0 0 16px 22px}
+#notes .n-log ol{margin:0 0 0 36px;padding-left:18px}
+#notes .n-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border-top:1.5px solid var(--n-ink)}
+#notes .n-stats>div{display:block;padding:16px 16px 18px 0;border-top:0;border-bottom:1px solid var(--n-rule)}
+#notes .n-stats dt{font:700 44px/1 var(--display);color:var(--n-ink)}
+#notes .n-stats dd{margin-top:6px;font-size:14px;line-height:1.4;color:var(--n-muted)}
+#notes .n-small{font-size:14px;color:var(--n-muted)}
+#notes .n-sign{margin:40px 0 22px;font:500 16px/1.6 var(--mono);color:var(--n-muted)}
+#notes .n-meta{border-top:1.5px solid var(--n-ink)}
+#notes .n-meta>div{grid-template-columns:140px minmax(0,1fr);padding:10px 0}
+#notes .n-meta dt{font:600 12px/1.6 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--n-muted)}
+#notes .n-meta dd{font:400 15px/1.5 var(--mono)}
+@media(max-width:700px){#notes .n-turn{grid-template-columns:1fr;gap:6px}#notes .n-turn b{transform:rotate(90deg);justify-self:start}#notes .n-pairs li{grid-template-columns:1fr;gap:4px}#notes .n-stats{grid-template-columns:repeat(2,minmax(0,1fr))}#notes .n-rules td:first-child{white-space:normal}}

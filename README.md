@@ -27,7 +27,7 @@ The first load takes a few seconds while the city is built.
 - **Autumn ▾** (top bar): season, indoor haze, and the gaussian paint (splat level, brush strokes, brush size, focus). Settings are remembered.
 - **Walk ◉** (or `G`): first person. Click to look around, `W A S D` to move, `Shift` to run, `Esc` frees the mouse, `G` or `Esc` again to leave.
 - **Free camera** (or `F`): orbit, pan, zoom, `W A S D`, `Q / E`.
-- **Memory** (bottom left): fades the whole scene from “Now” to “Only the shape”, like a memory: colour drains, brush strokes grow, sound muffles, and only the building’s outline stays.
+- **Memory** knob (bottom left; drag it round, scroll over it, or use the arrow keys): fades the whole scene from “Now” to “Only the shape”, like a memory: colour drains, brush strokes grow, sound muffles, and only the building’s outline stays.
 - **As designed ↔ as lived**: a slider that appears inside the flat.
 - **Field notes**: start here — the project outline, proofs of concept, MVP and reflection, working log, sources and controls. `M` toggles sound.
 

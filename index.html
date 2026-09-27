@@ -203,6 +203,26 @@ body.ui-idle #memory-ui{opacity:0;transform:translateY(12px);pointer-events:none
 #memory-ui{display:grid;grid-template-columns:auto 1fr;grid-template-areas:"l o" "i i";gap:8px 14px;width:236px;padding:10px 14px 12px}
 #memory-ui label{grid-area:l}#memory-ui output{grid-area:o;min-width:0;text-align:right;align-self:center}#memory-ui input{grid-area:i;width:100%}
 @media(max-width:700px){#memory-ui{width:auto;left:12px;right:12px;bottom:118px}}
+#memory-ui{z-index:13}
+/* the memory dial: a bakelite knob on a paper plate */
+#memory-ui{display:flex;align-items:center;gap:12px;width:auto;padding:8px 16px 8px 8px}
+#memory-ui .dial{width:78px;height:78px;flex:0 0 auto;cursor:grab;touch-action:none;border-radius:50%}
+#memory-ui .dial:active{cursor:grabbing}
+#memory-ui .dial:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+#memory-ui svg{width:100%;height:100%;display:block;overflow:visible}
+#memory-ui .ticks line{stroke:var(--ink);stroke-width:1.2;opacity:.45}#memory-ui .ticks line.big{stroke-width:2;opacity:.85}
+#memory-ui .track,#memory-ui .arc{fill:none;stroke-width:4;transform:rotate(135deg);transform-origin:50px 50px}
+#memory-ui .track{stroke:color-mix(in srgb,var(--ink) 16%,transparent);stroke-dasharray:169.6 999}
+#memory-ui .arc{stroke:var(--red);stroke-linecap:round;transition:stroke-dasharray .12s}
+#memory-ui .knob{transform-origin:50px 50px;transition:transform .12s}
+#memory-ui .knob>circle:first-child{fill:#2a2723;stroke:#15130f;stroke-width:1.5}
+#memory-ui .grip{fill:none;stroke:#4a453e;stroke-width:1;stroke-dasharray:1.6 2.4}
+#memory-ui .needle{fill:#efe8d8}
+#memory-ui .dial-text{display:flex;flex-direction:column;gap:6px}
+#memory-ui #memory-lab{font:600 12px/1.1 var(--mono);text-transform:uppercase;letter-spacing:.06em}
+#memory-ui output{font:500 13px/1.2 var(--mono);text-align:left;min-width:8.5em}
+@media(max-width:700px){#memory-ui{left:12px;right:auto;bottom:118px}#memory-ui .dial{width:64px;height:64px}}
+@media(prefers-reduced-motion:reduce){#memory-ui .knob,#memory-ui .arc{transition:none}}
 .notes-cols{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin:34px 0 10px}.notes-cols h3{font:600 26px/1 var(--display);margin:0 0 14px;text-transform:uppercase}.log,.why{margin:0;padding-left:18px;font-size:12px;line-height:1.75}.log li,.why li{margin-bottom:12px}.log b,.why b{font-weight:600}@media(max-width:700px){.notes-cols{grid-template-columns:1fr;gap:18px}}
 </style>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/","three-mesh-bvh":"https://cdn.jsdelivr.net/npm/three-mesh-bvh@0.8.3/build/index.module.js"}}</script>
@@ -218,7 +238,7 @@ body.ui-idle #memory-ui{opacity:0;transform:translateY(12px);pointer-events:none
 <label class="ap-check"><input type="checkbox" id="outdoor-splats" checked> Outdoor atmosphere (leaves, haze, snow)</label></div>
 <div id="chapters-pop" hidden><div class="ap-title">Chapters / Главы</div><ol></ol></div>
 <div id="walk-hint"></div>
-<div id="memory-ui"><label for="memory">Memory<small lang="ru">Память</small></label><input type="range" id="memory" min="0" max="1" step="0.01" value="0"><output id="memory-val" for="memory">Now</output></div>
+<div id="memory-ui"><div id="memory" class="dial" role="slider" tabindex="0" aria-labelledby="memory-lab" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-valuetext="Now"><svg viewBox="0 0 100 100" aria-hidden="true"><g class="ticks"></g><circle class="track" cx="50" cy="50" r="36"/><circle class="arc" cx="50" cy="50" r="36"/><g class="knob"><circle cx="50" cy="50" r="27"/><circle class="grip" cx="50" cy="50" r="21"/><rect class="needle" x="48" y="25" width="4" height="15" rx="2"/></g></svg></div><div class="dial-text"><span id="memory-lab">Memory<small lang="ru">Память</small></span><output id="memory-val">Now</output></div></div>
 <div id="lived-ui"><span>As designed<small>как построено</small></span><input type="range" id="lived" min="0" max="1" step="0.01" value="1" aria-label="From the flat as designed to the flat as lived in"><span>As lived<small>как жили</small></span></div>
 <div id="hero"><div class="eyebrow">Behind the concrete</div><h1>ДОМА<span>A BUILDING. A THOUSAND LIVES.</span></h1><p>From the repeated window<br>to the room that is entirely yours.<br>A journey through prefabricated living.</p><div class="intro-foot"><b>↓</b><span>Scroll to enter<br>Листайте, чтобы войти</span></div></div>
 <div class="crosshair"></div><div id="labels" aria-hidden="true"></div>
@@ -383,7 +403,7 @@ body.ui-idle #memory-ui{opacity:0;transform:translateY(12px);pointer-events:none
 <tr><td>Travel the journey</td><td>Scroll, or open <b>Chapters</b> to jump</td></tr>
 <tr><td>Walk the flat</td><td><kbd>G</kbd> or <b>Walk</b>, click to look, <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> to move, <kbd>Shift</kbd> to run, <kbd>Esc</kbd> frees the mouse</td></tr>
 <tr><td>Free camera</td><td><kbd>F</kbd> or <b>Free camera</b>: drag to orbit, right-drag to pan, <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd>, <kbd>Q</kbd>/<kbd>E</kbd> up and down</td></tr>
-<tr><td>Memory</td><td>The <b>Memory</b> dial, bottom left: from “Now” to “Only the shape”</td></tr>
+<tr><td>Memory</td><td>Turn the <b>Memory</b> knob, bottom left: drag it round, scroll over it, or focus it and use the arrow keys. From “Now” to “Only the shape”; double-click to return to now.</td></tr>
 <tr><td>Season, haze, paint</td><td>The season button (▾) in the toolbar</td></tr>
 <tr><td>As designed ↔ as lived</td><td>Slider at the bottom, inside the flat</td></tr>
 <tr><td>Sound on / off</td><td><kbd>M</kbd> or <b>Sound</b></td></tr>
@@ -1596,7 +1616,18 @@ function chooseSeason(name){applySeason(name);const S=SEASONS[name];$('#season-b
 document.querySelectorAll('[data-season]').forEach(b=>b.onclick=()=>chooseSeason(b.dataset.season));
 $('#haze').oninput=e=>{const v=+e.target.value;setIndoorHaze(v);$('#haze-val').textContent=Math.round(v*100)+'%';try{localStorage.setItem('doma-haze',v)}catch{}};
 // the memory dial: from now to a faded memory in which only the shape of the building is left
-{const el=$('#memory'),out=$('#memory-val'),words=['Now','Recalled','Fading','Faded','Only the shape'],say=v=>words[Math.min(4,Math.round(v*4))];const set=v=>{MEMORY.target=v;out.textContent=say(v);el.setAttribute('aria-valuetext',say(v));try{localStorage.setItem('doma-memory',v)}catch{}};let v0=0;try{v0=+(localStorage.getItem('doma-memory')||0)}catch{}el.value=v0;MEMORY.v=v0;set(v0);el.oninput=e=>set(+e.target.value)}
+// a rotary knob like a radio's: 270° of travel from Now (7 o'clock) to Only the shape (5 o'clock); drag round it, scroll over it, or use the arrow keys
+{const el=$('#memory'),out=$('#memory-val'),svg=el.querySelector('svg'),knob=el.querySelector('.knob'),arc=el.querySelector('.arc'),words=['Now','Recalled','Fading','Faded','Only the shape'],say=v=>words[Math.min(4,Math.round(v*4))];
+ const C=2*Math.PI*36,SW=270;arc.style.strokeDasharray=`0 ${C}`;
+ el.querySelector('.ticks').innerHTML=Array.from({length:21},(_,i)=>{const a=(-135+i*13.5)*Math.PI/180,big=i%5===0,r0=big?40:42,r1=47;return`<line class="${big?'big':''}" x1="${50+Math.sin(a)*r0}" y1="${50-Math.cos(a)*r0}" x2="${50+Math.sin(a)*r1}" y2="${50-Math.cos(a)*r1}"/>`}).join('');
+ let val=0;const set=v=>{val=clamp(v,0,1);MEMORY.target=val;knob.style.transform=`rotate(${-135+val*SW}deg)`;arc.style.strokeDasharray=`${C*SW/360*val} ${C}`;out.textContent=say(val);el.setAttribute('aria-valuenow',Math.round(val*100));el.setAttribute('aria-valuetext',say(val));try{localStorage.setItem('doma-memory',val)}catch{}};
+ const angleAt=e=>{const b=svg.getBoundingClientRect();let a=Math.atan2(e.clientX-(b.left+b.width/2),-(e.clientY-(b.top+b.height/2)))*180/Math.PI;if(a>135||a<-135)a=val>.5?135:-135;return(a+135)/SW};
+ let dragging=false;el.addEventListener('pointerdown',e=>{dragging=true;el.setPointerCapture(e.pointerId);el.focus({preventScroll:true,focusVisible:false});set(angleAt(e));wakeUI();e.preventDefault()});
+ el.addEventListener('pointermove',e=>{if(dragging){set(angleAt(e));wakeUI()}});const stop=()=>{dragging=false};el.addEventListener('pointerup',stop);el.addEventListener('pointercancel',stop);
+ el.addEventListener('wheel',e=>{e.preventDefault();e.stopPropagation();set(val-(e.deltaY||-e.deltaX)*.0012);wakeUI()},{passive:false});
+ el.addEventListener('keydown',e=>{const k=e.key,step={ArrowUp:.05,ArrowRight:.05,ArrowDown:-.05,ArrowLeft:-.05,PageUp:.25,PageDown:-.25}[k];if(step!==undefined)set(val+step);else if(k==='Home')set(0);else if(k==='End')set(1);else return;e.preventDefault();e.stopPropagation();wakeUI()});
+ el.addEventListener('dblclick',()=>set(0));
+ let v0=0;try{v0=+(localStorage.getItem('doma-memory')||0)}catch{}MEMORY.v=v0;set(v0)}
 const paintUI=[['paint','level',v=>Math.round(v*100)+'%'],['brush','brush',v=>v.toFixed(1)+'×'],['focus','focus',v=>Math.round(v*100)+'%'],['strokes','strokes',v=>Math.round(v*100)+'%']];
 for(const[id,key,fmt]of paintUI){const el=$('#'+id);el.oninput=e=>{PAINT[key]=+e.target.value;$('#'+id+'-val').textContent=fmt(PAINT[key]);try{localStorage.setItem('doma-'+id,PAINT[key])}catch{}};try{const v=localStorage.getItem('doma-'+id);if(v!==null)PAINT[key]=+v}catch{}el.value=PAINT[key];$('#'+id+'-val').textContent=fmt(PAINT[key]);if(!paint)el.disabled=true}
 $('#outdoor-splats').onchange=e=>{atmosOn=e.target.checked;atmosphere.forEach(o=>o.visible=atmosOn)};

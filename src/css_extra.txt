@@ -191,3 +191,23 @@ body.ui-idle #memory-ui{opacity:0;transform:translateY(12px);pointer-events:none
 #memory-ui{display:grid;grid-template-columns:auto 1fr;grid-template-areas:"l o" "i i";gap:8px 14px;width:236px;padding:10px 14px 12px}
 #memory-ui label{grid-area:l}#memory-ui output{grid-area:o;min-width:0;text-align:right;align-self:center}#memory-ui input{grid-area:i;width:100%}
 @media(max-width:700px){#memory-ui{width:auto;left:12px;right:12px;bottom:118px}}
+#memory-ui{z-index:13}
+/* the memory dial: a bakelite knob on a paper plate */
+#memory-ui{display:flex;align-items:center;gap:12px;width:auto;padding:8px 16px 8px 8px}
+#memory-ui .dial{width:78px;height:78px;flex:0 0 auto;cursor:grab;touch-action:none;border-radius:50%}
+#memory-ui .dial:active{cursor:grabbing}
+#memory-ui .dial:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+#memory-ui svg{width:100%;height:100%;display:block;overflow:visible}
+#memory-ui .ticks line{stroke:var(--ink);stroke-width:1.2;opacity:.45}#memory-ui .ticks line.big{stroke-width:2;opacity:.85}
+#memory-ui .track,#memory-ui .arc{fill:none;stroke-width:4;transform:rotate(135deg);transform-origin:50px 50px}
+#memory-ui .track{stroke:color-mix(in srgb,var(--ink) 16%,transparent);stroke-dasharray:169.6 999}
+#memory-ui .arc{stroke:var(--red);stroke-linecap:round;transition:stroke-dasharray .12s}
+#memory-ui .knob{transform-origin:50px 50px;transition:transform .12s}
+#memory-ui .knob>circle:first-child{fill:#2a2723;stroke:#15130f;stroke-width:1.5}
+#memory-ui .grip{fill:none;stroke:#4a453e;stroke-width:1;stroke-dasharray:1.6 2.4}
+#memory-ui .needle{fill:#efe8d8}
+#memory-ui .dial-text{display:flex;flex-direction:column;gap:6px}
+#memory-ui #memory-lab{font:600 12px/1.1 var(--mono);text-transform:uppercase;letter-spacing:.06em}
+#memory-ui output{font:500 13px/1.2 var(--mono);text-align:left;min-width:8.5em}
+@media(max-width:700px){#memory-ui{left:12px;right:auto;bottom:118px}#memory-ui .dial{width:64px;height:64px}}
+@media(prefers-reduced-motion:reduce){#memory-ui .knob,#memory-ui .arc{transition:none}}

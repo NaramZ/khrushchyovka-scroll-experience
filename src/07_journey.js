@@ -81,7 +81,18 @@ function chooseSeason(name){applySeason(name);const S=SEASONS[name];$('#season-b
 document.querySelectorAll('[data-season]').forEach(b=>b.onclick=()=>chooseSeason(b.dataset.season));
 $('#haze').oninput=e=>{const v=+e.target.value;setIndoorHaze(v);$('#haze-val').textContent=Math.round(v*100)+'%';try{localStorage.setItem('doma-haze',v)}catch{}};
 // the memory dial: from now to a faded memory in which only the shape of the building is left
-{const el=$('#memory'),out=$('#memory-val'),words=['Now','Recalled','Fading','Faded','Only the shape'],say=v=>words[Math.min(4,Math.round(v*4))];const set=v=>{MEMORY.target=v;out.textContent=say(v);el.setAttribute('aria-valuetext',say(v));try{localStorage.setItem('doma-memory',v)}catch{}};let v0=0;try{v0=+(localStorage.getItem('doma-memory')||0)}catch{}el.value=v0;MEMORY.v=v0;set(v0);el.oninput=e=>set(+e.target.value)}
+// a rotary knob like a radio's: 270° of travel from Now (7 o'clock) to Only the shape (5 o'clock); drag round it, scroll over it, or use the arrow keys
+{const el=$('#memory'),out=$('#memory-val'),svg=el.querySelector('svg'),knob=el.querySelector('.knob'),arc=el.querySelector('.arc'),words=['Now','Recalled','Fading','Faded','Only the shape'],say=v=>words[Math.min(4,Math.round(v*4))];
+ const C=2*Math.PI*36,SW=270;arc.style.strokeDasharray=`0 ${C}`;
+ el.querySelector('.ticks').innerHTML=Array.from({length:21},(_,i)=>{const a=(-135+i*13.5)*Math.PI/180,big=i%5===0,r0=big?40:42,r1=47;return`<line class="${big?'big':''}" x1="${50+Math.sin(a)*r0}" y1="${50-Math.cos(a)*r0}" x2="${50+Math.sin(a)*r1}" y2="${50-Math.cos(a)*r1}"/>`}).join('');
+ let val=0;const set=v=>{val=clamp(v,0,1);MEMORY.target=val;knob.style.transform=`rotate(${-135+val*SW}deg)`;arc.style.strokeDasharray=`${C*SW/360*val} ${C}`;out.textContent=say(val);el.setAttribute('aria-valuenow',Math.round(val*100));el.setAttribute('aria-valuetext',say(val));try{localStorage.setItem('doma-memory',val)}catch{}};
+ const angleAt=e=>{const b=svg.getBoundingClientRect();let a=Math.atan2(e.clientX-(b.left+b.width/2),-(e.clientY-(b.top+b.height/2)))*180/Math.PI;if(a>135||a<-135)a=val>.5?135:-135;return(a+135)/SW};
+ let dragging=false;el.addEventListener('pointerdown',e=>{dragging=true;el.setPointerCapture(e.pointerId);el.focus({preventScroll:true,focusVisible:false});set(angleAt(e));wakeUI();e.preventDefault()});
+ el.addEventListener('pointermove',e=>{if(dragging){set(angleAt(e));wakeUI()}});const stop=()=>{dragging=false};el.addEventListener('pointerup',stop);el.addEventListener('pointercancel',stop);
+ el.addEventListener('wheel',e=>{e.preventDefault();e.stopPropagation();set(val-(e.deltaY||-e.deltaX)*.0012);wakeUI()},{passive:false});
+ el.addEventListener('keydown',e=>{const k=e.key,step={ArrowUp:.05,ArrowRight:.05,ArrowDown:-.05,ArrowLeft:-.05,PageUp:.25,PageDown:-.25}[k];if(step!==undefined)set(val+step);else if(k==='Home')set(0);else if(k==='End')set(1);else return;e.preventDefault();e.stopPropagation();wakeUI()});
+ el.addEventListener('dblclick',()=>set(0));
+ let v0=0;try{v0=+(localStorage.getItem('doma-memory')||0)}catch{}MEMORY.v=v0;set(v0)}
 const paintUI=[['paint','level',v=>Math.round(v*100)+'%'],['brush','brush',v=>v.toFixed(1)+'×'],['focus','focus',v=>Math.round(v*100)+'%'],['strokes','strokes',v=>Math.round(v*100)+'%']];
 for(const[id,key,fmt]of paintUI){const el=$('#'+id);el.oninput=e=>{PAINT[key]=+e.target.value;$('#'+id+'-val').textContent=fmt(PAINT[key]);try{localStorage.setItem('doma-'+id,PAINT[key])}catch{}};try{const v=localStorage.getItem('doma-'+id);if(v!==null)PAINT[key]=+v}catch{}el.value=PAINT[key];$('#'+id+'-val').textContent=fmt(PAINT[key]);if(!paint)el.disabled=true}
 $('#outdoor-splats').onchange=e=>{atmosOn=e.target.checked;atmosphere.forEach(o=>o.visible=atmosOn)};

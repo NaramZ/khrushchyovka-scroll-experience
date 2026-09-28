@@ -783,7 +783,7 @@ body.journal-open header,body.journal-open footer,body.journal-open #type-layer,
 <tr><td>Walk the flat</td><td><b>Walk around the flat</b> (inside the flat) or <kbd>G</kbd>; <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd>, <kbd>Esc</kbd> frees the mouse</td></tr>
 <tr><td>Fly around</td><td><b>Settings</b> or <kbd>F</kbd>; drag to orbit, <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd>, <kbd>Q</kbd>/<kbd>E</kbd></td></tr>
 <tr><td>Season &amp; sound</td><td><b>Settings</b>, top right; <kbd>M</kbd> for sound</td></tr>
-<tr><td>This journal</td><td>‹ › or the arrow keys turn its pages; <b>Printed text</b> swaps the handwriting for print</td></tr>
+<tr><td>This journal</td><td>Grab a page and pull it over, or use ‹ › and the arrow keys; <b>Printed text</b> swaps the handwriting for print</td></tr>
 </tbody></table>
 <p class="n-sign">For everyone who opened their door to a guest.</p>
 <p class="n-credit">ДОМА · Naram Ziady &amp; Sami · 2026</p>
@@ -2134,7 +2134,7 @@ const JOURNAL=(()=>{
  const hand=w=>`${w} ${'var(--j-hand)'}`;
  function scribble(x,r){x.save();x.strokeStyle='rgba(44,30,18,.9)';x.lineWidth=2.4;x.lineCap='round';x.lineJoin='round';for(let k=0;k<3;k++){x.beginPath();const y0=r.y+r.h*(.35+k*.14);x.moveTo(r.x-4,y0);for(let xx=r.x-4;xx<=r.x+r.w+4;xx+=5)x.lineTo(xx,y0+Math.sin(xx*.9+k*2)*r.h*.16+(k-1)*2);x.stroke()}x.restore()}
  function coverImg(x,im,r){const ar=im.naturalWidth/im.naturalHeight,br=r.w/r.h;let sw=im.naturalWidth,sh=im.naturalHeight,sx=0,sy=0;if(ar>br){sw=sh*br;sx=(im.naturalWidth-sw)/2}else{sh=sw/br;sy=(im.naturalHeight-sh)/2}x.drawImage(im,sx,sy,sw,sh,r.x,r.y,r.w,r.h)}
- function drawPage(i,focusEl){const mk=()=>{const c=document.createElement('canvas');c.width=PW*S;c.height=PH*S;const k=c.getContext('2d');k.scale(S,S);return[c,k]};const[cp,xp]=mk(),[c,x]=mk();paper(xp,i);const out={paper:cp,ink:c};
+ function drawPage(i,focusEl,hoverEl){const mk=()=>{const c=document.createElement('canvas');c.width=PW*S;c.height=PH*S;const k=c.getContext('2d');k.scale(S,S);return[c,k]};const[cp,xp]=mk(),[c,x]=mk();paper(xp,i);const out={paper:cp,ink:c};
   const fam=getComputedStyle(pressBox).getPropertyValue('--j-hand')||'Caveat';
   x.font=`600 19px ${fam}`;x.fillStyle='rgba(110,80,50,.8)';x.textAlign='center';x.fillText(i%2===0?'ДОМА':'Someone else’s home',PW/2,34);x.textAlign=i%2===0?'left':'right';x.font=`700 21px ${fam}`;x.fillText(String(i+1),i%2===0?26:PW-26,PH-18);x.textAlign='left';
   const blocksHere=pages[i]||[];if(!blocksHere.length)return out;
@@ -2148,20 +2148,22 @@ const JOURNAL=(()=>{
   for(const k of root.querySelectorAll('kbd')){const r=P(k);x.fillStyle='#f3ead4';x.strokeStyle='rgba(44,30,18,.55)';x.lineWidth=1;x.beginPath();x.roundRect(r.x,r.y,r.w,r.h,3);x.fill();x.stroke()}
   for(const t of root.querySelectorAll('table')){x.strokeStyle='rgba(44,30,18,.85)';x.lineWidth=2;const h=t.querySelector('thead tr');if(h){const r=P(h);x.beginPath();x.moveTo(r.x,r.y+r.h);x.lineTo(r.x+r.w,r.y+r.h+1);x.stroke()}x.setLineDash([5,4]);x.lineWidth=1;x.strokeStyle='rgba(44,30,18,.4)';for(const tr of t.querySelectorAll('tbody tr')){const r=P(tr);x.beginPath();x.moveTo(r.x,r.y+r.h);x.lineTo(r.x+r.w,r.y+r.h);x.stroke()}x.setLineDash([])}
   for(const d of root.querySelectorAll('.ix-d')){const r=P(d);x.fillStyle='rgba(44,30,18,.5)';for(let xx=r.x+2;xx<r.x+r.w-2;xx+=7){x.beginPath();x.arc(xx,r.y+r.h-9,1.2,0,7);x.fill()}}
+  if(hoverEl&&root.contains(hoverEl)){x.fillStyle='rgba(156,58,34,.13)';for(const r of hoverEl.getClientRects()){const X=r.left-O.left,Y=r.top-O.top;x.beginPath();x.roundRect(X-6,Y-2,r.width+12,r.height+4,7);x.fill()}}
   // the words themselves, each at the exact place the layout put it
   const rg=document.createRange(),tw=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let n;
-  while(n=tw.nextNode()){const t=n.nodeValue;if(!t.trim())continue;const el=n.parentElement;if(el.closest('.sr'))continue;const cs=getComputedStyle(el);x.font=`${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;x.fillStyle=cs.color;
+  while(n=tw.nextNode()){const t=n.nodeValue;if(!t.trim())continue;const el=n.parentElement;if(el.closest('.sr'))continue;const cs=getComputedStyle(el);x.font=`${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;x.fillStyle=hoverEl&&hoverEl.contains(el)?'#9c3a22':cs.color;
    const link=el.closest('.n-links a'),re=/\S+/g;let m;while(m=re.exec(t)){rg.setStart(n,m.index);rg.setEnd(n,m.index+m[0].length);const rs=rg.getClientRects();if(!rs.length)continue;const rc=rs[0],mt=x.measureText(m[0]),asc=mt.fontBoundingBoxAscent||parseFloat(cs.fontSize)*.8,dsc=mt.fontBoundingBoxDescent||parseFloat(cs.fontSize)*.25;
     const X=rc.left-O.left,Y=rc.top-O.top+(rc.height-asc-dsc)/2+asc;x.fillText(m[0],X,Y);if(link){x.fillRect(X,Y+4,rc.width+4,1.2)}}}
   // headings are underlined by hand; crossed-out words are scratched through; tape holds the photos
   for(const h of root.querySelectorAll('h3')){const tn=[...h.childNodes].reverse().find(c=>c.nodeType===3&&c.nodeValue.trim());if(!tn)continue;rg.selectNodeContents(tn);const rc=rg.getBoundingClientRect(),X=rc.left-O.left,Y=rc.bottom-O.top+3;x.strokeStyle='rgba(150,56,34,.75)';x.lineWidth=2.6;x.lineCap='round';x.beginPath();x.moveTo(X-4,Y);for(let xx=X-4;xx<=X+rc.width+10;xx+=8)x.lineTo(xx,Y+Math.sin(xx*.21)*1.3+(xx-X)*.01);x.stroke()}
   for(const s of root.querySelectorAll('s.scratch'))scribble(x,P(s));
+  if(hoverEl&&root.contains(hoverEl)){const t=hoverEl.querySelector('.ix-t')||hoverEl;for(const r of t.getClientRects()){const X=r.left-O.left,Y=r.bottom-O.top+2;x.strokeStyle='rgba(156,58,34,.9)';x.lineWidth=2;x.lineCap='round';x.beginPath();x.moveTo(X,Y);for(let xx=X;xx<=X+r.width;xx+=3)x.lineTo(xx,Y+Math.sin((xx-X)*.55)*1.6);x.stroke()}}
   if(focusEl&&root.contains(focusEl)){const r=P(focusEl);x.strokeStyle='#9c3a22';x.lineWidth=3;x.beginPath();x.roundRect(r.x-6,r.y-3,r.w+12,r.h+6,6);x.stroke()}
   if(!live)press.innerHTML='';return out}
  const texCache=new Map();
  const mkTex=(c,ink)=>{const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=maxAniso;if(ink)t.premultiplyAlpha=true;return t};
- let focusTex=null;function tex(i,focusEl){if(!focusEl&&texCache.has(i))return texCache.get(i);const d=drawPage(i,focusEl);
-  if(focusEl){if(focusTex)focusTex.ink.dispose();focusTex={paper:tex(i).paper,ink:mkTex(d.ink,true)};return focusTex}
+ let focusTex=null;function tex(i,focusEl,hoverEl){if(!focusEl&&!hoverEl&&texCache.has(i))return texCache.get(i);const d=drawPage(i,focusEl,hoverEl);
+  if(focusEl||hoverEl){if(focusTex)focusTex.ink.dispose();focusTex={paper:tex(i).paper,ink:mkTex(d.ink,true)};return focusTex}
   const t={paper:mkTex(d.paper),ink:mkTex(d.ink,true)};texCache.set(i,t);if(texCache.size>8){const k0=texCache.keys().next().value;const o=texCache.get(k0);o.paper.dispose();o.ink.dispose();texCache.delete(k0)}return t}
  function clearTex(){for(const t of texCache.values()){t.paper.dispose();t.ink.dispose()}texCache.clear()}
 
@@ -2237,12 +2239,15 @@ const JOURNAL=(()=>{
  // ── 5 · turning
  let turn=null;const baseTex=[null,null];
  function setBase(){setPage(pageL,tex(spread*2));setPage(pageR,tex(spread*2+1))}
- function go(dir){if(turn)return;if(single){if(dir>0&&side===0){side=1;showView();return}if(dir<0&&side===1){side=0;showView();return}}
-  const n=spread+dir;if(n<0||n>pages.length/2-1)return;const cur=spread;spread=n;if(single)side=dir>0?0:1;
-  const t0=performance.now(),dur=reduced?0:1250;
+ // a turn is a sheet between two states; it can be played (arrows, buttons) or held by the hand (drag)
+ const last=()=>pages.length/2-1;
+ function begin(dir){if(turn)return false;const n=spread+dir;if(n<0||n>last())return false;hoverA=null;dlg.style.cursor='';const cur=spread;spread=n;if(single)side=dir>0?0:1;
   if(dir>0){setPage(sheetF,tex(cur*2+1));setPage(sheetB,tex(n*2));setPage(pageR,tex(n*2+1))}else{setPage(sheetF,tex(n*2+1));setPage(sheetB,tex(cur*2));setPage(pageL,tex(n*2))}showView();
-  if(!dur){setBase();return}turn={t0,dur,dir};sheetF.visible=sheetB.visible=true;syncInk();bendSheet(dir>0?0:1)}
- function toId(id){if(!idPage.has(id))return;const n=Math.floor(idPage.get(id)/2),s=idPage.get(id)%2;if(n===spread){side=s;showView()}else{const d=Math.sign(n-spread);spread=n-d;go(d)}if(single)side=s;const t=document.getElementById(id);if(t){t.setAttribute('tabindex','-1');t.focus({preventScroll:true})}}
+  turn={dir,cur,p:0,from:0,to:0,t0:0,dur:0,manual:true};sheetF.visible=sheetB.visible=true;syncInk();bendSheet(dir>0?0:1);return true}
+ function playTo(to,dur){if(!turn)return;if(reduced)dur=0;turn.from=turn.p;turn.to=to;turn.t0=performance.now();turn.dur=Math.max(1,dur);turn.manual=false}
+ function endTurn(){const done=turn.to>=1;if(!done){spread=turn.cur;if(single)side=turn.dir>0?1:0}turn=null;sheetF.visible=sheetB.visible=false;syncInk();setBase();showView()}
+ function go(dir){if(turn)return;if(single){if(dir>0&&side===0){side=1;showView();return}if(dir<0&&side===1){side=0;showView();return}}if(begin(dir))playTo(1,1250)}
+ function toId(id){if(!idPage.has(id))return;const n=Math.floor(idPage.get(id)/2),s=idPage.get(id)%2;if(turn)return;if(n===spread){side=s;showView()}else{const d=Math.sign(n-spread);spread=n-d;if(begin(d))playTo(1,1250)}if(single)side=s;const t=document.getElementById(id);if(t){t.setAttribute('tabindex','-1');t.focus({preventScroll:true})}}
  prevB.onclick=()=>go(-1);nextB.onclick=()=>go(1);
  addEventListener('keydown',e=>{if(!dlg.open||(e.target.closest&&e.target.closest('input,textarea,select')))return;const k=e.key;if(k==='ArrowRight'||k==='PageDown'){go(1);e.preventDefault()}else if(k==='ArrowLeft'||k==='PageUp'){go(-1);e.preventDefault()}});
  dlg.querySelector('.n-index-btn').onclick=()=>toId('h-index');
@@ -2250,16 +2255,32 @@ const JOURNAL=(()=>{
  const ray=new THREE.Raycaster(),ndc=new THREE.Vector2();
  function linkAt(e){ndc.set(e.clientX/innerWidth*2-1,-(e.clientY/innerHeight)*2+1);ray.setFromCamera(ndc,cam);const h=ray.intersectObjects([pageL,pageR],false)[0];if(!h||!h.uv)return null;const k=h.object===pageL?0:1,px=h.uv.x*PW,py=(1-h.uv.y)*PH,vb=views[k].getBoundingClientRect();
   for(const a of viewIns[k].querySelectorAll('a')){for(const r of a.getClientRects()){const x0=r.left-vb.left,y0=r.top-vb.top;if(px>=x0-4&&px<=x0+r.width+4&&py>=y0-4&&py<=y0+r.height+4)return a}}return null}
- dlg.addEventListener('pointermove',e=>{mx=e.clientX/innerWidth-.5;my=e.clientY/innerHeight-.5;dlg.style.cursor=e.target===dlg&&linkAt(e)?'pointer':''});
+ let hoverA=null,focusA=null;const pageOfLink=a=>views.findIndex(v=>v.contains(a));
+ function refresh(k){if(turn||k<0)return;const h=hoverA&&pageOfLink(hoverA)===k?hoverA:null,f=focusA&&pageOfLink(focusA)===k?focusA:null;setPage(k?pageR:pageL,h||f?tex(spread*2+k,f,h):tex(spread*2+k))}
+ dlg.addEventListener('pointermove',e=>{mx=e.clientX/innerWidth-.5;my=e.clientY/innerHeight-.5;if(grab)return;const a=e.target===dlg&&!turn?linkAt(e):null;const onPage=!a&&e.target===dlg&&!turn&&pageHit(e);dlg.style.cursor=a?'pointer':onPage?'grab':'';if(a!==hoverA){const old=hoverA;hoverA=a;if(old)refresh(pageOfLink(old));if(a)refresh(pageOfLink(a))}});
+ // grab a page and pull it over; let go past about a third of the way and it finishes, otherwise it falls back
+ const grabPlane=new THREE.Plane(new THREE.Vector3(0,1,0),-(COVER+.06)),_gp=new THREE.Vector3();let grab=null,dragged=false;
+ const worldX=e=>{ndc.set(e.clientX/innerWidth*2-1,-(e.clientY/innerHeight)*2+1);ray.setFromCamera(ndc,cam);return ray.ray.intersectPlane(grabPlane,_gp)?_gp.x:null};
+ const pageHit=e=>{ndc.set(e.clientX/innerWidth*2-1,-(e.clientY/innerHeight)*2+1);ray.setFromCamera(ndc,cam);const h=ray.intersectObjects([pageL,pageR],false)[0];return h?(h.object===pageL?-1:1):0};
+ dlg.addEventListener('pointerdown',e=>{if(e.target!==dlg||e.button!==0||turn||linkAt(e))return;const hit=pageHit(e);if(!hit)return;dragged=false;grab={dir:hit,x0:worldX(e),sx:e.clientX,started:false,single};dlg.setPointerCapture(e.pointerId);dlg.style.cursor='grabbing';e.preventDefault()});
+ dlg.addEventListener('pointermove',e=>{if(!grab)return;if(Math.abs(e.clientX-grab.sx)>4)dragged=true;if(grab.single)return;const x=worldX(e);if(x===null)return;
+  if(!grab.started){if(!dragged)return;if(!begin(grab.dir)){grab=null;return}grab.started=true}
+  const p=grab.dir>0?clamp((grab.x0-x)/(grab.x0+W),0,1):clamp((x-grab.x0)/(W-grab.x0),0,1);turn.p=p;bendSheet(grab.dir>0?p:1-p)},true);
+ const release=e=>{if(!grab)return;const g=grab;grab=null;dlg.style.cursor='';try{dlg.releasePointerCapture(e.pointerId)}catch{}
+  if(g.single){const dx=e.clientX-g.sx;if(Math.abs(dx)>40)go(dx<0?1:-1);return}
+  if(g.started&&turn){const p=turn.p;if(p>.32)playTo(1,250+700*(1-p));else playTo(0,200+500*p)}};
+ dlg.addEventListener('pointerup',release);dlg.addEventListener('pointercancel',release);
+ dlg.addEventListener('click',e=>{if(dragged){e.stopImmediatePropagation();dragged=false}},true);
+ dlg.addEventListener('pointerleave',()=>{if(hoverA){const k=pageOfLink(hoverA);hoverA=null;refresh(k)}});
  dlg.addEventListener('click',e=>{if(e.target!==dlg)return;const a=linkAt(e);if(a)a.click()});
  dlg.addEventListener('click',e=>{const a=e.target.closest&&e.target.closest('a[href^="#"]');if(!a)return;e.preventDefault();toId(a.getAttribute('href').slice(1))});
  // keyboard focus on a link inside the invisible pages is drawn onto the paper
- dlg.addEventListener('focusin',e=>{const v=views.findIndex(v=>v.contains(e.target));if(v<0||e.target===views[v])return;if(single&&side!==v){side=v;showView()}setPage(v?pageR:pageL,tex(spread*2+v,e.target))});
- dlg.addEventListener('focusout',e=>{const v=views.findIndex(v=>v.contains(e.target));if(v<0)return;if(turn)return;setPage(v?pageR:pageL,tex(spread*2+v))});
+ dlg.addEventListener('focusin',e=>{const v=views.findIndex(v=>v.contains(e.target));if(v<0||e.target===views[v])return;if(single&&side!==v){side=v;showView()}focusA=e.target;refresh(v)});
+ dlg.addEventListener('focusout',e=>{const v=views.findIndex(v=>v.contains(e.target));if(v<0)return;focusA=null;refresh(v)});
  function frame(snap){framing();if(snap){camP.copy(want);look.copy(wantL)}}
  let lastT=0;
  function draw(ms){ensureComposer();const dt=Math.min(.05,Math.max(0,(ms-lastT)/1000)||.016);lastT=ms;framing();const k=1-Math.exp(-dt*3.2);camP.lerp(want,k);look.lerp(wantL,k);cam.position.copy(camP);cam.position.y+=Math.sin(ms/2600)*.003;cam.lookAt(look);
-  if(turn){const t=clamp((ms-turn.t0)/turn.dur,0,1),e=.5-.5*Math.cos(Math.PI*t);bendSheet(turn.dir>0?e:1-e);if(t>=1){turn=null;sheetF.visible=sheetB.visible=false;syncInk();setBase()}}
+  if(turn&&!turn.manual){const t=clamp((ms-turn.t0)/turn.dur,0,1),e=.5-.5*Math.cos(Math.PI*t);turn.p=turn.from+(turn.to-turn.from)*e;bendSheet(turn.dir>0?turn.p:1-turn.p);if(t>=1)endTurn()}
   dust.material.uniforms.uT.value=ms/1000;dust.material.uniforms.uS.value=innerHeight*pixelRatio;lamp.target.position.set(-.2,0,.05);
   renderer.toneMappingExposure=1;renderer.shadowMap.needsUpdate=true;jcomp.render(dt)}
  function open(){document.body.classList.add('journal-open');syncInk();paginate();clearTex();setBase();showView();ensureComposer();resize();frame(true);if(document.fonts)document.fonts.ready.then(()=>{if(dlg.open){paginate();clearTex();setBase();showView()}});requestAnimationFrame(()=>{if(dlg.open)dlg.querySelector('.bk-next').focus({preventScroll:true})})}

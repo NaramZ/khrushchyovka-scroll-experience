@@ -52,7 +52,7 @@ The top bar has two buttons: **Journal** and **Settings**.
 - **Fly around** (Settings, or `F`): orbit, pan, zoom, `W A S D`, `Q / E`.
 - **Memory** (a tab bottom left; open it, then drag the handle up, click a word on the scale, scroll over it, or use the arrow keys): fades the whole scene from “Now” to “Only the shape”, like a memory: colour drains, brush strokes grow, sound muffles, and only the building’s outline stays.
 - **As designed ↔ as lived**: a slider that appears inside the flat.
-- **Journal**: “Someone else’s home”, an old notebook you page through (‹ › or the arrow keys; **Index** jumps to the contents): a walk through the rooms and what each one meant, how we made it, sources and controls. **Printed text** swaps the handwriting for print. `M` toggles sound.
+- **Journal**: “Someone else’s home”, an old leather notebook on a desk, in 3D: grab a page and pull it over, or use ‹ › and the arrow keys; **Index** jumps to the contents): a walk through the rooms and what each one meant, how we made it, sources and controls. **Printed text** swaps the handwriting for print. `M` toggles sound.
 
 ## Sound
 Click or press a key once and the sound starts (browsers need a gesture). The kitchen radio uses the recordings in `audio/`; they are also embedded in `index.html`, so the page works on its own.

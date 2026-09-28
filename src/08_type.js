@@ -97,7 +97,7 @@ function livedUpdate(dt){const u=WX.uLived;u.value=lerp(u.value,livedTarget,1-Ma
  const pl=splatSets.find(o=>o.name==='plants');if(pl)pl.material.uniforms.uOpacity.value=smooth(v,.2,.9);
  document.body.classList.toggle('in-flat',zone==='flat'||zone==='balcony')}
 // ── the website recedes: chrome fades away while you explore, returns when you reach for it
-let uiTimer=0;function wakeUI(){document.body.classList.remove('ui-idle');clearTimeout(uiTimer);uiTimer=setTimeout(()=>{if((progress>.03||walking||free)&&document.getElementById('chapters-pop').hidden)document.body.classList.add('ui-idle')},2400)}
+let uiTimer=0;function wakeUI(){document.body.classList.remove('ui-idle');clearTimeout(uiTimer);uiTimer=setTimeout(()=>{if((progress>.03||walking||free)&&document.getElementById('chapters-pop').hidden&&document.getElementById('atmos-panel').hidden)document.body.classList.add('ui-idle')},2400)}
 addEventListener('mousemove',()=>{if(!document.pointerLockElement)wakeUI()});addEventListener('touchstart',wakeUI,{passive:true});addEventListener('keydown',e=>{if(!['w','a','s','d','shift','q','e'].includes(e.key.toLowerCase()))wakeUI()});wakeUI();
 addEventListener('resize',()=>cssRenderer.setSize(innerWidth,innerHeight));
 window.domaType={PLATES,PAL,samplePalette:()=>{try{samplePalette();return 'ok'}catch(e){return String(e)}}};

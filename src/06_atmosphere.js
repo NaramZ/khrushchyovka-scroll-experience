@@ -104,7 +104,7 @@ let hazeLevel=1;
 function setIndoorHaze(v){hazeLevel=v;for(const o of[glowSet,roomHazeSet,dustSet]){o.material.uniforms.uOpacity.value=v>1?1+(v-1)*.9:1;o.geometry.setDrawRange(0,Math.round(o.geometry.userData.count*Math.min(1,v)));o.userData.off=v<=0}}
 
 // ───────────────────────── applying a season ─────────────────────────
-let season='autumn',fogBase=.0105,envBase=.85,hemiBase=.95,sunBase=.55;
+let season='summer',fogBase=.0105,envBase=.85,hemiBase=.95,sunBase=.55;
 // how light behaves per season, outside and in: exposure, how much daylight the windows let in, whether the lamps are on
 let seasonK={exp:1.05,inI:1,lamp:1,inAmb:1,inExp:1,bloom:.32,lift:[.012,.017,.016],sat:.7};
 function applySeason(name){const S=SEASONS[name];season=name;seasonK=S;FOG.set(S.fog);scene.fog.color.copy(FOG);fogBase=S.fogD;sunDir.set(...S.sunDir).normalize();setSky(S.sky,S.skyO);

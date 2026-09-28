@@ -262,3 +262,35 @@ body.ui-idle #memory-ui{opacity:0;transform:translateY(12px);pointer-events:none
 #notes .n-credit{font:500 13px/1.5 var(--mono);letter-spacing:.04em;color:var(--n-muted);margin-bottom:28px}
 #notes .n-close-end{font-family:var(--mono)}
 @media(max-width:600px){#notes{font-size:17px}#notes .n-lede{font-size:20px}}
+/* ── a simpler journey: three buttons up top, a page footer below, walking offered where it makes sense ── */
+.toolbar{gap:8px}
+.toolbar button{font:500 12px/1 var(--mono)!important;letter-spacing:.06em;text-transform:uppercase;padding:11px 16px!important;min-height:40px}
+.toolbar #archive,.toolbar #season-btn,.toolbar #chapters-btn{display:inline-block!important}
+.toolbar #archive{border-color:var(--ink)!important}
+#atmos-panel{max-height:calc(100vh - 120px);overflow-y:auto;width:300px}
+.ap-btn{display:block;width:100%;margin:0 0 16px;padding:11px 12px;background:transparent;border:1px solid color-mix(in srgb,var(--ink) 35%,transparent);color:var(--ink);font:500 12px/1 var(--mono);letter-spacing:.05em;text-transform:uppercase;text-align:left;cursor:pointer}
+.ap-btn:hover{background:color-mix(in srgb,var(--ink) 8%,transparent)}
+.ap-btn[aria-pressed=true]{background:var(--ink);color:var(--paper)}
+.ap-two{display:grid;grid-template-columns:1fr 1fr;gap:6px}.ap-two .ap-btn{text-align:center;padding:11px 6px}
+.ap-more{border-top:1px solid color-mix(in srgb,var(--ink) 20%,transparent);padding-top:12px}
+.ap-more summary{cursor:pointer;list-style:none;font:500 11px/1.4 var(--mono);letter-spacing:.12em;text-transform:uppercase;padding:4px 0 10px}
+.ap-more summary::-webkit-details-marker{display:none}
+.ap-more summary::after{content:" +";color:var(--red)}.ap-more[open] summary::after{content:" −"}
+#lived-ui #walk-in{margin-left:6px;padding:9px 12px;background:var(--ink);color:var(--paper);border:0;font:500 11px/1 var(--mono);letter-spacing:.05em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
+#resume{display:none;position:fixed;z-index:15;top:24px;left:50%;transform:translateX(-50%);padding:11px 18px;background:var(--ink);color:var(--paper);border:0;font:500 12px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+body.walking #resume,body.free #resume{display:block}
+body.walking header .toolbar,body.free header .toolbar{opacity:.0;pointer-events:none}
+#percent{display:none}
+.track-top{justify-content:center}
+#progress-text{font:500 12px/1.3 var(--mono);letter-spacing:.04em;text-transform:none;text-align:center}
+#progress-text b{color:var(--red);font-weight:600;margin-right:6px}
+#progress-text span{margin-left:6px;opacity:.6;font-size:11px;letter-spacing:.08em}
+.track{width:clamp(200px,30vw,420px)}
+@media(max-width:700px){.toolbar button{font-size:10px!important;padding:9px 10px!important}#lived-ui #walk-in{display:none}#progress-text span{display:none}}
+.journey{padding:8px 12px;background:color-mix(in srgb,var(--paper) 82%,transparent);backdrop-filter:blur(6px)}
+#progress-text{color:var(--ink)}#progress-text span{opacity:.75}
+#walk-in{display:none;position:fixed;z-index:13;right:24px;bottom:24px;margin:0;padding:13px 16px;background:var(--ink);color:var(--paper);border:0;font:500 12px/1 var(--mono);letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:opacity .9s}
+body.in-flat #walk-in{display:block}body.walking #walk-in{display:none}
+body.ui-idle #walk-in{opacity:0;pointer-events:none}
+@media(max-width:1150px){#lived-ui{bottom:136px!important}}
+@media(max-width:700px){#walk-in{display:none!important}#lived-ui{bottom:200px!important}}

@@ -45,10 +45,11 @@ python3 -m http.server 8000
 The first load takes a few seconds while the city is built.
 
 ## Controls
-- **Scroll** to travel through nine chapters (about five minutes); **Chapters ▾** in the top bar jumps to any of them.
-- **Autumn ▾** (top bar): season, indoor haze, and the gaussian paint (splat level, brush strokes, brush size, focus). Settings are remembered.
-- **Walk ◉** (or `G`): first person. Click to look around, `W A S D` to move, `Shift` to run, `Esc` frees the mouse, `G` or `Esc` again to leave.
-- **Free camera** (or `F`): orbit, pan, zoom, `W A S D`, `Q / E`.
+The top bar has three buttons: **Contents**, **Journal** and **Settings**.
+- **Scroll** to travel through nine chapters (about five minutes); **Contents** jumps to any of them, and the arrows at the bottom turn the page.
+- **Settings**: season (summer by default), sound, walking and flying, and, folded under *Look & atmosphere*, indoor haze and the gaussian paint. Settings are remembered.
+- **Walk around the flat** (bottom right, inside the flat, or `G`): first person. Click to look around, `W A S D` to move, `Shift` to run, `Esc` frees the mouse; **Back to the journey** at the top returns you to the scroll.
+- **Fly around** (Settings, or `F`): orbit, pan, zoom, `W A S D`, `Q / E`.
 - **Memory** knob (bottom left; drag it round, scroll over it, or use the arrow keys): fades the whole scene from “Now” to “Only the shape”, like a memory: colour drains, brush strokes grow, sound muffles, and only the building’s outline stays.
 - **As designed ↔ as lived**: a slider that appears inside the flat.
 - **Journal**: “Someone else’s home”, the written entry: a walk through the rooms and what each one meant, how we made it, sources and controls. `M` toggles sound.

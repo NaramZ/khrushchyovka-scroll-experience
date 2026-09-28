@@ -91,7 +91,7 @@ const JOURNAL=(()=>{
  // the page block: the edges of all the other pages, visible along each side
  const edgeC=(()=>{const[c,x]=cnv(64,256);x.fillStyle='#d9c69c';x.fillRect(0,0,64,256);for(let y=0;y<256;y+=2){x.fillStyle=`rgba(${rnd()<.5?'120,90,50':'250,240,215'},${.15+rnd()*.25})`;x.fillRect(0,y,64,1)}return c})();
  const edgeMat=new THREE.MeshStandardMaterial({map:T(edgeC),roughness:.9,side:THREE.DoubleSide});
- function blockGeo(s){const shape=new THREE.Shape();shape.moveTo(0,COVER);for(let i=0;i<=SEG;i++){const d=i/SEG*W;shape.lineTo(s*d,COVER+prof(d)-.002)}shape.lineTo(s*W,COVER);shape.lineTo(0,COVER);return new THREE.ExtrudeGeometry(shape,{depth:H-.01,bevelEnabled:false,steps:1})}
+ function blockGeo(s){const shape=new THREE.Shape();shape.moveTo(0,COVER);for(let i=0;i<=SEG;i++){const d=i/SEG*W;shape.lineTo(s*d,COVER+prof(d)-.009)}shape.lineTo(s*W,COVER);shape.lineTo(0,COVER);return new THREE.ExtrudeGeometry(shape,{depth:H-.01,bevelEnabled:false,steps:1})}
  for(const s of[-1,1]){const g=blockGeo(s);g.translate(0,0,-(H-.01)/2);const m=new THREE.Mesh(g,edgeMat);m.castShadow=m.receiveShadow=true;book.add(m)}
  function pageGeo(s){const g=new THREE.PlaneGeometry(W,H,SEG,SEGZ);g.rotateX(-Math.PI/2);const p=g.attributes.position,uv=g.attributes.uv;for(let i=0;i<p.count;i++){const u=uv.getX(i),d=s>0?u*W:(1-u)*W;p.setX(i,s>0?d:-d);p.setY(i,COVER+prof(d)+Math.sin(d*7.3+s)*.0025*(d/W))}p.needsUpdate=true;g.computeVertexNormals();return g}
  const pageMat=()=>new THREE.MeshStandardMaterial({roughness:.93,metalness:0,color:'#ffffff'});
@@ -102,7 +102,7 @@ const JOURNAL=(()=>{
  for(const m of[sheetF,sheetB]){m.castShadow=true;m.visible=false;book.add(m)}
  const bx=new Float32Array((SEG+1)*(SEGZ+1)),by=new Float32Array((SEG+1)*(SEGZ+1));
  function bendSheet(t){const th=t*Math.PI,sw=Math.sin(Math.PI*t),dl=W/SEG;
-  for(let iz=0;iz<=SEGZ;iz++){const zb=iz/SEGZ,k=1.35*sw*(1-.5*zb);let x=0,y=0;for(let ix=0;ix<=SEG;ix++){const i=iz*(SEG+1)+ix;if(ix){const l=(ix-.5)*dl,ph=th-k*Math.pow(l/W,1.5);x+=Math.cos(ph)*dl;y+=Math.sin(ph)*dl}bx[i]=x;by[i]=y+COVER+prof(ix*dl)+.003+sw*.012*(ix/SEG)}}
+  for(let iz=0;iz<=SEGZ;iz++){const zb=iz/SEGZ,k=1.35*sw*(1-.5*zb);let x=0,y=0;for(let ix=0;ix<=SEG;ix++){const i=iz*(SEG+1)+ix;if(ix){const l=(ix-.5)*dl,ph=th-k*Math.pow(l/W,1.5);x+=Math.cos(ph)*dl;y+=Math.sin(ph)*dl}bx[i]=x;by[i]=y+COVER+prof(ix*dl)+.006+sw*.012*(ix/SEG)}}
   for(const g of sheetGeo){const p=g.attributes.position;for(let i=0;i<p.count;i++){p.setX(i,bx[i]);p.setY(i,by[i])}p.needsUpdate=true;g.computeVertexNormals()}}
  // the ribbon, lying out of the gutter and over the edge onto the desk
  {const pts=[new THREE.Vector3(.016,COVER+prof(.016)+.003,-H/2-.01),new THREE.Vector3(.018,COVER+prof(.018)+.003,-.1),new THREE.Vector3(.02,COVER+prof(.02)+.003,H/2-.03),new THREE.Vector3(.03,COVER*.5,H/2+.05),new THREE.Vector3(.07,.002,H/2+.2),new THREE.Vector3(.1,.002,H/2+.3)];const cv=new THREE.CatmullRomCurve3(pts);

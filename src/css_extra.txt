@@ -396,3 +396,88 @@ body.ui-idle #walk-in{opacity:0;pointer-events:none}
 .loader-title{font:700 clamp(64px,10vw,120px)/1 var(--j-hand)!important;letter-spacing:0!important;color:var(--j-ink)}
 #load-message{font:600 24px/1.3 var(--j-hand)!important;letter-spacing:0!important;text-transform:none!important;color:var(--j-ink)}
 .loader-line{filter:url(#ink)}
+/* ── memory, redrawn: a strip of paper in the bottom-left margin, a scale written by hand, an ink handle ── */
+#memory-ui{display:block!important;left:22px!important;right:auto!important;bottom:22px!important;width:auto!important;padding:14px 18px 16px 16px!important;gap:0!important}
+#memory-ui::before{transform:rotate(-.8deg)!important}
+#memory-ui #memory-lab{display:block;font:700 24px/1 var(--j-hand)!important;margin:0 0 10px}
+#memory-ui #memory-lab small{display:inline;margin-left:6px;font-size:17px!important}
+.mem-track{position:relative;height:190px;width:150px;cursor:pointer;touch-action:none;outline-offset:6px}
+.mem-line{position:absolute;left:12px;top:8px;bottom:8px;width:3px;background:var(--j-ink);border-radius:3px;filter:url(#ink)}
+.mem-fill{position:absolute;left:9px;bottom:8px;width:9px;height:0;max-height:calc(100% - 16px);background:var(--j-red-wash);opacity:.75;border-radius:5px;filter:url(#ink)}
+.mem-marks{position:absolute;left:30px;right:0;top:0;bottom:0;margin:0;padding:0;list-style:none;display:flex;flex-direction:column;justify-content:space-between}
+.mem-marks li{position:relative;font:600 18px/16px var(--j-hand);color:var(--j-ink);opacity:.7;white-space:nowrap}
+.mem-marks li::before{content:"";position:absolute;left:-22px;top:7px;width:12px;height:2px;background:var(--j-ink);filter:url(#ink)}
+.mem-marks li.on{opacity:1;font-weight:700;color:var(--j-red)}
+.mem-thumb{position:absolute;left:3px;bottom:8px;width:22px;height:18px;transform:translateY(50%);background:var(--j-ink);border:2px solid var(--j-ink);border-radius:55% 45% 60% 40%/45% 60% 40% 55%;filter:url(#ink);pointer-events:none;transition:bottom .12s}
+#memory:focus-visible{outline:3px solid var(--j-red)!important;outline-offset:6px!important;border-radius:6px}
+@media(prefers-reduced-motion:reduce){.mem-thumb{transition:none}}
+/* the vertical strip replaces the older bottom-left rules at every width */
+@media(min-width:701px) and (max-width:1000px){#memory-ui{bottom:22px!important;padding:12px 16px 14px 14px!important}}
+@media(max-width:1000px){#memory-ui #memory-lab{font-size:22px!important}}
+@media(max-width:700px){#memory-ui{bottom:110px!important;left:10px!important;padding:10px 12px 12px!important}#memory-ui #memory-lab small{display:none}.mem-track{height:150px;width:122px}.mem-marks li{font-size:16px}}
+.mem-marks li,#memory-ui #memory-lab{text-transform:none!important;letter-spacing:0!important}
+/* ═══ THE JOURNAL: a spiral notebook left open on the kitchen table — ruled pages, a red margin, written by hand,
+   photos taped in, a sticky note for the contents. "Printed text" swaps the handwriting for a serif. ═══ */
+#notes{--rule:36px;--pg:#f7f0de;--pg-ink:#2b2621;--pg-red:#9c3a22;--pg-blue:#8fa7c24d;background:#3a2e24 repeating-linear-gradient(92deg,#ffffff05 0 2px,transparent 2px 9px,#00000010 9px 11px,transparent 11px 23px);padding:26px 14px 70px!important;color:var(--pg-ink);font:500 25px/var(--rule) var(--j-hand)}
+#notes::backdrop{background:#3a2e24}
+#notes .n-top,#notes .n-body{max-width:1080px;margin-left:auto;margin-right:auto;background-color:var(--pg);background-image:linear-gradient(90deg,transparent 86px,#c6493055 86px,#c6493055 88px,transparent 88px)}
+#notes .n-top{position:sticky;top:-26px;z-index:3;padding:34px 36px 14px 110px;border-bottom:2px solid #c6493055;box-shadow:0 -30px 0 #3a2e24}
+#notes .n-kicker{font:600 21px/1.2 var(--j-hand)!important;letter-spacing:0!important;text-transform:none!important;color:var(--pg-red)!important}
+#notes h2{font:700 clamp(40px,5vw,62px)/1 var(--j-hand)!important;letter-spacing:0!important;color:var(--pg-ink)}
+#notes .n-tools{grid-column:2;grid-row:1/3;align-self:center;display:flex;gap:10px}
+#notes .n-tools button,#notes .n-close-end{position:relative;isolation:isolate;min-height:44px;padding:8px 16px 10px!important;background:transparent!important;border:0!important;color:var(--pg-ink)!important;font:700 22px/1 var(--j-hand)!important;letter-spacing:0!important;text-transform:none!important;cursor:pointer}
+#notes .n-tools button::before,#notes .n-close-end::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--pg);border:2px solid var(--pg-ink);border-radius:14px 5px 12px 6px/6px 12px 5px 14px;filter:url(#paint);transform:rotate(-1deg)}
+#notes .n-tools button:hover::before,#notes .n-close-end:hover::before{background:#eadfc4}
+#notes .n-tools .n-print[aria-pressed=true]{color:var(--pg)!important}#notes .n-tools .n-print[aria-pressed=true]::before{background:var(--pg-ink)}
+#notes .n-body{position:relative;display:grid;grid-template-columns:230px minmax(0,1fr);gap:44px;padding:36px 44px 72px 110px;box-shadow:0 30px 60px #0000006b;background-image:linear-gradient(90deg,transparent 86px,#c6493055 86px,#c6493055 88px,transparent 88px),repeating-linear-gradient(180deg,transparent 0 calc(var(--rule) - 1px),var(--pg-blue) calc(var(--rule) - 1px) var(--rule));background-position:0 0,0 12px}
+/* the spiral: punched holes down the left edge, showing the table through them */
+#notes .n-body::before,#notes .n-top::before{content:"";position:absolute;left:22px;top:0;bottom:0;width:30px;background:radial-gradient(circle at 15px 18px,#3a2e24 0 7px,#00000033 7.5px 8.5px,transparent 9px) 0 0/30px 36px repeat-y}
+#notes .n-top::before{top:10px}
+/* the contents: a yellow sticky note */
+#notes .n-toc{position:sticky;top:150px;align-self:start;padding:22px 20px 24px;background:#f5dc79;box-shadow:3px 8px 14px #0000003d;transform:rotate(-2.2deg);font:600 22px/1.3 var(--j-hand)}
+#notes .n-toc-h{font:700 24px/1.1 var(--j-hand)!important;letter-spacing:0!important;text-transform:none!important;color:var(--pg-ink)!important;margin:0 0 10px!important}
+#notes .n-toc ol{border:0!important}
+#notes .n-toc a{padding:4px 0!important;border:0!important;font:600 22px/1.25 var(--j-hand)!important;color:var(--pg-ink)!important;text-decoration:none}
+#notes .n-toc a::before{font:700 20px var(--j-hand)!important;color:var(--pg-red)!important;content:counter(t) ". "!important}
+#notes .n-toc a:hover,#notes .n-toc a:focus-visible{text-decoration:underline wavy var(--pg-red) 2px;text-underline-offset:5px}
+/* the writing */
+#notes .n-main{max-width:680px}
+#notes .n-main p,#notes .n-main li,#notes .n-main dd,#notes .n-main td{font:500 25px/var(--rule) var(--j-hand);color:var(--pg-ink)}
+#notes .n-main p{margin:0 0 var(--rule)!important}
+#notes .n-lede{font:600 30px/var(--rule) var(--j-hand)!important}
+#notes .n-how{margin:0 0 var(--rule)!important;padding:0!important;border:0!important;background:none!important;font:600 24px/var(--rule) var(--j-hand)!important;color:var(--pg-red)!important;transform:rotate(-1deg)}
+#notes section{border:0!important;margin:0!important;padding:0 0 var(--rule)!important}
+#notes .n-room h3,#notes #n-refs h3{margin:var(--rule) 0 0!important;padding-top:6px;font:700 44px/var(--rule) var(--j-hand)!important;color:var(--pg-ink);text-decoration:underline;text-decoration-color:#9c3a2299;text-decoration-thickness:3px;text-underline-offset:9px;text-decoration-skip-ink:none}
+#notes h3 small{display:block;margin:0 0 4px!important;font:700 22px/var(--rule) var(--j-hand)!important;letter-spacing:0!important;text-transform:none!important;color:var(--pg-red)!important}
+#notes .n-room h3 + p{margin-top:var(--rule)!important}
+#notes section::after{content:"~ ~ ~";display:block;margin-top:6px;text-align:center;font:700 26px/var(--rule) var(--j-hand);color:#9c3a2288;letter-spacing:.4em}
+#notes #n-refs::after{content:none}
+#notes h4{margin:var(--rule) 0 0!important;font:700 30px/var(--rule) var(--j-hand)!important;letter-spacing:0!important;text-transform:none!important;color:var(--pg-red)!important}
+#notes .n-small,#notes .n-links li{font:500 22px/var(--rule) var(--j-hand)!important;color:var(--pg-ink)!important}
+#notes .n-links{margin:0 0 var(--rule)!important}
+#notes a{color:var(--pg-ink)!important;text-decoration-color:#2b262199!important}
+#notes a:hover{color:var(--pg-red)!important}
+/* photos taped into the page */
+#notes .n-figs{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:34px 30px!important;margin:var(--rule) 0!important;width:auto!important}
+#notes .n-figs figure{position:relative;margin:0;padding:10px 10px 6px;background:#fffdf7;box-shadow:0 6px 14px #0000002e}
+#notes .n-figs figure:nth-child(1){transform:rotate(-2deg)}#notes .n-figs figure:nth-child(2){transform:rotate(1.6deg)}#notes .n-figs figure:nth-child(3){transform:rotate(1deg)}#notes .n-figs figure:nth-child(4){transform:rotate(-1.4deg)}
+#notes .n-figs figure::before{content:"";position:absolute;top:-12px;left:50%;width:84px;height:24px;margin-left:-42px;background:#dccb9ecc;transform:rotate(-4deg);filter:url(#paint);z-index:1}
+#notes .n-figs img{aspect-ratio:4/5!important;filter:saturate(.75) sepia(.12)!important}
+#notes .n-figs figcaption{margin:6px 0 0!important;font:600 22px/1.2 var(--j-hand)!important;text-transform:none!important;letter-spacing:0!important;color:var(--pg-ink)!important;text-align:center}
+/* controls, as a hand-ruled table */
+#notes .n-keys{margin:0 0 var(--rule)!important;font:500 22px/1.3 var(--j-hand)!important}
+#notes .n-keys th{font:700 22px/1.2 var(--j-hand)!important;letter-spacing:0!important;text-transform:none!important;color:var(--pg-red)!important;border-bottom:2px solid var(--pg-ink)!important}
+#notes .n-keys td{font:500 22px/1.3 var(--j-hand)!important;border-bottom:1px dashed #2b262166!important;padding:8px 12px 8px 0!important}
+#notes .n-keys td:first-child{font-weight:700!important}
+#notes kbd{font:600 15px/1.3 var(--mono);background:#fffdf7;border-color:#2b262188}
+#notes .n-sign{margin:var(--rule) 0 0!important;font:700 34px/1.3 var(--j-hand)!important;color:var(--pg-ink)!important;transform:rotate(-1.2deg)}
+#notes .n-credit{font:600 21px/var(--rule) var(--j-hand)!important;letter-spacing:0!important;color:var(--pg-red)!important;text-align:right}
+#notes :focus-visible{outline:3px solid var(--pg-red)!important;outline-offset:4px}
+/* printed text: the same entry in a serif, for anyone who finds handwriting hard to read */
+#notes.printed .n-main p,#notes.printed .n-main li,#notes.printed .n-main dd,#notes.printed .n-main td,#notes.printed .n-small,#notes.printed .n-links li,#notes.printed .n-keys td,#notes.printed .n-keys th,#notes.printed .n-how,#notes.printed .n-toc a,#notes.printed .n-figs figcaption{font-family:'Source Serif 4',Georgia,serif!important;font-size:19px!important;font-weight:400!important}
+#notes.printed .n-lede{font:400 23px/var(--rule) 'Source Serif 4',Georgia,serif!important}
+#notes.printed .n-room h3,#notes.printed #n-refs h3{font:600 34px/var(--rule) 'Source Serif 4',Georgia,serif!important}
+#notes.printed h2{font:italic 500 clamp(34px,4.4vw,50px)/1.05 'Source Serif 4',Georgia,serif!important}
+#notes.printed .n-sign{font:italic 400 24px/1.4 'Source Serif 4',serif!important}
+@media(max-width:900px){#notes .n-body{grid-template-columns:1fr;gap:28px;padding:30px 20px 60px 64px}#notes .n-top{padding:28px 20px 12px 64px}#notes .n-toc{position:static;transform:rotate(-1deg)}#notes .n-toc ol{display:block!important}#notes .n-top,#notes .n-body{background-image:linear-gradient(90deg,transparent 52px,#c6493055 52px,#c6493055 54px,transparent 54px)}#notes .n-body{background-image:linear-gradient(90deg,transparent 52px,#c6493055 52px,#c6493055 54px,transparent 54px),repeating-linear-gradient(180deg,transparent 0 calc(var(--rule) - 1px),var(--pg-blue) calc(var(--rule) - 1px) var(--rule))}#notes .n-body::before,#notes .n-top::before{left:10px}}
+@media(max-width:600px){#notes{padding:0 0 40px!important}#notes .n-top{top:0;grid-template-columns:1fr;box-shadow:none}#notes .n-tools{grid-column:1;grid-row:auto;margin-top:8px}#notes .n-main p,#notes .n-main li,#notes .n-main dd,#notes .n-main td{font-size:22px}#notes .n-figs{grid-template-columns:1fr!important}#notes .n-room h3{font-size:38px!important}}

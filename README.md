@@ -13,7 +13,7 @@ These aren't our memories to tell. They belong to the people who live in these b
 
 ### Memory
 
-The piece is designed to feel like remembering rather than looking. Turn the **Memory** knob and the scene fades the way a memory does: the gaussian paint thickens, the brush strokes grow, colour drains, nothing stays in focus and sound goes muffled. Turn it all the way and almost everything is gone. But you can still see the building: a huge, pale rectangle with rows of windows. You can forget the rooms and whose flat it was. You don't forget the architecture. It's simple, repeated and deeply memorable, and that's what makes it so emotional.
+The piece is designed to feel like remembering rather than looking. Slide the **Memory** strip (bottom left) up and the scene fades the way a memory does: the gaussian paint thickens, the brush strokes grow, colour drains, nothing stays in focus and sound goes muffled. Slide it all the way and almost everything is gone. But you can still see the building: a huge, pale rectangle with rows of windows. You can forget the rooms and whose flat it was. You don't forget the architecture. It's simple, repeated and deeply memorable, and that's what makes it so emotional.
 
 ### The walk
 
@@ -50,7 +50,7 @@ The top bar has three buttons: **Contents**, **Journal** and **Settings**.
 - **Settings**: season (summer by default), sound, walking and flying, and, folded under *Look & atmosphere*, indoor haze and the gaussian paint. Settings are remembered.
 - **Walk around the flat** (bottom right, inside the flat, or `G`): first person. Click to look around, `W A S D` to move, `Shift` to run, `Esc` frees the mouse; **Back to the journey** at the top returns you to the scroll.
 - **Fly around** (Settings, or `F`): orbit, pan, zoom, `W A S D`, `Q / E`.
-- **Memory** knob (bottom left; drag it round, scroll over it, or use the arrow keys): fades the whole scene from “Now” to “Only the shape”, like a memory: colour drains, brush strokes grow, sound muffles, and only the building’s outline stays.
+- **Memory** strip (bottom left; drag the handle up, click a word on the scale, scroll over it, or use the arrow keys): fades the whole scene from “Now” to “Only the shape”, like a memory: colour drains, brush strokes grow, sound muffles, and only the building’s outline stays.
 - **As designed ↔ as lived**: a slider that appears inside the flat.
 - **Journal**: “Someone else’s home”, the written entry: a walk through the rooms and what each one meant, how we made it, sources and controls. `M` toggles sound.
 

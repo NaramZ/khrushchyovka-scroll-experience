@@ -481,3 +481,156 @@ body.ui-idle #walk-in{opacity:0;pointer-events:none}
 #notes.printed .n-sign{font:italic 400 24px/1.4 'Source Serif 4',serif!important}
 @media(max-width:900px){#notes .n-body{grid-template-columns:1fr;gap:28px;padding:30px 20px 60px 64px}#notes .n-top{padding:28px 20px 12px 64px}#notes .n-toc{position:static;transform:rotate(-1deg)}#notes .n-toc ol{display:block!important}#notes .n-top,#notes .n-body{background-image:linear-gradient(90deg,transparent 52px,#c6493055 52px,#c6493055 54px,transparent 54px)}#notes .n-body{background-image:linear-gradient(90deg,transparent 52px,#c6493055 52px,#c6493055 54px,transparent 54px),repeating-linear-gradient(180deg,transparent 0 calc(var(--rule) - 1px),var(--pg-blue) calc(var(--rule) - 1px) var(--rule))}#notes .n-body::before,#notes .n-top::before{left:10px}}
 @media(max-width:600px){#notes{padding:0 0 40px!important}#notes .n-top{top:0;grid-template-columns:1fr;box-shadow:none}#notes .n-tools{grid-column:1;grid-row:auto;margin-top:8px}#notes .n-main p,#notes .n-main li,#notes .n-main dd,#notes .n-main td{font-size:22px}#notes .n-figs{grid-template-columns:1fr!important}#notes .n-room h3{font-size:38px!important}}
+/* ── the page bar is the navigation: ‹ chapter › — the title in the middle opens the chapter list above it ── */
+.track-top#chapters-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin:0;padding:6px 10px;background:transparent;border:0;border-radius:6px;cursor:pointer;color:var(--j-ink)}
+.track-top#chapters-btn:hover #progress-text{text-decoration:underline wavy var(--j-red) 1.5px;text-underline-offset:5px}
+.track-top#chapters-btn .chev{font:700 16px var(--j-hand);color:var(--j-red);transition:transform .2s}
+.track-top#chapters-btn[aria-expanded=true] .chev{transform:rotate(180deg)}
+.track-top#chapters-btn:focus-visible{outline:3px solid var(--j-red)!important;outline-offset:3px}
+#chapters-pop{top:auto!important;bottom:96px!important;left:50%!important;right:auto!important;width:min(380px,calc(100vw - 24px))!important;transform:translateX(-50%)}
+/* memory folds down to a tab */
+#memory-ui #memory-lab{display:flex!important;align-items:baseline;gap:6px;width:100%;margin:0!important;padding:2px 0;background:transparent;border:0;color:var(--j-ink);cursor:pointer;text-align:left}
+#memory-ui .mem-now{margin-left:auto;padding-left:12px;font:700 19px/1 var(--j-hand);color:var(--j-red)}
+#memory-ui .mem-chev{font:700 16px var(--j-hand);color:var(--j-red);transition:transform .2s}
+#memory-ui:not(.folded) .mem-chev{transform:rotate(180deg)}
+#memory-ui:not(.folded) #memory-lab{margin-bottom:10px!important}
+#memory-ui.folded .mem-track{display:none}
+#memory-ui.folded{padding:10px 16px 10px 14px!important}
+#memory-ui #memory-lab:focus-visible{outline:3px solid var(--j-red)!important;outline-offset:4px}
+@media(max-width:700px){#memory-ui.folded{bottom:110px!important}}
+.journey{gap:10px!important}
+.journey .track{flex:1 1 auto;min-width:0;width:clamp(230px,30vw,380px)!important}
+#progress-text{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;max-width:100%}
+.track-top#chapters-btn{min-height:44px}
+@media(max-width:1000px){.journey .track{width:clamp(200px,40vw,320px)!important}}
+@media(max-width:700px){.journey .track{width:calc(100vw - 150px)!important}}
+.journey #chapters-btn{width:100%!important;height:auto!important;font:inherit!important;padding:6px 10px!important}
+.journey #chapters-btn::before{content:none}
+.journey #chapters-btn:hover{background:#2b262110}
+/* ═══ THE JOURNAL AS A BOOK — a cloth-bound notebook open on the table: two aged, ruled pages, a stitched spine,
+   a ribbon, pages that turn. Nothing scrolls; the words are laid out page by page. ═══ */
+#notes{--rule:34px;--age:#ecdfbf;--age-dark:#d9c69c;--ink2:#2b2621;overflow:hidden!important;padding:0!important;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px}
+#notes[open]{display:flex}
+#notes .book-tools{position:fixed;top:14px;right:18px;z-index:4;display:flex;gap:10px}
+#notes .book-tools button{position:relative;isolation:isolate;min-height:44px;padding:8px 16px 10px;background:transparent;border:0;color:var(--ink2);font:700 22px/1 var(--j-hand);cursor:pointer}
+#notes .book-tools button::before{content:"";position:absolute;inset:0;z-index:-1;background:#f3ecdc;border:2px solid var(--ink2);border-radius:14px 5px 12px 6px/6px 12px 5px 14px;filter:url(#paint);transform:rotate(-1deg)}
+#notes .book-tools button:hover::before{background:#e5d9bb}
+#notes .book-tools .n-print[aria-pressed=true]{color:#f3ecdc}#notes .book-tools .n-print[aria-pressed=true]::before{background:var(--ink2)}
+/* the cover shows around the pages; page edges stack on the outside */
+#notes .book{position:relative;width:min(1180px,94vw);height:min(760px,calc(100vh - 128px));margin-top:40px;padding:14px 16px;border-radius:10px 16px 16px 10px;background:#5a2b22 repeating-linear-gradient(35deg,#ffffff08 0 2px,transparent 2px 6px);box-shadow:0 34px 60px #000000a6,inset 0 0 0 2px #00000040,inset 0 0 30px #0000004d;perspective:2200px}
+#notes .spread{position:relative;display:grid;grid-template-columns:1fr 1fr;height:100%}
+#notes .page{position:relative;overflow:hidden;background-color:var(--age);background-image:radial-gradient(circle at 18% 82%,#b58a4a22 0 2px,transparent 3px),radial-gradient(circle at 74% 14%,#b58a4a1f 0 3px,transparent 4px),radial-gradient(circle at 61% 67%,#9b6b3014 0 26px,transparent 28px),radial-gradient(ellipse at 50% 50%,transparent 58%,#a57e4a38 100%),repeating-linear-gradient(180deg,transparent 0 calc(var(--rule) - 1px),#7f96b233 calc(var(--rule) - 1px) var(--rule));background-position:0 0,0 0,0 0,0 0,0 58px}
+#notes .page-l{border-radius:6px 0 0 6px;box-shadow:inset -34px 0 40px -26px #5a3a1a66,-2px 0 0 #d8c8a2,-4px 0 0 #efe4c8,-6px 0 0 #d8c8a2,-8px 0 0 #e6d9b8}
+#notes .page-r{border-radius:0 6px 6px 0;box-shadow:inset 34px 0 40px -26px #5a3a1a66,2px 0 0 #d8c8a2,4px 0 0 #efe4c8,6px 0 0 #d8c8a2,8px 0 0 #e6d9b8;transform-origin:left center}
+#notes .page-l{transform-origin:right center}
+#notes .page::after{content:"";position:absolute;top:0;bottom:0;width:2px;background:#c6493040}
+#notes .page-l::after{left:64px}#notes .page-r::after{left:52px}
+#notes .spread::after{content:"";position:absolute;left:50%;top:18px;bottom:18px;border-left:2px dashed #8a6a4a66;transform:translateX(-1px);pointer-events:none}
+#notes .book.single .spread{grid-template-columns:1fr}#notes .book.single .spread::after{content:none}#notes .book.single .page-l{border-radius:6px;box-shadow:-2px 0 0 #d8c8a2,-4px 0 0 #efe4c8,2px 0 0 #d8c8a2,4px 0 0 #efe4c8}
+#notes .page-in{position:absolute;top:58px;bottom:54px;left:82px;right:40px;overflow:hidden}
+#notes .page-r .page-in{left:70px;right:48px}
+#notes .run{position:absolute;top:18px;left:0;right:0;text-align:center;font:600 18px/1 var(--j-hand);color:#8a6a4a}
+#notes .folio{position:absolute;bottom:16px;font:700 20px/1 var(--j-hand);color:#8a6a4a}
+#notes .page-l .folio{left:30px}#notes .page-r .folio{right:30px}
+/* the ribbon: a tab at the top edge and a tail hanging out below */
+#notes .ribbon{position:absolute;right:120px;bottom:-54px;width:16px;height:70px;background:linear-gradient(90deg,#7a1b17,#9c2a22,#7a1b17);clip-path:polygon(0 0,100% 0,100% 100%,50% 86%,0 100%);box-shadow:0 2px 4px #0005}
+#notes .ribbon::before{content:"";position:absolute;left:0;top:-704px;width:16px;height:30px;background:inherit}
+/* page turning */
+@keyframes turnR{from{transform:rotateY(-70deg);filter:brightness(.8)}to{transform:none;filter:none}}
+@keyframes turnL{from{transform:rotateY(70deg);filter:brightness(.8)}to{transform:none;filter:none}}
+#notes .book.flip-next .page-r{animation:turnR .55s cubic-bezier(.2,.7,.2,1)}
+#notes .book.flip-prev .page-l{animation:turnL .55s cubic-bezier(.2,.7,.2,1)}
+#notes .book.single.flip-next .page-l{animation:turnR .5s cubic-bezier(.2,.7,.2,1);transform-origin:left center}
+@media(prefers-reduced-motion:reduce){#notes .book .page{animation:none!important}}
+/* turning the pages */
+#notes .book-nav{display:flex;align-items:center;gap:16px;margin-top:6px}
+#notes .book-nav button{position:relative;isolation:isolate;width:48px;height:44px;background:transparent;border:0;color:#f3ecdc;font:700 30px/1 var(--j-hand);cursor:pointer}
+#notes .book-nav button::before{content:"";position:absolute;inset:0;z-index:-1;border:2px solid #f3ecdcbb;border-radius:50% 45% 55% 40%/45% 55% 40% 50%;filter:url(#paint)}
+#notes .book-nav button:hover:not(:disabled)::before{background:#f3ecdc22}
+#notes .book-nav button:disabled{opacity:.3;cursor:default}
+#notes .bk-where{min-width:12em;text-align:center;font:600 22px/1 var(--j-hand);color:#f3ecdc}
+/* writing on the page */
+#notes .page-in p,#notes .page-in li,#notes .page-in td{margin:0;font:500 23px/var(--rule) var(--j-hand)!important;color:var(--ink2)!important}
+#notes .page-in p{margin-bottom:var(--rule)!important}
+#notes .page-in .n-lede{font:600 26px/var(--rule) var(--j-hand)!important}
+#notes .page-in .n-how{font:600 22px/var(--rule) var(--j-hand)!important;color:#9c3a22!important;transform:rotate(-1deg);padding:0!important;border:0!important;background:none!important}
+#notes .page-in h3{margin:0 0 var(--rule)!important;padding:0!important;font:700 40px/var(--rule) var(--j-hand)!important;color:var(--ink2)!important;text-decoration:underline;text-decoration-color:#9c3a2299;text-decoration-thickness:3px;text-underline-offset:9px;text-decoration-skip-ink:none}
+#notes .page-in h3 small{display:block;margin:0!important;font:700 21px/var(--rule) var(--j-hand)!important;color:#9c3a22!important;text-decoration:none;letter-spacing:0!important;text-transform:none!important}
+#notes .page-in h3:focus{outline:none}
+#notes .page-in h4{margin:0!important;font:700 28px/var(--rule) var(--j-hand)!important;color:#9c3a22!important;letter-spacing:0!important;text-transform:none!important}
+#notes .page-in .n-small,#notes .page-in .n-links li{font:500 20px/var(--rule) var(--j-hand)!important}
+#notes .page-in .n-links{margin:0 0 var(--rule)!important;padding-left:22px}
+#notes .page-in a{color:var(--ink2)!important;text-decoration:underline;text-decoration-color:#2b262199;text-underline-offset:3px}
+#notes .page-in a:hover{color:#9c3a22!important}
+/* the title page */
+#notes .title-page{padding-top:10px}
+#notes .t-kicker{font:600 24px/var(--rule) var(--j-hand)!important;color:#9c3a22!important;margin:0!important}
+#notes .title-page h2{margin:0 0 6px;font:700 clamp(46px,5vw,64px)/1.05 var(--j-hand)!important;color:var(--ink2)!important;letter-spacing:0!important;text-transform:none!important}
+#notes .t-by{font:600 24px/var(--rule) var(--j-hand)!important;margin:0 0 30px!important}
+#notes .title-page .n-toc{position:static!important;display:inline-block;max-width:300px;margin:0 0 0 10px;padding:18px 22px 20px;background:#f5dc79;box-shadow:3px 8px 14px #0000003d;transform:rotate(-2.4deg)}
+#notes .title-page .n-toc-h{margin:0 0 8px!important;font:700 23px/1.1 var(--j-hand)!important;color:var(--ink2)!important}
+#notes .title-page .n-toc ol{margin:0;padding:0;list-style:none;counter-reset:t;border:0!important}
+#notes .title-page .n-toc li{counter-increment:t;margin:0}
+#notes .title-page .n-toc a{display:block;padding:3px 0!important;border:0!important;font:600 21px/1.25 var(--j-hand)!important;text-decoration:none!important}
+#notes .title-page .n-toc a::before{content:counter(t) ". "!important;font:700 19px var(--j-hand)!important;color:#9c3a22!important}
+#notes .title-page .n-toc a:hover,#notes .title-page .n-toc a:focus-visible{text-decoration:underline wavy #9c3a22 2px!important;text-underline-offset:4px}
+/* photographs taped in, two to a row */
+#notes .page-in .snap{display:inline-block;vertical-align:top;position:relative;width:calc(50% - 14px);margin:6px 6px 22px;padding:8px 8px 4px;background:#fffdf5;box-shadow:0 5px 12px #0000002e}
+#notes .page-in .snap:nth-of-type(odd){transform:rotate(-1.8deg)}#notes .page-in .snap:nth-of-type(even){transform:rotate(1.4deg)}
+#notes .page-in .snap::before{content:"";position:absolute;top:-10px;left:50%;width:70px;height:20px;margin-left:-35px;background:#dccb9ecc;transform:rotate(-4deg);filter:url(#paint)}
+#notes .page-in .snap img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;filter:saturate(.7) sepia(.18)}
+#notes .page-in .snap figcaption{margin:4px 0 0;font:600 19px/1.2 var(--j-hand);text-align:center;color:var(--ink2)}
+/* the controls, hand-ruled */
+#notes .page-in .n-keys{width:100%;border-collapse:collapse;margin:0 0 var(--rule)}
+#notes .page-in .n-keys th{text-align:left;font:700 21px/1.2 var(--j-hand)!important;color:#9c3a22!important;border-bottom:2px solid var(--ink2);padding:0 8px 4px 0;letter-spacing:0;text-transform:none}
+#notes .page-in .n-keys td{font:500 19px/1.3 var(--j-hand)!important;border-bottom:1px dashed #2b262166;padding:6px 8px 6px 0;vertical-align:top}
+#notes .page-in .n-keys td:first-child{font-weight:700!important;width:28%}
+#notes .page-in kbd{font:600 13px/1.3 var(--mono);padding:0 4px;background:#fffdf5;border:1px solid #2b262188;border-bottom-width:2px;border-radius:3px}
+#notes .page-in .n-sign{font:700 30px/1.3 var(--j-hand)!important;transform:rotate(-1.2deg);margin:0 0 10px!important}
+#notes .page-in .n-credit{font:600 20px/1.2 var(--j-hand)!important;color:#9c3a22!important;text-align:right}
+#notes :focus-visible{outline:3px solid #9c3a22!important;outline-offset:4px}
+/* printed text */
+#notes.printed .page-in p,#notes.printed .page-in li,#notes.printed .page-in td,#notes.printed .page-in .n-small,#notes.printed .page-in .snap figcaption,#notes.printed .title-page .n-toc a{font-family:'Source Serif 4',Georgia,serif!important;font-size:17px!important;font-weight:400!important}
+#notes.printed .page-in .n-lede{font:400 20px/var(--rule) 'Source Serif 4',Georgia,serif!important}
+#notes.printed .page-in h3{font:600 30px/var(--rule) 'Source Serif 4',Georgia,serif!important}
+#notes.printed .title-page h2{font:italic 500 clamp(38px,4vw,52px)/1.1 'Source Serif 4',Georgia,serif!important}
+@media(max-width:820px){#notes .book{width:94vw;height:calc(100vh - 150px);padding:10px}#notes .page-in{left:56px!important;right:22px!important;top:50px}#notes .page-l::after{left:42px}#notes .ribbon{right:40px}#notes .page-in p,#notes .page-in li{font-size:21px!important}#notes .page-in h3{font-size:34px!important}#notes .page-in .snap{width:calc(100% - 12px)}#notes .book-tools{top:10px;right:10px}#notes .book-tools button{font-size:19px;padding:6px 12px 8px}}
+#notes .ribbon{right:auto;left:50%;top:-10px;bottom:-56px;height:auto;margin-left:-8px;z-index:2}
+#notes .ribbon::before{content:none}
+#notes .book.single .ribbon{left:auto;right:30px;top:auto;height:70px;margin:0}
+#notes .page-in h3{display:block!important;text-transform:none!important;letter-spacing:0!important;align-items:initial;gap:0}
+#notes .spread:focus{outline:none}
+/* the index: its own page, facing the title, each room with its page number on a dotted line */
+#notes .page-in .t-note{margin-top:40px!important;font:600 22px/var(--rule) var(--j-hand)!important;color:#9c3a22!important;transform:rotate(-1deg);max-width:340px}
+#notes .n-index{margin:0;padding:0;list-style:none}
+#notes .n-index li{margin:0}
+#notes .n-index a{display:flex;align-items:baseline;gap:8px;padding:0;font:600 24px/var(--rule) var(--j-hand);color:var(--ink2)!important;text-decoration:none!important}
+#notes .n-index .ix-d{flex:1;border-bottom:2px dotted #2b262177;transform:translateY(-6px)}
+#notes .n-index .ix-p{min-width:1.6em;text-align:right;font:700 24px/var(--rule) var(--j-hand);color:#9c3a22}
+#notes .n-index a:hover .ix-t,#notes .n-index a:focus-visible .ix-t{text-decoration:underline wavy #9c3a22 2px;text-underline-offset:5px}
+#notes.printed .n-index a,#notes.printed .n-index .ix-p{font-family:'Source Serif 4',Georgia,serif!important;font-size:18px!important;font-weight:400!important}
+@media(max-width:820px){#notes .bk-where{min-width:0;font-size:19px}#notes .book-nav{gap:10px}#notes .book.single .ribbon{right:18px;height:54px;bottom:-40px}#notes .book-tools{gap:6px}#notes .book-tools button{font-size:18px;padding:6px 10px 8px}}
+/* ── older: yellowed paper, foxing and a coffee ring, sepia ink, faded rules — and words crossed out mid-sentence ── */
+#notes{--age:#e6d3a6;--ink2:#34261a}
+#notes .page{background-color:var(--age);background-image:
+ url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 .35  0 0 0 0 .24  0 0 0 0 .12  0 0 0 .18 0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)'/%3E%3C/svg%3E"),
+ radial-gradient(circle at 22% 78%,#8a5a2a2e 0 2px,transparent 3px),radial-gradient(circle at 71% 16%,#8a5a2a29 0 3px,transparent 4px),radial-gradient(circle at 38% 34%,#8a5a2a1f 0 2px,transparent 3px),radial-gradient(circle at 84% 58%,#8a5a2a24 0 4px,transparent 5px),
+ radial-gradient(circle at 76% 80%,transparent 0 46px,#7a4a1a2e 47px 50px,#7a4a1a14 51px 53px,transparent 55px),
+ radial-gradient(ellipse at 50% 45%,transparent 45%,#8f6a3659 100%),
+ repeating-linear-gradient(180deg,transparent 0 calc(var(--rule) - 1px),#6f7f8f2b calc(var(--rule) - 1px) var(--rule));
+ background-position:0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 58px}
+#notes .page-l{background-image:
+ url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' seed='3'/%3E%3CfeColorMatrix values='0 0 0 0 .35  0 0 0 0 .24  0 0 0 0 .12  0 0 0 .18 0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)'/%3E%3C/svg%3E"),
+ radial-gradient(circle at 14% 22%,#8a5a2a26 0 3px,transparent 4px),radial-gradient(circle at 63% 71%,#8a5a2a2b 0 2px,transparent 3px),radial-gradient(ellipse at 30% 90%,#9a6a2a1f 0 60px,transparent 90px),
+ radial-gradient(ellipse at 50% 45%,transparent 45%,#8f6a3659 100%),
+ repeating-linear-gradient(180deg,transparent 0 calc(var(--rule) - 1px),#6f7f8f2b calc(var(--rule) - 1px) var(--rule));
+ background-position:0 0,0 0,0 0,0 0,0 0,0 58px}
+#notes .page::after{background:#b0503a33}
+#notes .run,#notes .folio{color:#7a5a36}
+#notes .page-in h3 small,#notes .page-in h4,#notes .n-index .ix-p,#notes .t-kicker,#notes .page-in .n-how,#notes .page-in .t-note,#notes .page-in .n-credit{color:#8a3a22!important}
+/* the scratch-out: a few hard back-and-forth strokes of the pen over the word */
+#notes s.scratch{position:relative;text-decoration:none;color:#34261aa6;white-space:nowrap}
+#notes s.scratch::after{content:"";position:absolute;left:-4px;right:-4px;top:12%;bottom:8%;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 30' preserveAspectRatio='none'%3E%3Cpath d='M1 18 C12 9 20 24 31 13 S52 22 62 11 S84 21 99 10 M3 22 C16 12 27 26 40 15 S63 25 75 14 S90 20 98 16 M2 14 L20 20 L38 12 L57 19 L76 11 L97 18' fill='none' stroke='%2334261a' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/100% 100% no-repeat;pointer-events:none}
+#notes.printed s.scratch{color:#34261a80}
+#notes s.scratch{margin-right:2px}
+#notes s.scratch::after{left:-6px;right:-6px;top:4%;bottom:-2%;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 30' preserveAspectRatio='none'%3E%3Cpath d='M1 17 C12 7 20 25 31 12 S52 23 62 10 S84 22 99 9 M2 22 C16 11 27 27 40 14 S63 26 75 13 S90 21 98 15 M2 13 L20 21 L38 11 L57 20 L76 10 L98 19' fill='none' stroke='%2334261a' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round' opacity='.92'/%3E%3C/svg%3E") center/100% 100% no-repeat}

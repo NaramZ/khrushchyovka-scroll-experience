@@ -86,6 +86,16 @@ const _arrMats=new Map();function arriveMat(m){let c=_arrMats.get(m);if(c)return
 const homeLight=new THREE.PointLight('#ffd49c',0,8,2);homeLight.position.copy(toWorld(6.5,AY+2.0,3.25));scene.add(homeLight);
 const homeDay=new THREE.PointLight('#dce7e3',0,8,1.5);homeDay.position.copy(toWorld(6.5,AY+1.55,5.0));scene.add(homeDay);
 const SITE_PLANTS=[];
+// another family, another taste: the same room and the same furniture shapes, but their own paper, carpets, fabrics and wood.
+// Everything outside is identical; inside, people make it theirs.
+const RESTYLE=(()=>{const V=(m,o)=>{const c=m.clone();c.onBeforeCompile=m.onBeforeCompile;c.userData=Object.assign({},m.userData);if(o.map){c.map=o.map;if(c.bumpMap&&o.bump)c.bumpMap=o.bump}if(o.color)c.color.set(o.color);if(o.emissive)c.emissive.set(o.emissive);return c};
+ const paperC=pattern(512,'#b7c6bd',(x,s)=>{for(let i=0;i<8;i++){x.fillStyle=i%2?'#a9bbb1':'#c2cfc7';x.fillRect(i*s/8,0,s/8,s)}x.fillStyle='#e6e2d2';for(let j=0;j<6;j++)for(let i=0;i<4;i++){const cx=i*s/4+s/16,cy=j*s/6+(i%2)*s/12;for(let k=0;k<5;k++){x.beginPath();x.ellipse(cx+Math.cos(k*1.256)*5,cy+Math.sin(k*1.256)*5,3.5,2.2,k*1.256,0,7);x.fill()}}fbm(x,s,s,.22)});
+ const carpetC=carpetCanvas(1024,1536,{field:'#2f4b3b',field2:'#243b2e',dark:'#191a17',light:'#dcc58c',accent:'#a9542f'});
+ const rugC2=carpetCanvas(1024,1280,{field:'#40587a',field2:'#344966',dark:'#1d2431',light:'#dcd3bb',accent:'#b3783f'});
+ const woodC2=woodC('#9b6a3a',30,46,1024);
+ return new Map([[mat.livingPaper,V(mat.livingPaper,{map:T(paperC,.62),bump:T(paperC,.62,{srgb:false})})],[mat.wallCarpet,V(mat.wallCarpet,{map:T(carpetC),bump:T(carpetC,0,{srgb:false})})],[mat.rug,V(mat.rug,{map:T(rugC2),bump:T(rugC2,0,{srgb:false})})],
+  [mat.sofa,V(mat.sofa,{map:T(floral('#b5842c','#ecd28c','#6e5a26',512,20,.8),.4)})],[mat.walnut,V(mat.walnut,{map:T(woodC2,1.1)})],[mat.curtain,V(mat.curtain,{map:T(floral('#7d9272','#dcd4b4','#4a5a3a',512,22,1.1),.55)})],
+  [mat.spread,V(mat.spread,{map:T(floral('#4f6a86','#e2d6b6','#2f4052',512,26,1),.5)})],[mat.linen,V(mat.linen,{color:'#c9d6dc'})],[mat.lampShade,V(mat.lampShade,{color:'#d6dcc0'})],[mat.photoA,mat.photoB],[mat.photoB,mat.photoA]])})();
 {const recs=[],bb=new THREE.Box3();const inRoom=b=>b.min.x>4.29&&b.max.x<8.72&&b.min.z>.7&&b.max.z<5.75&&b.min.y>AY-.05&&b.max.y<AY+CH+.05;
  for(const g of[living,hall,bedroom]){g.updateMatrixWorld(true);g.traverse(o=>{if(!o.isMesh)return;bb.setFromObject(o);if(g!==living&&!inRoom(bb))return;recs.push({o,box:bb.clone(),m:o.material,id:o.userData.lived})})}
  // 1 · the fit-out, in the order the finishers worked; 2 · the paper; 3 · the furniture, grouped into whole pieces
@@ -107,7 +117,7 @@ const SITE_PLANTS=[];
  for(const r of recs){if(r.t===undefined)continue;const o=r.o;let g=o.geometry.index?o.geometry.toNonIndexed():o.geometry.clone();g.applyMatrix4(o.matrixWorld);for(const k of Object.keys(g.attributes))if(!['position','normal','uv'].includes(k))g.deleteAttribute(k);
   if(!g.attributes.uv)g.setAttribute('uv',new THREE.BufferAttribute(new Float32Array(g.attributes.position.count*2),2));const mode=r.m.userData.uv||'world';if(mode!=='keep')projectUV(g,mode);g.applyMatrix4(ARR_SQ).applyMatrix4(SITE_M);
   const a=new Float32Array(g.attributes.position.count*3);for(let i=0;i<a.length;i+=3){a[i]=r.t;a[i+1]=r.mot;a[i+2]=r.dur}g.setAttribute('aArr',new THREE.BufferAttribute(a,3));
-  const m=arriveMat(r.m);if(!buckets.has(m))buckets.set(m,[]);buckets.get(m).push(g)}
+  const m=arriveMat(RESTYLE.get(r.m)||r.m);if(!buckets.has(m))buckets.set(m,[]);buckets.get(m).push(g)}
  for(const[m,gs]of buckets){const mg=mergeGeometries(gs,false);gs.forEach(x=>x.dispose());if(!mg)continue;mg.computeBoundingSphere();const me=new THREE.Mesh(mg,m);me.receiveShadow=true;me.castShadow=false;me.userData.scan=true;me.frustumCulled=false;HOME.add(me)}
  // the geraniums and the ficus come too
  for(const s of plantSpots)if(s.x>4.3&&s.x<8.72&&s.z>.7&&s.z<5.75&&s.y>AY-.1&&s.y<AY+CH){const w=toWorld(s.x,AY+(s.y-AY)*(H-.226)/CH,s.z);SITE_PLANTS.push(Object.assign({},s,{x:w.x,y:w.y,z:w.z}))}}

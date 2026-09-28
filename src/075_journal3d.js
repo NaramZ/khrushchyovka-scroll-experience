@@ -35,16 +35,16 @@ const JOURNAL=(()=>{
  const hand=w=>`${w} ${'var(--j-hand)'}`;
  function scribble(x,r){x.save();x.strokeStyle='rgba(44,30,18,.9)';x.lineWidth=2.4;x.lineCap='round';x.lineJoin='round';for(let k=0;k<3;k++){x.beginPath();const y0=r.y+r.h*(.35+k*.14);x.moveTo(r.x-4,y0);for(let xx=r.x-4;xx<=r.x+r.w+4;xx+=5)x.lineTo(xx,y0+Math.sin(xx*.9+k*2)*r.h*.16+(k-1)*2);x.stroke()}x.restore()}
  function coverImg(x,im,r){const ar=im.naturalWidth/im.naturalHeight,br=r.w/r.h;let sw=im.naturalWidth,sh=im.naturalHeight,sx=0,sy=0;if(ar>br){sw=sh*br;sx=(im.naturalWidth-sw)/2}else{sh=sw/br;sy=(im.naturalHeight-sh)/2}x.drawImage(im,sx,sy,sw,sh,r.x,r.y,r.w,r.h)}
- function drawPage(i,focusEl){const c=document.createElement('canvas');c.width=PW*S;c.height=PH*S;const x=c.getContext('2d');x.scale(S,S);paper(x,i);
+ function drawPage(i,focusEl){const mk=()=>{const c=document.createElement('canvas');c.width=PW*S;c.height=PH*S;const k=c.getContext('2d');k.scale(S,S);return[c,k]};const[cp,xp]=mk(),[c,x]=mk();paper(xp,i);const out={paper:cp,ink:c};
   const fam=getComputedStyle(pressBox).getPropertyValue('--j-hand')||'Caveat';
   x.font=`600 19px ${fam}`;x.fillStyle='rgba(110,80,50,.8)';x.textAlign='center';x.fillText(i%2===0?'ДОМА':'Someone else’s home',PW/2,34);x.textAlign=i%2===0?'left':'right';x.font=`700 21px ${fam}`;x.fillText(String(i+1),i%2===0?26:PW-26,PH-18);x.textAlign='left';
-  const blocksHere=pages[i]||[];if(!blocksHere.length)return c;
+  const blocksHere=pages[i]||[];if(!blocksHere.length)return out;
   // draw from the visible (accessible) page if it is showing, so keyboard focus is never disturbed; otherwise lay it out off to the side
   const vk=[spread*2,spread*2+1].indexOf(i),live=vk>=0&&viewIns[vk].firstChild===blocksHere[0],root=live?viewIns[vk]:press,box=live?views[vk]:pressBox;
   if(!live){press.innerHTML='';for(const b of blocksHere)press.appendChild(b)}const o=box.getBoundingClientRect(),O={left:o.left,top:o.top};
   const P=el=>{const r=el.getBoundingClientRect();return{x:r.left-O.left,y:r.top-O.top,w:r.width,h:r.height}};
   // photographs, taped in
-  for(const f of root.querySelectorAll('figure.snap')){const r=P(f);x.save();x.shadowColor='rgba(40,25,10,.35)';x.shadowBlur=12;x.shadowOffsetY=5;x.fillStyle='#f6f0e0';x.fillRect(r.x,r.y,r.w,r.h);x.restore();const im=f.querySelector('img');if(im&&im.complete&&im.naturalWidth){x.save();x.filter='sepia(.35) saturate(.7) contrast(1.05)';coverImg(x,im,P(im));x.restore()}}
+  for(const f of root.querySelectorAll('figure.snap')){const r=P(f);xp.save();xp.shadowColor='rgba(40,25,10,.35)';xp.shadowBlur=12;xp.shadowOffsetY=5;xp.fillStyle='#f6f0e0';xp.fillRect(r.x,r.y,r.w,r.h);xp.restore();const im=f.querySelector('img');if(im&&im.complete&&im.naturalWidth){xp.save();xp.filter='sepia(.35) saturate(.7) contrast(1.05)';coverImg(xp,im,P(im));xp.restore()}xp.save();xp.translate(r.x+r.w/2,r.y+2);xp.rotate(-.06+(r.x%7)*.02);xp.fillStyle='rgba(222,206,160,.85)';xp.fillRect(-36,-10,72,20);xp.restore()}
   // keyboard keys, table rules, index leaders
   for(const k of root.querySelectorAll('kbd')){const r=P(k);x.fillStyle='#f3ead4';x.strokeStyle='rgba(44,30,18,.55)';x.lineWidth=1;x.beginPath();x.roundRect(r.x,r.y,r.w,r.h,3);x.fill();x.stroke()}
   for(const t of root.querySelectorAll('table')){x.strokeStyle='rgba(44,30,18,.85)';x.lineWidth=2;const h=t.querySelector('thead tr');if(h){const r=P(h);x.beginPath();x.moveTo(r.x,r.y+r.h);x.lineTo(r.x+r.w,r.y+r.h+1);x.stroke()}x.setLineDash([5,4]);x.lineWidth=1;x.strokeStyle='rgba(44,30,18,.4)';for(const tr of t.querySelectorAll('tbody tr')){const r=P(tr);x.beginPath();x.moveTo(r.x,r.y+r.h);x.lineTo(r.x+r.w,r.y+r.h);x.stroke()}x.setLineDash([])}
@@ -57,17 +57,18 @@ const JOURNAL=(()=>{
   // headings are underlined by hand; crossed-out words are scratched through; tape holds the photos
   for(const h of root.querySelectorAll('h3')){const tn=[...h.childNodes].reverse().find(c=>c.nodeType===3&&c.nodeValue.trim());if(!tn)continue;rg.selectNodeContents(tn);const rc=rg.getBoundingClientRect(),X=rc.left-O.left,Y=rc.bottom-O.top+3;x.strokeStyle='rgba(150,56,34,.75)';x.lineWidth=2.6;x.lineCap='round';x.beginPath();x.moveTo(X-4,Y);for(let xx=X-4;xx<=X+rc.width+10;xx+=8)x.lineTo(xx,Y+Math.sin(xx*.21)*1.3+(xx-X)*.01);x.stroke()}
   for(const s of root.querySelectorAll('s.scratch'))scribble(x,P(s));
-  for(const f of root.querySelectorAll('figure.snap')){const r=P(f);x.save();x.translate(r.x+r.w/2,r.y+2);x.rotate(-.06+(r.x%7)*.02);x.fillStyle='rgba(222,206,160,.82)';x.fillRect(-36,-10,72,20);x.restore()}
   if(focusEl&&root.contains(focusEl)){const r=P(focusEl);x.strokeStyle='#9c3a22';x.lineWidth=3;x.beginPath();x.roundRect(r.x-6,r.y-3,r.w+12,r.h+6,6);x.stroke()}
-  if(!live)press.innerHTML='';return c}
+  if(!live)press.innerHTML='';return out}
  const texCache=new Map();
- let focusTex=null;function tex(i,focusEl){const key=i+(focusEl?'f':'');if(!focusEl&&texCache.has(key))return texCache.get(key);if(focusEl&&focusTex){focusTex.dispose();focusTex=null}const t=new THREE.CanvasTexture(drawPage(i,focusEl));t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=maxAniso;
-  if(!focusEl){texCache.set(key,t);if(texCache.size>8){const k0=texCache.keys().next().value;texCache.get(k0).dispose();texCache.delete(k0)}}else focusTex=t;return t}
- function clearTex(){for(const t of texCache.values())t.dispose();texCache.clear()}
+ const mkTex=(c,ink)=>{const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=maxAniso;if(ink)t.premultiplyAlpha=true;return t};
+ let focusTex=null;function tex(i,focusEl){if(!focusEl&&texCache.has(i))return texCache.get(i);const d=drawPage(i,focusEl);
+  if(focusEl){if(focusTex)focusTex.ink.dispose();focusTex={paper:tex(i).paper,ink:mkTex(d.ink,true)};return focusTex}
+  const t={paper:mkTex(d.paper),ink:mkTex(d.ink,true)};texCache.set(i,t);if(texCache.size>8){const k0=texCache.keys().next().value;const o=texCache.get(k0);o.paper.dispose();o.ink.dispose();texCache.delete(k0)}return t}
+ function clearTex(){for(const t of texCache.values()){t.paper.dispose();t.ink.dispose()}texCache.clear()}
 
  // ── 3 · the desk, the lamp, the book
  const scene=new THREE.Scene();scene.background=new THREE.Color('#120d09');scene.fog=new THREE.FogExp2('#120d09',.16);
- const cam=new THREE.PerspectiveCamera(30,1,.05,40);
+ const cam=new THREE.PerspectiveCamera(30,1,.05,40);cam.up.set(0,0,-1);
  const lamp=new THREE.SpotLight('#ffd3a0',26,14,.66,.75,1.4);lamp.position.set(-1.9,3.4,-1.2);lamp.castShadow=true;lamp.shadow.mapSize.set(2048,2048);lamp.shadow.bias=-.0004;lamp.shadow.normalBias=.02;lamp.shadow.radius=4;scene.add(lamp,lamp.target);
  scene.add(new THREE.HemisphereLight('#5b6878','#20150e',.42));const rim=new THREE.DirectionalLight('#9fb4d0',.35);rim.position.set(3,2,-3);scene.add(rim);
  const deskC=woodC('#3b2416',22,30,1024);const desk=new THREE.Mesh(new THREE.PlaneGeometry(14,14),new THREE.MeshStandardMaterial({map:T(deskC,1.6),roughness:.55,metalness:0,color:'#b89880'}));desk.rotation.x=-Math.PI/2;desk.receiveShadow=true;scene.add(desk);
@@ -76,23 +77,31 @@ const JOURNAL=(()=>{
   x.strokeStyle='rgba(180,120,90,.08)';for(let k=0;k<160;k++){x.lineWidth=rnd()*1.5;x.beginPath();const a=rnd()*6.28,px=rnd()*1024,py=rnd()*1024;x.moveTo(px,py);x.lineTo(px+Math.cos(a)*rand(10,60),py+Math.sin(a)*rand(10,60));x.stroke()}
   const g=x.createRadialGradient(512,512,300,512,512,720);g.addColorStop(0,'rgba(0,0,0,0)');g.addColorStop(1,'rgba(150,95,60,.35)');x.fillStyle=g;x.fillRect(0,0,1024,1024);return c})();
  const leather=new THREE.MeshStandardMaterial({map:T(leatherC),bumpMap:T(leatherC,0,{srgb:false}),bumpScale:1.4,roughness:.5,metalness:.05});
- const W=1,H=W*PH/PW,COVER=.022,SEG=64,prof=d=>.085*(1-Math.exp(-d/.09))-.03*Math.pow(d/W,1.6)+.004;
- const book=new THREE.Group();book.rotation.y=-.07;scene.add(book);
- for(const s of[-1,1]){const cv=new THREE.Mesh(new RoundedBoxGeometry(W+.07,COVER,H+.08,3,.008),leather);cv.position.set(s*(W+.07)/2,COVER/2,0);cv.castShadow=cv.receiveShadow=true;book.add(cv)}
- const spine=new THREE.Mesh(new THREE.CylinderGeometry(.03,.03,H+.08,16,1,false,Math.PI/2,Math.PI),leather);spine.rotation.x=Math.PI/2;spine.rotation.z=Math.PI;spine.position.set(0,.012,0);book.add(spine);
+ const W=1,H=W*PH/PW,COVER=.024,SEG=160,SEGZ=24,prof=d=>.085*(1-Math.exp(-d/.09))-.03*Math.pow(d/W,1.6)+.004;
+ const book=new THREE.Group();scene.add(book);
+ for(const s of[-1,1]){const cv=new THREE.Mesh(new RoundedBoxGeometry(W+.075,COVER,H+.085,8,.011),leather);cv.position.set(s*(W+.075)/2+s*.004,COVER/2,0);cv.castShadow=cv.receiveShadow=true;book.add(cv)}
+ // marbled endpapers inside the covers, showing as a thin border around the pages
+ const marbleC=(()=>{const[c,x]=cnv(1024);x.fillStyle='#2f3a44';x.fillRect(0,0,1024,1024);const cols=['#7a3528','#c9a86a','#3f5a6c','#e3d6b4','#5b2a24','#8a9a8a'];for(let k=0;k<900;k++){x.strokeStyle=cols[k%cols.length];x.globalAlpha=.25+rnd()*.35;x.lineWidth=2+rnd()*7;x.beginPath();let px=rnd()*1024,py=rnd()*1024;x.moveTo(px,py);for(let j=0;j<18;j++){px+=Math.sin(py*.012+k)*14+rand(-4,4);py+=Math.cos(px*.011)*14+rand(-4,4);x.lineTo(px,py)}x.stroke()}x.globalAlpha=1;return c})();
+ const endMat=new THREE.MeshStandardMaterial({map:T(marbleC,.8),roughness:.7});for(const s of[-1,1]){const e=new THREE.Mesh(new THREE.PlaneGeometry(W+.045,H+.055),endMat);e.rotation.x=-Math.PI/2;e.position.set(s*(W+.045)/2,COVER+.0008,0);e.receiveShadow=true;book.add(e)}
+ // headbands at the top and bottom of the spine: striped silk
+ {const hbC=(()=>{const[c,x]=cnv(128,16);for(let i=0;i<32;i++){x.fillStyle=i%2?'#8a2a20':'#e8dcc0';x.fillRect(i*4,0,4,16)}return c})();const hbm=new THREE.MeshStandardMaterial({map:T(hbC),roughness:.5});for(const z of[-1,1]){const hb=new THREE.Mesh(new THREE.CylinderGeometry(.009,.009,.06,24),hbm);hb.rotation.z=Math.PI/2;hb.position.set(0,COVER+.012,z*(H/2+.002));book.add(hb)}}
+ const spine=new THREE.Mesh(new THREE.CylinderGeometry(.034,.034,H+.085,48,1,false,Math.PI/2,Math.PI),leather);spine.rotation.x=Math.PI/2;spine.rotation.z=Math.PI;spine.position.set(0,.012,0);book.add(spine);
  // the page block: the edges of all the other pages, visible along each side
  const edgeC=(()=>{const[c,x]=cnv(64,256);x.fillStyle='#d9c69c';x.fillRect(0,0,64,256);for(let y=0;y<256;y+=2){x.fillStyle=`rgba(${rnd()<.5?'120,90,50':'250,240,215'},${.15+rnd()*.25})`;x.fillRect(0,y,64,1)}return c})();
  const edgeMat=new THREE.MeshStandardMaterial({map:T(edgeC),roughness:.9,side:THREE.DoubleSide});
  function blockGeo(s){const shape=new THREE.Shape();shape.moveTo(0,COVER);for(let i=0;i<=SEG;i++){const d=i/SEG*W;shape.lineTo(s*d,COVER+prof(d)-.002)}shape.lineTo(s*W,COVER);shape.lineTo(0,COVER);return new THREE.ExtrudeGeometry(shape,{depth:H-.01,bevelEnabled:false,steps:1})}
  for(const s of[-1,1]){const g=blockGeo(s);g.translate(0,0,-(H-.01)/2);const m=new THREE.Mesh(g,edgeMat);m.castShadow=m.receiveShadow=true;book.add(m)}
- function pageGeo(s){const g=new THREE.PlaneGeometry(W,H,SEG,1);g.rotateX(-Math.PI/2);const p=g.attributes.position,uv=g.attributes.uv;for(let i=0;i<p.count;i++){const u=uv.getX(i),d=s>0?u*W:(1-u)*W;p.setX(i,s>0?d:-d);p.setY(i,COVER+prof(d)+Math.sin(d*7.3+s)*.0025*(d/W))}p.needsUpdate=true;g.computeVertexNormals();return g}
+ function pageGeo(s){const g=new THREE.PlaneGeometry(W,H,SEG,SEGZ);g.rotateX(-Math.PI/2);const p=g.attributes.position,uv=g.attributes.uv;for(let i=0;i<p.count;i++){const u=uv.getX(i),d=s>0?u*W:(1-u)*W;p.setX(i,s>0?d:-d);p.setY(i,COVER+prof(d)+Math.sin(d*7.3+s)*.0025*(d/W))}p.needsUpdate=true;g.computeVertexNormals();return g}
  const pageMat=()=>new THREE.MeshStandardMaterial({roughness:.93,metalness:0,color:'#ffffff'});
  const pageL=new THREE.Mesh(pageGeo(-1),pageMat()),pageR=new THREE.Mesh(pageGeo(1),pageMat());for(const m of[pageL,pageR]){m.receiveShadow=true;m.castShadow=true;book.add(m)}
  // the sheet that turns: a front and a back, bent a little as it goes over
  const sheetGeo=[pageGeo(1),pageGeo(1)];{const uv=sheetGeo[1].attributes.uv;for(let i=0;i<uv.count;i++)uv.setX(i,1-uv.getX(i));uv.needsUpdate=true}
  const sheetF=new THREE.Mesh(sheetGeo[0],new THREE.MeshStandardMaterial({roughness:.93,side:THREE.FrontSide})),sheetB=new THREE.Mesh(sheetGeo[1],new THREE.MeshStandardMaterial({roughness:.93,side:THREE.BackSide}));
  for(const m of[sheetF,sheetB]){m.castShadow=true;m.visible=false;book.add(m)}
- function bendSheet(t){const th=t*Math.PI,curl=.85*Math.sin(Math.PI*t);for(const g of sheetGeo){const p=g.attributes.position,uv=g.attributes.uv;for(let i=0;i<p.count;i++){const u=g===sheetGeo[1]?1-uv.getX(i):uv.getX(i),d=u*W,a=clamp(th-curl*(d/W)*(t<.5?1:-1)*.6,0,Math.PI),y0=COVER+prof(d)+.003;p.setX(i,d*Math.cos(a));p.setY(i,y0+d*Math.sin(a))}p.needsUpdate=true;g.computeVertexNormals()}}
+ const bx=new Float32Array((SEG+1)*(SEGZ+1)),by=new Float32Array((SEG+1)*(SEGZ+1));
+ function bendSheet(t){const th=t*Math.PI,sw=Math.sin(Math.PI*t),dl=W/SEG;
+  for(let iz=0;iz<=SEGZ;iz++){const zb=iz/SEGZ,k=1.35*sw*(1-.5*zb);let x=0,y=0;for(let ix=0;ix<=SEG;ix++){const i=iz*(SEG+1)+ix;if(ix){const l=(ix-.5)*dl,ph=th-k*Math.pow(l/W,1.5);x+=Math.cos(ph)*dl;y+=Math.sin(ph)*dl}bx[i]=x;by[i]=y+COVER+prof(ix*dl)+.003+sw*.012*(ix/SEG)}}
+  for(const g of sheetGeo){const p=g.attributes.position;for(let i=0;i<p.count;i++){p.setX(i,bx[i]);p.setY(i,by[i])}p.needsUpdate=true;g.computeVertexNormals()}}
  // the ribbon, lying out of the gutter and over the edge onto the desk
  {const pts=[new THREE.Vector3(.016,COVER+prof(.016)+.003,-H/2-.01),new THREE.Vector3(.018,COVER+prof(.018)+.003,-.1),new THREE.Vector3(.02,COVER+prof(.02)+.003,H/2-.03),new THREE.Vector3(.03,COVER*.5,H/2+.05),new THREE.Vector3(.07,.002,H/2+.2),new THREE.Vector3(.1,.002,H/2+.3)];const cv=new THREE.CatmullRomCurve3(pts);
   const g=new THREE.PlaneGeometry(.024,1,1,60);const p=g.attributes.position;for(let i=0;i<p.count;i++){const v=p.getY(i)+.5,pt=cv.getPoint(v),tn=cv.getTangent(v);const side=new THREE.Vector3(-tn.z,0,tn.x).normalize().multiplyScalar(p.getX(i));p.setXYZ(i,pt.x+side.x,pt.y+.001,pt.z+side.z)}p.needsUpdate=true;g.computeVertexNormals();
@@ -113,22 +122,27 @@ const JOURNAL=(()=>{
   const m=new THREE.ShaderMaterial({transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,uniforms:{uT:{value:0},uS:{value:600}},vertexShader:'attribute float aSeed;uniform float uT,uS;varying float vA;void main(){vec3 q=position;q.x+=sin(uT*.13+aSeed*40.)*.12;q.y+=mod(uT*.02*(.3+aSeed)+aSeed*2.,1.9)-.95+.95*0.;q.z+=cos(uT*.11+aSeed*30.)*.1;vec4 mv=modelViewMatrix*vec4(q,1.);gl_Position=projectionMatrix*mv;gl_PointSize=clamp(uS*(.004+.006*aSeed)/-mv.z,1.,5.);float lit=smoothstep(1.1,.2,length(q.xz-vec2(-.5,-.3)))*smoothstep(.1,.5,q.y);vA=(.08+.22*aSeed)*lit;}',
    fragmentShader:'varying float vA;void main(){float d=length(gl_PointCoord-.5);gl_FragColor=vec4(1.,.86,.62,vA*smoothstep(.5,0.,d));}'});const o=new THREE.Points(g,m);o.frustumCulled=false;scene.add(o);return o})();
 
- // ── 4 · the picture: a gentler gaussian paint than the walk, so the handwriting stays legible
+ // ── 4 · the ink: a second scene holding only the writing, laid exactly over the paper and drawn after the paint
+ const inkScene=new THREE.Scene();const lampI=new THREE.SpotLight('#ffd3a0',26,14,.66,.75,1.4);lampI.position.copy(lamp.position);inkScene.add(lampI,lampI.target);inkScene.add(new THREE.HemisphereLight('#5b6878','#20150e',.42));
+ const inkOf=new Map();for(const m of[pageL,pageR,sheetF,sheetB]){const side=m.material.side;const occ=new THREE.Mesh(m.geometry,new THREE.MeshBasicMaterial({colorWrite:false,side}));const ink=new THREE.Mesh(m.geometry,new THREE.MeshStandardMaterial({transparent:true,premultipliedAlpha:true,depthWrite:false,roughness:.8,side,polygonOffset:true,polygonOffsetFactor:-2,polygonOffsetUnits:-6}));ink.renderOrder=2;inkScene.add(occ,ink);inkOf.set(m,{occ,ink})}
+ function setPage(m,t){m.material.map=t.paper;m.material.needsUpdate=true;const w=inkOf.get(m);w.ink.material.map=t.ink;w.ink.material.needsUpdate=true}
+ function syncInk(){for(const[m,w]of inkOf){w.occ.visible=w.ink.visible=m.visible}}
+ class InkPass extends Pass{constructor(){super();this.needsSwap=false}render(r,wb,rb){const ac=r.autoClear;r.autoClear=false;r.setRenderTarget(rb);r.clearDepth();lampI.target.position.copy(lamp.target.position);r.render(inkScene,cam);r.autoClear=ac}}
+ // ── 5 · the picture: the same gaussian paint and brush strokes as the walk, on everything except the writing
  let jcomp=null,jpaint=null;
- function ensureComposer(){if(jcomp)return;jcomp=new EffectComposer(renderer);jcomp.addPass(new RenderPass(scene,cam));jpaint=new PaintPass({fixed:{level:.34,brush:.62,focus:.92,strokes:.38}});jcomp.addPass(jpaint);jcomp.addPass(new OutputPass());resize()}
+ function ensureComposer(){if(jcomp)return;jcomp=new EffectComposer(renderer);jcomp.addPass(new RenderPass(scene,cam));jpaint=new PaintPass({fixed:{level:.74,brush:1.15,focus:.5,strokes:.85}});jcomp.addPass(jpaint);jcomp.addPass(new InkPass());jcomp.addPass(new OutputPass());resize()}
  function resize(){if(!jcomp)return;const w=innerWidth,h=innerHeight;cam.aspect=w/h;cam.updateProjectionMatrix();jcomp.setPixelRatio(pixelRatio);jcomp.setSize(w,h);jpaint.setSize(w*pixelRatio,h*pixelRatio);const was=single;single=w/h<.95;if(was!==single)side=0;showView();frame(true)}
  // the camera leans over the desk; on a narrow screen it reads one page at a time
  const camT=new THREE.Vector3(),camP=new THREE.Vector3(),look=new THREE.Vector3(),want=new THREE.Vector3(),wantL=new THREE.Vector3();let mx=0,my=0;
- function framing(){const tan=Math.tan(THREE.MathUtils.degToRad(cam.fov/2));const fw=single?W*1.18:W*2.26,fh=H*1.28;const D=Math.max(fw/(2*tan*cam.aspect),fh/(2*tan));const tx=single?(side===0?-W/2:W/2):0;wantL.set(tx,.05,.06);want.set(tx+mx*.06+.06,0,0).addScaledVector(new THREE.Vector3(.08,1.35,.95).normalize(),D*.98);want.y+=my*.04}
+ function framing(){const tan=Math.tan(THREE.MathUtils.degToRad(cam.fov/2));const fw=single?W*1.18:W*2.26,fh=H*1.28;const D=Math.max(fw/(2*tan*cam.aspect),fh/(2*tan));const tx=single?(side===0?-W/2:W/2):0;wantL.set(tx,0,0);want.set(tx+mx*.025,D*1.02+.09,my*.025)}
  // ── 5 · turning
  let turn=null;const baseTex=[null,null];
- function setBase(){pageL.material.map=tex(spread*2);pageR.material.map=tex(spread*2+1);pageL.material.needsUpdate=pageR.material.needsUpdate=true}
+ function setBase(){setPage(pageL,tex(spread*2));setPage(pageR,tex(spread*2+1))}
  function go(dir){if(turn)return;if(single){if(dir>0&&side===0){side=1;showView();return}if(dir<0&&side===1){side=0;showView();return}}
   const n=spread+dir;if(n<0||n>pages.length/2-1)return;const cur=spread;spread=n;if(single)side=dir>0?0:1;
-  const t0=performance.now(),dur=reduced?0:900;
-  if(dir>0){sheetF.material.map=tex(cur*2+1);sheetB.material.map=tex(n*2);pageR.material.map=tex(n*2+1)}else{sheetF.material.map=tex(n*2+1);sheetB.material.map=tex(cur*2);pageL.material.map=tex(n*2)}
-  sheetF.material.needsUpdate=sheetB.material.needsUpdate=pageL.material.needsUpdate=pageR.material.needsUpdate=true;showView();
-  if(!dur){setBase();return}turn={t0,dur,dir};sheetF.visible=sheetB.visible=true;bendSheet(dir>0?0:1)}
+  const t0=performance.now(),dur=reduced?0:1250;
+  if(dir>0){setPage(sheetF,tex(cur*2+1));setPage(sheetB,tex(n*2));setPage(pageR,tex(n*2+1))}else{setPage(sheetF,tex(n*2+1));setPage(sheetB,tex(cur*2));setPage(pageL,tex(n*2))}showView();
+  if(!dur){setBase();return}turn={t0,dur,dir};sheetF.visible=sheetB.visible=true;syncInk();bendSheet(dir>0?0:1)}
  function toId(id){if(!idPage.has(id))return;const n=Math.floor(idPage.get(id)/2),s=idPage.get(id)%2;if(n===spread){side=s;showView()}else{const d=Math.sign(n-spread);spread=n-d;go(d)}if(single)side=s;const t=document.getElementById(id);if(t){t.setAttribute('tabindex','-1');t.focus({preventScroll:true})}}
  prevB.onclick=()=>go(-1);nextB.onclick=()=>go(1);
  addEventListener('keydown',e=>{if(!dlg.open||(e.target.closest&&e.target.closest('input,textarea,select')))return;const k=e.key;if(k==='ArrowRight'||k==='PageDown'){go(1);e.preventDefault()}else if(k==='ArrowLeft'||k==='PageUp'){go(-1);e.preventDefault()}});
@@ -141,15 +155,15 @@ const JOURNAL=(()=>{
  dlg.addEventListener('click',e=>{if(e.target!==dlg)return;const a=linkAt(e);if(a)a.click()});
  dlg.addEventListener('click',e=>{const a=e.target.closest&&e.target.closest('a[href^="#"]');if(!a)return;e.preventDefault();toId(a.getAttribute('href').slice(1))});
  // keyboard focus on a link inside the invisible pages is drawn onto the paper
- dlg.addEventListener('focusin',e=>{const v=views.findIndex(v=>v.contains(e.target));if(v<0||e.target===views[v])return;if(single&&side!==v){side=v;showView()}const m=v?pageR:pageL;m.material.map=tex(spread*2+v,e.target);m.material.needsUpdate=true});
- dlg.addEventListener('focusout',e=>{const v=views.findIndex(v=>v.contains(e.target));if(v<0)return;if(turn)return;(v?pageR:pageL).material.map=tex(spread*2+v);(v?pageR:pageL).material.needsUpdate=true});
+ dlg.addEventListener('focusin',e=>{const v=views.findIndex(v=>v.contains(e.target));if(v<0||e.target===views[v])return;if(single&&side!==v){side=v;showView()}setPage(v?pageR:pageL,tex(spread*2+v,e.target))});
+ dlg.addEventListener('focusout',e=>{const v=views.findIndex(v=>v.contains(e.target));if(v<0)return;if(turn)return;setPage(v?pageR:pageL,tex(spread*2+v))});
  function frame(snap){framing();if(snap){camP.copy(want);look.copy(wantL)}}
  let lastT=0;
- function draw(ms){ensureComposer();const dt=Math.min(.05,Math.max(0,(ms-lastT)/1000)||.016);lastT=ms;framing();const k=1-Math.exp(-dt*3.2);camP.lerp(want,k);look.lerp(wantL,k);cam.position.copy(camP);cam.position.y+=Math.sin(ms/2400)*.004;cam.lookAt(look);
-  if(turn){let t=clamp((ms-turn.t0)/turn.dur,0,1);const e=t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;bendSheet(turn.dir>0?e:1-e);if(t>=1){turn=null;sheetF.visible=sheetB.visible=false;setBase()}}
+ function draw(ms){ensureComposer();const dt=Math.min(.05,Math.max(0,(ms-lastT)/1000)||.016);lastT=ms;framing();const k=1-Math.exp(-dt*3.2);camP.lerp(want,k);look.lerp(wantL,k);cam.position.copy(camP);cam.position.y+=Math.sin(ms/2600)*.003;cam.lookAt(look);
+  if(turn){const t=clamp((ms-turn.t0)/turn.dur,0,1),e=.5-.5*Math.cos(Math.PI*t);bendSheet(turn.dir>0?e:1-e);if(t>=1){turn=null;sheetF.visible=sheetB.visible=false;syncInk();setBase()}}
   dust.material.uniforms.uT.value=ms/1000;dust.material.uniforms.uS.value=innerHeight*pixelRatio;lamp.target.position.set(-.2,0,.05);
   renderer.toneMappingExposure=1;renderer.shadowMap.needsUpdate=true;jcomp.render(dt)}
- function open(){document.body.classList.add('journal-open');paginate();clearTex();setBase();showView();ensureComposer();resize();frame(true);if(document.fonts)document.fonts.ready.then(()=>{if(dlg.open){paginate();clearTex();setBase();showView()}});requestAnimationFrame(()=>{if(dlg.open)dlg.querySelector('.bk-next').focus({preventScroll:true})})}
+ function open(){document.body.classList.add('journal-open');syncInk();paginate();clearTex();setBase();showView();ensureComposer();resize();frame(true);if(document.fonts)document.fonts.ready.then(()=>{if(dlg.open){paginate();clearTex();setBase();showView()}});requestAnimationFrame(()=>{if(dlg.open)dlg.querySelector('.bk-next').focus({preventScroll:true})})}
  function close(){document.body.classList.remove('journal-open');renderer.shadowMap.needsUpdate=true;turn=null}
  function repaginate(){paginate();clearTex();setBase();showView()}
  addEventListener('resize',()=>{if(dlg.open)resize()});

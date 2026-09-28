@@ -1,6 +1,28 @@
-# ДОМА / DOMA — a spatial journal
+# ДОМА / DOMA
 
-A personal HCI project about emotion and memory in Soviet panel housing: everyone had the same flat, and the small differences made it home. By Naram Ziady and Sami. Made for a Typography & Design course (Case Study 08): a Soviet panel tower, its stairwell and one late‑Soviet flat; a construction site where a 1‑464‑type block is assembled panel by panel; and an ending where the same room is built and furnished again in the new building. Four seasons, a first‑person walk mode and a painterly gaussian look.
+**An interactive walk through a Soviet panel flat, about memory, emotion and the architecture that shaped them.**
+By Naram Ziady and Sami: a simple idea we wanted to explore.
+
+## About
+
+Everyone had the same place. Millions of families were given the same flat, in the same concrete block, built from the same factory-made panels. That's exactly what makes the memories of these homes so specific. When the architecture is identical, every difference is human: how a family decorated, where they put the things they were given, the small choices that turned a standard flat into *home*.
+
+And the building shaped the life inside it. The kitchen was built tiny, so it became the place to sit, talk and gossip late into the night. There was nowhere to keep anything, so the balcony became the cellar, the pantry and the storeroom. These things didn't happen everywhere. They happened *there*, because of the architecture.
+
+These aren't our memories to tell. They belong to the people who live in these buildings. ДОМА comes from being a guest: invited into other people's homes, in flats exactly like every other flat in the block, and nothing like any of them.
+
+### Memory
+
+The piece is designed to feel like remembering rather than looking. Turn the **Memory** knob and the scene fades the way a memory does: the gaussian paint thickens, the brush strokes grow, colour drains, nothing stays in focus and sound goes muffled. Turn it all the way and almost everything is gone. But you can still see the building: a huge, pale rectangle with rows of windows. You can forget the rooms and whose flat it was. You don't forget the architecture. It's simple, repeated and deeply memorable, and that's what makes it so emotional.
+
+### The walk
+
+- **The block and the stairwell:** the shared part of the building, where short fragments of text appear beside you like thoughts.
+- **Flat № 6:** the hall, the kitchen (lit like a dream of it, a period radio playing), the living room, the bedroom and the balcony. A slider strips the flat back *as designed*, then fills it again *as lived*: the building is the constant, home is the variable.
+- **Across the road:** a new block goes up panel by panel. You climb in through a window and watch the same room fill up again for another family: another home, another story beginning.
+- **Four seasons** change the light outside and in, with a painterly look and the grey overcast of Tarkovsky's *Stalker*.
+
+The written entry, **“Someone else’s home”**, opens from the **Journal** button inside the piece.
 
 ## How to run it
 

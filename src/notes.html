@@ -1,12 +1,8 @@
 <dialog id="notes" aria-label="Journal: Someone else’s home">
 <div class="book-tools"><button class="n-index-btn" type="button">Index</button><button class="n-print" type="button" aria-pressed="false">Printed text</button><button class="close" type="button">Close <span aria-hidden="true">×</span></button></div>
-<div class="book">
-<div class="spread" role="region" aria-label="Open pages" tabindex="-1">
-<div class="page page-l"><span class="run" aria-hidden="true">ДОМА</span><div class="page-in"></div><span class="folio" aria-hidden="true"></span></div>
-<div class="page page-r"><span class="run" aria-hidden="true">Someone else’s home</span><div class="page-in"></div><span class="folio" aria-hidden="true"></span></div>
-</div>
-<span class="ribbon" aria-hidden="true"></span>
-</div>
+<div class="j-pages" role="region" aria-label="Open pages of the journal" tabindex="-1"><div class="pg-dom view" data-side="0"><div class="page-in"></div></div><div class="pg-dom view" data-side="1"><div class="page-in"></div></div></div>
+<div class="pg-dom press" aria-hidden="true"><div class="page-in"></div></div>
+<div class="j-shade" aria-hidden="true"></div>
 <nav class="book-nav" aria-label="Turn the pages"><button class="bk-prev" type="button" aria-label="Previous page">‹</button><span class="bk-where" aria-live="polite">pages 1–2</span><button class="bk-next" type="button" aria-label="Next page">›</button></nav>
 
 <div class="n-src" hidden>

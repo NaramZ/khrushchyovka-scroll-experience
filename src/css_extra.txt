@@ -634,3 +634,20 @@ body.ui-idle #walk-in{opacity:0;pointer-events:none}
 #notes.printed s.scratch{color:#34261a80}
 #notes s.scratch{margin-right:2px}
 #notes s.scratch::after{left:-6px;right:-6px;top:4%;bottom:-2%;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 30' preserveAspectRatio='none'%3E%3Cpath d='M1 17 C12 7 20 25 31 12 S52 23 62 10 S84 22 99 9 M2 22 C16 11 27 27 40 14 S63 26 75 13 S90 21 98 15 M2 13 L20 21 L38 11 L57 20 L76 10 L98 19' fill='none' stroke='%2334261a' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round' opacity='.92'/%3E%3C/svg%3E") center/100% 100% no-repeat}
+/* ═══ the 3D journal: the dialog is a clear sheet over the canvas, which now shows the desk and the book ═══ */
+#notes{background:transparent!important;display:none!important;padding:0!important;overflow:hidden!important}
+#notes[open]{display:block!important}
+#notes::backdrop{background:transparent!important}
+body.journal-open header,body.journal-open footer,body.journal-open #type-layer,body.journal-open #labels,body.journal-open #memory-ui,body.journal-open #lived-ui,body.journal-open #walk-in,body.journal-open #resume,body.journal-open .vignette,body.journal-open .grain,body.journal-open #hero,body.journal-open #stage-caption,body.journal-open #chapters-pop,body.journal-open #atmos-panel,body.journal-open .crosshair,body.journal-open #walk-hint,body.journal-open #free-hint{visibility:hidden!important}
+#notes .j-pages{position:fixed;inset:0;pointer-events:none;outline:none}
+#notes .pg-dom{position:fixed;left:0;top:0;width:720px;height:990px;opacity:0;pointer-events:none;overflow:hidden;background:none!important;box-shadow:none!important}
+#notes .pg-dom .page-in{position:absolute!important;top:72px!important;bottom:66px!important;left:84px!important;right:60px!important;overflow:hidden}
+#notes .pg-dom .snap,#notes .pg-dom .n-how,#notes .pg-dom .t-note,#notes .pg-dom .n-sign{transform:none!important}
+#notes .pg-dom .snap::before{content:none}
+#notes .book-nav{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:3;padding:6px 14px;border-radius:30px;background:#120d09aa}
+#notes .book-tools{z-index:3}
+#notes .j-shade{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,transparent 55%,#0000008c 100%)}
+#notes .pg-dom{width:540px!important;height:742px!important}
+#notes .pg-dom .page-in{top:56px!important;bottom:50px!important;left:66px!important;right:40px!important}
+#notes .pg-dom .title-page h2{font-size:52px!important}
+#notes .pg-dom .page-in .snap{width:calc(50% - 14px)}

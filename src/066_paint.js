@@ -8,7 +8,7 @@ const PAINT={level:.7,brush:1.2,focus:.6,strokes:.75};
 // the memory dial: 0 is the scene as set above, 1 is a faded memory — full paint, huge brushes, nothing held in focus
 const MEMORY={v:0,target:0};const memMix=(a,b)=>a+(b-a)*MEMORY.v;
 const quadVS='varying vec2 vUv;void main(){vUv=uv;gl_Position=vec4(position.xy,0.,1.);}';
-class PaintPass extends Pass{constructor(){super();this.needsSwap=true;
+class PaintPass extends Pass{constructor(opts={}){super();this.needsSwap=true;this.fixed=opts.fixed||null;
  const o={type:THREE.HalfFloatType,depthBuffer:false};this.tA=new THREE.WebGLRenderTarget(4,4,o);this.tB=new THREE.WebGLRenderTarget(4,4,o);this.fs=new FullScreenQuad(null);
  // 1 · structure tensor of the image (half resolution)
  this.mTensor=new THREE.ShaderMaterial({uniforms:{tDiffuse:{value:null},uTexel:{value:new THREE.Vector2()}},vertexShader:quadVS,depthTest:false,depthWrite:false,
@@ -65,13 +65,13 @@ class PaintPass extends Pass{constructor(){super();this.needsSwap=true;
    vec2 px=vUv*uRes;float cs=max(4.,uCell*uRes.y/900.);float big=smoothstep(3.,11.,r);vec4 st;if(big<.3)st=strokes(px,cs,p.rgb);else if(big>.7)st=strokes(px,cs*2.3,p.rgb);else st=mix(strokes(px,cs,p.rgb),strokes(px,cs*2.3,p.rgb),(big-.3)/.4);
    vec3 painted=mix(p.rgb,st.rgb,clamp(st.a*1.4,0.,1.)*uStroke);gl_FragColor=vec4(mix(s.rgb,painted,mask),s.a);}`})}
  setSize(w,h){const hw=Math.max(1,w>>1),hh=Math.max(1,h>>1);this.tA.setSize(hw,hh);this.tB.setSize(hw,hh);this.tP.setSize(hw,hh);this.mPaint.uniforms.uRes.value.set(hw,hh);this.mPaint.uniforms.uAspect.value=w/h;this.mComp.uniforms.uRes.value.set(w,h);this.mTensor.uniforms.uTexel.value.set(1/w,1/h);this.mBlur.uniforms.uTexel.value.set(2/w,2/h)}
- render(renderer,writeBuffer,readBuffer){const P=this.mPaint.uniforms;const mLevel=memMix(PAINT.level,1),mBrush=memMix(PAINT.brush,2.9);P.uLevel.value=mLevel;P.uBrush.value=mBrush;P.uFocus.value=memMix(PAINT.focus,0);
+ render(renderer,writeBuffer,readBuffer){const P=this.mPaint.uniforms,F=this.fixed;const mLevel=F?F.level:memMix(PAINT.level,1),mBrush=F?F.brush:memMix(PAINT.brush,2.9);P.uLevel.value=mLevel;P.uBrush.value=mBrush;P.uFocus.value=F?F.focus:memMix(PAINT.focus,0);
   if(mLevel<=.001){this.fs.material=copyMat;copyMat.uniforms.tDiffuse.value=readBuffer.texture;renderer.setRenderTarget(this.renderToScreen?null:writeBuffer);this.fs.render(renderer);return}
   this.mTensor.uniforms.tDiffuse.value=readBuffer.texture;this.fs.material=this.mTensor;renderer.setRenderTarget(this.tA);this.fs.render(renderer);
   this.mBlur.uniforms.tDiffuse.value=this.tA.texture;this.fs.material=this.mBlur;renderer.setRenderTarget(this.tB);this.fs.render(renderer);
-  const hasD=!!(gtao&&gtao.enabled);P.uHasDepth.value=hasD?1:0;if(hasD){P.tDepth.value=gtao.depthTexture;P.uNear.value=camera.near;P.uFar.value=camera.far;P.uFocusD.value=paintFocus}
+  const hasD=!F&&!!(gtao&&gtao.enabled);P.uHasDepth.value=hasD?1:0;if(hasD){P.tDepth.value=gtao.depthTexture;P.uNear.value=camera.near;P.uFar.value=camera.far;P.uFocusD.value=paintFocus}
   P.tDiffuse.value=readBuffer.texture;P.tTensor.value=this.tB.texture;this.fs.material=this.mPaint;renderer.setRenderTarget(this.tP);this.fs.render(renderer);
-  const C=this.mComp.uniforms;C.tDiffuse.value=readBuffer.texture;C.tPaint.value=this.tP.texture;C.tTensor.value=this.tB.texture;C.uCell.value=6+mBrush*mLevel*9;C.uStroke.value=memMix(PAINT.strokes,.9);this.fs.material=this.mComp;renderer.setRenderTarget(this.renderToScreen?null:writeBuffer);this.fs.render(renderer)}}
+  const C=this.mComp.uniforms;C.tDiffuse.value=readBuffer.texture;C.tPaint.value=this.tP.texture;C.tTensor.value=this.tB.texture;C.uCell.value=6+mBrush*mLevel*9;C.uStroke.value=F?F.strokes:memMix(PAINT.strokes,.9);this.fs.material=this.mComp;renderer.setRenderTarget(this.renderToScreen?null:writeBuffer);this.fs.render(renderer)}}
 const copyMat=new THREE.ShaderMaterial({uniforms:{tDiffuse:{value:null}},vertexShader:quadVS,fragmentShader:'uniform sampler2D tDiffuse;varying vec2 vUv;void main(){gl_FragColor=texture2D(tDiffuse,vUv);}',depthTest:false,depthWrite:false});
 // autofocus: follow the distance of whatever sits in the middle of the frame (a ray, smoothed like a lens)
 let paintFocus=12;const _fr=new THREE.Raycaster();_fr.firstHitOnly=true;const _fc=new THREE.Vector2(0,.04);let _ft=0;

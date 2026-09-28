@@ -126,32 +126,10 @@ function walkUpdate(dt){const run=keys.has('shift'),sp=run?3.4:1.55,fw=_a.set(-M
 canvas.addEventListener('pointerdown',e=>{if(!free&&e.pointerType!=='touch'){drag={x:e.clientX,y:e.clientY};canvas.setPointerCapture(e.pointerId)}});canvas.addEventListener('pointermove',e=>{if(drag&&!free){lookOffset.x=clamp((e.clientX-drag.x)/innerWidth,-.3,.3);lookOffset.y=clamp((e.clientY-drag.y)/innerHeight,-.22,.22)}});function endDrag(){drag=null;gsap.to(lookOffset,{x:0,y:0,duration:reduced?0:1.4,ease:'power2.out'})}canvas.addEventListener('pointerup',endDrag);canvas.addEventListener('pointercancel',endDrag);
 const keys=new Set();addEventListener('keydown',e=>{if($('#notes').open||e.target.tagName==='INPUT')return;const k=e.key.toLowerCase();if(k==='escape'&&free){setFree(false);return}if(k==='escape'&&walking&&!document.pointerLockElement){setWalk(false);return}if(k==='f'){setFree(!free);return}if(k==='g'){setWalk(!walking);return}if(k==='m')toggleSound();if((free||walking)&&['w','a','s','d','q','e','arrowup','arrowdown','arrowleft','arrowright','shift'].includes(k)){e.preventDefault();keys.add(k)}});addEventListener('keyup',e=>keys.delete(e.key.toLowerCase()));addEventListener('blur',()=>keys.clear());document.querySelectorAll('[data-key]').forEach(b=>{b.onpointerdown=e=>{e.preventDefault();keys.add(b.dataset.key);b.setPointerCapture(e.pointerId)};b.onpointerup=b.onpointercancel=()=>keys.delete(b.dataset.key)});
 const notes=$('#notes');
-// ── the journal is a book: the entry's paragraphs flow onto pages that never scroll, two to a spread (one on a phone);
-// ‹ › or the arrow keys turn them, the sticky note on the first page jumps to a room
-const BOOK=(()=>{const book=notes.querySelector('.book'),blocks=[...notes.querySelector('.n-src').children],pgs=[...notes.querySelectorAll('.page')],ins=pgs.map(p=>p.querySelector('.page-in')),folios=pgs.map(p=>p.querySelector('.folio')),where=notes.querySelector('.bk-where'),prevB=notes.querySelector('.bk-prev'),nextB=notes.querySelector('.bk-next');
- let pages=[],spread=0,per=2;const idPage=new Map();
- function paginate(){per=matchMedia('(max-width:820px)').matches?1:2;book.classList.toggle('single',per===1);pgs[1].hidden=per===1;
-  const m=ins[0];m.innerHTML='';pages=[];let cur=[];const flush=()=>{if(cur.length)pages.push(cur);cur=[];m.innerHTML=''};
-  for(const b of blocks){if(b.dataset.break==='before')flush();m.appendChild(b);
-   if(m.scrollHeight>m.clientHeight+2&&cur.length){m.removeChild(b);const carry=[];while(cur.length&&cur[cur.length-1].dataset.keep==='next')carry.unshift(cur.pop());flush();for(const c of carry){m.appendChild(c);cur.push(c)}m.appendChild(b)}
-   cur.push(b);if(b.dataset.break==='after')flush()}
-  flush();idPage.clear();pages.forEach((p,i)=>p.forEach(b=>{if(b.id)idPage.set(b.id,i);b.querySelectorAll('[id]').forEach(e=>idPage.set(e.id,i))}));
-  blocks.flatMap(b=>[...b.querySelectorAll('.n-index a')]).forEach(l=>{const id=l.getAttribute('href').slice(1);l.querySelector('.ix-p').textContent=idPage.has(id)?idPage.get(id)+1:'';l.setAttribute('aria-label',l.querySelector('.ix-t').textContent+(idPage.has(id)?', page '+(idPage.get(id)+1):''))});
-  spread=clamp(spread,0,Math.max(0,Math.ceil(pages.length/per)-1));render(0)}
- function render(dir){for(let k=0;k<2;k++){const i=spread*per+k;ins[k].innerHTML='';const on=k<per&&pages[i];if(on)for(const b of pages[i])ins[k].appendChild(b);folios[k].textContent=on?String(i+1):''}
-  const a=spread*per+1,b=Math.min(pages.length,spread*per+per);where.textContent=b>a?`pages ${a}–${b} of ${pages.length}`:`page ${a} of ${pages.length}`;prevB.disabled=spread===0;nextB.disabled=(spread+1)*per>=pages.length;
-  if(notes.open&&!notes.contains(document.activeElement))notes.querySelector('.spread').focus({preventScroll:true});book.classList.remove('flip-next','flip-prev');if(dir&&!reduced){void book.offsetWidth;book.classList.add(dir>0?'flip-next':'flip-prev')}}
- const turn=d=>{const n=clamp(spread+d,0,Math.max(0,Math.ceil(pages.length/per)-1));if(n!==spread){spread=n;render(d)}};
- prevB.onclick=()=>turn(-1);nextB.onclick=()=>turn(1);
- addEventListener('keydown',e=>{if(!notes.open||(e.target.closest&&e.target.closest('input,textarea,select')))return;const k=e.key;if(k==='ArrowRight'||k==='PageDown'){turn(1);e.preventDefault()}else if(k==='ArrowLeft'||k==='PageUp'){turn(-1);e.preventDefault()}else if(k==='Home'){turn(-999);e.preventDefault()}else if(k==='End'){turn(999);e.preventDefault()}});
- notes.addEventListener('click',e=>{const a=e.target.closest('a[href^="#"]');if(!a)return;e.preventDefault();const id=a.getAttribute('href').slice(1);if(!idPage.has(id))return;const n=Math.floor(idPage.get(id)/per),d=Math.sign(n-spread);spread=n;render(d||1);const t=document.getElementById(id);if(t){t.setAttribute('tabindex','-1');t.focus({preventScroll:true})}});
- let rT=0;addEventListener('resize',()=>{if(notes.open){clearTimeout(rT);rT=setTimeout(paginate,160)}});
- const toIndex=()=>{if(!idPage.has('n-index'))return;const n=Math.floor(idPage.get('n-index')/per),d=Math.sign(n-spread);spread=n;render(d);const h=document.getElementById('h-index');if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true})}};notes.querySelector('.n-index-btn').onclick=toIndex;
- return{paginate,turn,toIndex}})();
-$('#archive').onclick=()=>{if(document.pointerLockElement)document.exitPointerLock();notes.showModal();controls.enabled=false;keys.clear();BOOK.paginate();if(document.fonts)document.fonts.ready.then(()=>{if(notes.open)BOOK.paginate()})};
+$('#archive').onclick=()=>{if(document.pointerLockElement)document.exitPointerLock();notes.showModal();controls.enabled=false;keys.clear();JOURNAL.open()};
 notes.querySelectorAll('.close').forEach(b=>b.onclick=()=>notes.close());
-{const pb=notes.querySelector('.n-print'),setP=on=>{notes.classList.toggle('printed',on);pb.setAttribute('aria-pressed',on);pb.textContent=on?'Handwritten':'Printed text';try{localStorage.setItem('doma-print',on?'1':'0')}catch{}if(notes.open)BOOK.paginate()};let p0=false;try{p0=localStorage.getItem('doma-print')==='1'}catch{}setP(p0);pb.onclick=()=>setP(!notes.classList.contains('printed'))}
-notes.addEventListener('close',()=>{controls.enabled=free&&!walking});
+{const pb=notes.querySelector('.n-print'),setP=on=>{notes.classList.toggle('printed',on);pb.setAttribute('aria-pressed',on);pb.textContent=on?'Handwritten':'Printed text';try{localStorage.setItem('doma-print',on?'1':'0')}catch{}if(notes.open)JOURNAL.repaginate()};let p0=false;try{p0=localStorage.getItem('doma-print')==='1'}catch{}setP(p0);pb.onclick=()=>setP(!notes.classList.contains('printed'))}
+notes.addEventListener('close',()=>{controls.enabled=free&&!walking;JOURNAL.close()});
 $('#sound').onclick=toggleSound;
 
 // ───────────────────────── per-frame ─────────────────────────
@@ -164,7 +142,7 @@ const aptGroups=[shell,hall,kitchen,living,bedroom,bath,balcony];
 const _shaftC=new THREE.Vector3(5,5,3);let zone='out',shadowZone='',exposure=1,envI=.6,hemiI=.5;const workPos=new THREE.Vector3(),workLook=new THREE.Vector3(),forward=new THREE.Vector3(),right=new THREE.Vector3();
 let dream=0,frames=0,slowFrames=0,frameAcc=0,frameCount=0;
 function zoneOf(p){{const xl=SCX-p.x,zl=SCZ-p.z;if(Math.abs(xl)<12&&Math.abs(zl)<5.8&&p.y>AY&&p.y<AY+CH)return'newflat'}if(Math.abs(p.x)<12&&Math.abs(p.z)<6&&p.y<ROOF){if(Math.abs(p.x)<1.6)return'stair';if(p.x>1.6&&p.y>Y&&p.y<Y+CH)return'flat';return'stair'}if(p.x>8.9&&p.x<11.9&&p.z>5.9&&p.z<7.3&&p.y>Y&&p.y<Y+2.6)return'balcony';return'out'}
-function render(ms){requestAnimationFrame(render);if(document.hidden||notes.open){last=ms;return}tick(ms)}
+function render(ms){requestAnimationFrame(render);if(document.hidden){last=ms;return}if(notes.open){last=ms;JOURNAL.frame(ms);return}tick(ms)}
 function tick(ms){const dt=Math.min(Math.max((ms-last)/1000,0)||.016,.05);last=ms;
  if(walking&&!returning)walkUpdate(dt);
  else if(!free&&!returning){progress=reduced?target:lerp(progress,target,1-Math.exp(-dt*5.5));const u=curveU(progress);posCurve.getPoint(u,workPos);dirCurve.getPoint(u,workLook).normalize();

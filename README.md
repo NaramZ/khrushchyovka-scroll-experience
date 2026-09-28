@@ -3,6 +3,8 @@
 **An interactive walk through a Soviet panel flat, about memory, emotion and the architecture that shaped them.**
 By Naram Ziady and Sami: a simple idea we wanted to explore.
 
+**Walk it here: https://naramz.github.io/khrushchyovka-scroll-experience/** (desktop browser recommended; the first load takes a few seconds)
+
 ## About
 
 Everyone had the same place. Millions of families were given the same flat, in the same concrete block, built from the same factory-made panels. That's exactly what makes the memories of these homes so specific. When the architecture is identical, every difference is human: how a family decorated, where they put the things they were given, the small choices that turned a standard flat into *home*.

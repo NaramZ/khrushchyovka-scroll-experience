@@ -294,3 +294,105 @@ body.in-flat #walk-in{display:block}body.walking #walk-in{display:none}
 body.ui-idle #walk-in{opacity:0;pointer-events:none}
 @media(max-width:1150px){#lived-ui{bottom:136px!important}}
 @media(max-width:700px){#walk-in{display:none!important}#lived-ui{bottom:200px!important}}
+/* ═══ PAINTED UI — the interface as a page of someone's journal: handwritten labels, ink lines that wobble,
+   watercolour washes with dry-brush gaps. The paint is only ever on a layer behind the words, so text stays crisp,
+   and the colours are fixed (not sampled from the scene) so contrast never drops. ═══ */
+:root{--j-ink:#2b2621;--j-paper:#f3ecdc;--j-wash:#e9dfc8;--j-red:#9c3a22;--j-red-wash:#b8583b;--j-hand:'Caveat','Segoe Print','Bradley Hand',cursive}
+.paint-defs{position:absolute;width:0;height:0;overflow:hidden}
+/* one recipe for every painted surface: a ::before behind the content carries the wash, the wobbly ink edge and the dry brush */
+.toolbar button,.ap-btn,.ap-seg button,.journey button,#chapters-pop button,.n-close-end{position:relative;isolation:isolate}
+#walk-in,#resume{isolation:isolate}
+.toolbar button::before,.ap-btn::before,.ap-seg button::before,#walk-in::before,#resume::before,.journey button::before,#atmos-panel::before,#chapters-pop::before,#memory-ui::before,#lived-ui::before,.journey::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--j-paper);border:2px solid var(--j-ink);border-radius:14px 5px 12px 6px/6px 12px 5px 14px;filter:url(#paint);pointer-events:none}
+/* top bar: three handwritten words in painted boxes, each a little crooked */
+.toolbar{gap:12px}
+.toolbar button{background:transparent!important;border:0!important;backdrop-filter:none!important;color:var(--j-ink)!important;font:700 23px/1 var(--j-hand)!important;letter-spacing:.01em!important;text-transform:none!important;padding:8px 18px 10px!important;min-height:44px}
+.toolbar button:nth-child(1)::before{transform:rotate(-1.4deg)}.toolbar button:nth-child(2)::before{transform:rotate(.9deg)}.toolbar button:nth-child(3)::before{transform:rotate(-.6deg)}
+.toolbar button:hover::before{background:var(--j-wash)}
+.toolbar button[aria-expanded=true],.toolbar #archive:hover{color:var(--j-paper)!important}
+.toolbar button[aria-expanded=true]::before{background:var(--j-red);border-color:var(--j-red)}
+.toolbar #archive::before{background:var(--j-wash)}
+.toolbar #archive:hover::before{background:var(--j-ink)}
+.wordmark{font:700 46px/.8 var(--j-hand)!important;letter-spacing:0!important;color:var(--j-ink)!important}
+.wordmark small{font:600 19px/1.4 var(--j-hand)!important;letter-spacing:.01em!important;margin-top:4px;text-transform:none}
+/* panels: a sheet of paper, pinned with a strip of masking tape */
+#atmos-panel,#chapters-pop{background:transparent!important;border:0!important;backdrop-filter:none!important;color:var(--j-ink)!important;padding:26px 24px 20px!important;isolation:isolate;overflow:visible!important;max-height:none!important}
+#atmos-panel::before,#chapters-pop::before{border-radius:4px 10px 6px 12px/12px 5px 10px 4px;transform:rotate(-.5deg);box-shadow:none}
+#atmos-panel::after,#chapters-pop::after{content:"";position:absolute;top:-12px;left:50%;width:92px;height:26px;margin-left:-46px;background:#d9c9a0cc;transform:rotate(-3deg);filter:url(#paint);pointer-events:none}
+.ap-title,#chapters-pop .ap-title{font:700 22px/1.1 var(--j-hand)!important;letter-spacing:0!important;text-transform:none!important;color:var(--j-red)!important;margin:6px 0 8px!important}
+.ap-seg{gap:8px!important}
+.ap-seg button{background:transparent!important;border:0!important;font:700 22px/1 var(--j-hand)!important;color:var(--j-ink)!important;padding:10px 4px 8px!important;text-transform:none!important}
+.ap-seg button small{font:600 15px/1.3 var(--j-hand)!important;letter-spacing:0!important;opacity:.85}
+.ap-seg button:nth-child(odd)::before{transform:rotate(1.2deg)}.ap-seg button:nth-child(even)::before{transform:rotate(-1deg)}
+.ap-seg button[aria-pressed=true]{color:var(--j-paper)!important}
+.ap-seg button[aria-pressed=true]::before{background:var(--j-red);border-color:var(--j-red)}
+.ap-btn{background:transparent!important;border:0!important;color:var(--j-ink)!important;font:700 21px/1 var(--j-hand)!important;letter-spacing:0!important;text-transform:none!important;padding:11px 14px 12px!important;text-align:left}
+.ap-btn::before{transform:rotate(-.7deg)}
+.ap-btn:hover::before{background:var(--j-wash)}
+.ap-btn[aria-pressed=true]{color:var(--j-paper)!important}.ap-btn[aria-pressed=true]::before{background:var(--j-ink)}
+.ap-two .ap-btn{text-align:center}
+.ap-more{border-top:0!important;padding-top:4px!important;background:linear-gradient(var(--j-ink),var(--j-ink)) top/100% 1.5px no-repeat}
+.ap-more summary{font:700 21px/1.3 var(--j-hand)!important;letter-spacing:0!important;text-transform:none!important;color:var(--j-ink);padding:10px 0!important}
+.ap-more summary::after{color:var(--j-red)!important}
+.ap-row{font:600 19px/1.2 var(--j-hand)!important;letter-spacing:0!important;text-transform:none!important;color:var(--j-ink)}
+.ap-row output{font:700 19px var(--j-hand)}
+.ap-check{font:600 18px/1.3 var(--j-hand)!important;text-transform:none!important;letter-spacing:0!important}
+/* contents: a handwritten table of contents */
+#chapters-pop ol{gap:0!important}
+#chapters-pop button{background:transparent!important;border:0!important;color:var(--j-ink)!important;padding:8px 6px!important;grid-template-columns:40px 1fr auto!important}
+#chapters-pop button::after{content:"";position:absolute;left:6px;right:6px;bottom:2px;height:2px;background:var(--j-ink);opacity:.35;filter:url(#ink)}
+#chapters-pop button:hover::after,#chapters-pop button:focus-visible::after{opacity:1;background:var(--j-red);height:3px}
+#chapters-pop .cn{font:700 24px/1 var(--j-hand)!important;color:var(--j-red)!important}
+#chapters-pop .ct{font:700 25px/1.05 var(--j-hand)!important;text-transform:none!important}
+#chapters-pop .cr{font:600 16px/1 var(--j-hand)!important;opacity:.8!important;letter-spacing:0}
+/* sliders: an inked line with a blot of red for the handle (still the native control underneath) */
+#lived-ui,#memory-ui{background:transparent!important;backdrop-filter:none!important;color:var(--j-ink)!important;isolation:isolate}
+#lived-ui::before{transform:rotate(-.6deg)}#memory-ui::before{transform:rotate(.8deg)}
+#lived-ui span{font:700 21px/1 var(--j-hand)!important;text-transform:none!important;letter-spacing:0!important}
+#lived-ui small,#memory-ui small{font:600 16px/1.2 var(--j-hand)!important;letter-spacing:0!important;opacity:.85}
+#lived-ui input[type=range],#atmos-panel input[type=range]{-webkit-appearance:none;appearance:none;background:transparent;height:26px;filter:url(#ink);cursor:pointer}
+#atmos-panel input[type=range]{width:100%;margin:2px 0 12px}
+#lived-ui input[type=range]::-webkit-slider-runnable-track,#atmos-panel input[type=range]::-webkit-slider-runnable-track{height:3px;background:var(--j-ink);border-radius:3px}
+#lived-ui input[type=range]::-moz-range-track,#atmos-panel input[type=range]::-moz-range-track{height:3px;background:var(--j-ink);border-radius:3px}
+#lived-ui input[type=range]::-webkit-slider-thumb,#atmos-panel input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:18px;margin-top:-8px;background:var(--j-red);border:2px solid var(--j-ink);border-radius:55% 45% 60% 40%/45% 60% 40% 55%}
+#lived-ui input[type=range]::-moz-range-thumb,#atmos-panel input[type=range]::-moz-range-thumb{width:18px;height:16px;background:var(--j-red);border:2px solid var(--j-ink);border-radius:55% 45% 60% 40%/45% 60% 40% 55%}
+/* the memory knob, drawn in ink */
+#memory-ui #memory-lab{font:700 23px/1 var(--j-hand)!important;text-transform:none!important;letter-spacing:0!important}
+#memory-ui output{font:700 21px/1.2 var(--j-hand)!important;color:var(--j-red)}
+#memory-ui svg .ticks,#memory-ui svg .track,#memory-ui svg .arc,#memory-ui svg .knob>circle{filter:url(#ink)}
+#memory-ui .ticks line{stroke:var(--j-ink)!important}
+#memory-ui .track{stroke:#2b262140!important}#memory-ui .arc{stroke:var(--j-red)!important;stroke-width:5!important}
+#memory-ui .knob>circle:first-child{fill:var(--j-ink)!important;stroke:var(--j-ink)!important}
+#memory-ui .grip{stroke:#f3ecdc55!important}#memory-ui .needle{fill:var(--j-paper)!important}
+/* the page footer: a torn strip with a handwritten page number and drawn arrows */
+.journey{background:transparent!important;backdrop-filter:none!important;padding:8px 16px!important}
+.journey::before{border-radius:3px 12px 4px 10px/10px 4px 12px 3px;transform:rotate(.4deg)}
+.journey button{background:transparent!important;border:0!important;color:var(--j-ink)!important;font:700 24px/1 var(--j-hand)!important;width:44px!important;height:40px!important}
+.journey button::before{border-radius:50% 45% 55% 40%/45% 55% 40% 50%}
+.journey button:hover:not(:disabled)::before{background:var(--j-wash)}
+#progress-text{font:700 22px/1.2 var(--j-hand)!important;color:var(--j-ink)!important;letter-spacing:0!important}
+#progress-text b{color:var(--j-red)!important;font-weight:700}
+#progress-text span{font:600 18px var(--j-hand)!important;letter-spacing:0!important;opacity:.8!important}
+.track-line{background:var(--j-ink)!important;height:2px!important;filter:url(#ink);opacity:.5}
+.track-line span{background:var(--j-red)!important;height:4px!important;margin-top:-1px}
+.track-line i{background:var(--j-ink)!important}
+/* the two call-to-action buttons: painted in ink, written in paper */
+#walk-in,#resume{background:transparent!important;border:0!important;color:var(--j-paper)!important;font:700 22px/1 var(--j-hand)!important;letter-spacing:0!important;text-transform:none!important;padding:12px 20px 13px!important}
+#walk-in::before,#resume::before{background:var(--j-ink);transform:rotate(-1deg)}
+#walk-in:hover::before,#resume:hover::before{background:var(--j-red);border-color:var(--j-red)}
+/* focus is never left to the paint: a solid, high-contrast ring on anything you can reach by keyboard */
+.toolbar button:focus-visible,.ap-btn:focus-visible,.ap-seg button:focus-visible,#walk-in:focus-visible,#resume:focus-visible,.journey button:focus-visible,#chapters-pop button:focus-visible,.wordmark:focus-visible,.ap-more summary:focus-visible,#atmos-panel input:focus-visible,#lived-ui input:focus-visible,#memory:focus-visible{outline:3px solid var(--j-red)!important;outline-offset:4px!important}
+/* Windows high contrast: the paint disappears, so give everything a real border */
+@media(forced-colors:active){.toolbar button,.ap-btn,.ap-seg button,#walk-in,#resume,.journey button{border:2px solid ButtonText!important}#atmos-panel,#chapters-pop,#memory-ui,#lived-ui,.journey{border:2px solid CanvasText!important}}
+@media(max-width:700px){.toolbar{gap:6px}.toolbar button{font-size:19px!important;padding:6px 10px 8px!important}.wordmark{font-size:36px!important}.wordmark small{display:none}}
+.journey{position:relative;isolation:isolate}
+#atmos-panel::before,#chapters-pop::before,#memory-ui::before,#lived-ui::before,.journey::before{filter:url(#paint-soft)}
+.track{width:clamp(150px,22vw,340px)!important}
+@media(max-width:1000px){.track{width:auto!important}.track-line{display:none}#memory-ui{gap:8px;padding:6px 12px 6px 6px}#memory-ui .dial{width:62px;height:62px}#memory-ui #memory-lab{font-size:20px!important}#memory-ui output{font-size:18px!important;min-width:6.5em}}
+#lived-ui{bottom:100px!important}
+@media(max-width:1150px){#lived-ui{bottom:140px!important}}
+@media(max-width:700px){.wordmark{font-size:28px!important}.toolbar{gap:4px}.toolbar button{font-size:17px!important;padding:5px 8px 7px!important;min-height:40px}#lived-ui{bottom:196px!important}#progress-text span{display:none}}
+@media(min-width:701px) and (max-width:1000px){#memory-ui{bottom:86px!important}#walk-in{bottom:86px!important}#lived-ui{bottom:184px!important}}
+@media(max-width:700px){#lived-ui{bottom:236px!important}}
+.loader-title{font:700 clamp(64px,10vw,120px)/1 var(--j-hand)!important;letter-spacing:0!important;color:var(--j-ink)}
+#load-message{font:600 24px/1.3 var(--j-hand)!important;letter-spacing:0!important;text-transform:none!important;color:var(--j-ink)}
+.loader-line{filter:url(#ink)}

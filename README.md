@@ -56,6 +56,8 @@ The top bar has two buttons: **Journal** and **Settings**.
 - **As designed ↔ as lived**: a slider that appears inside the flat.
 - **Journal**: “Someone else’s home”, an old leather notebook on a desk, in 3D: grab a page and pull it over, or use ‹ › and the arrow keys; **Index** jumps to the contents): a walk through the rooms and what each one meant, how we made it, sources and controls. **Printed text** swaps the handwriting for print. `M` toggles sound.
 
+**On a phone:** swipe up and down anywhere to travel. Tap **Tilt to look** and move your phone to look around (iPhone asks for permission once). In Fly around: drag to look, pinch to move forward and back, two fingers to slide, double-tap somewhere to glide there.
+
 ## Sound
 Click or press a key once and the sound starts (browsers need a gesture). The kitchen radio uses the recordings in `audio/`; they are also embedded in `index.html`, so the page works on its own.
 

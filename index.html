@@ -663,6 +663,32 @@ body.journal-open header,body.journal-open footer,body.journal-open #type-layer,
 #notes .pg-dom .page-in{top:56px!important;bottom:50px!important;left:66px!important;right:40px!important}
 #notes .pg-dom .title-page h2{font-size:52px!important}
 #notes .pg-dom .page-in .snap{width:calc(50% - 14px)}
+/* ── phones: tilt-to-look pill, gesture-only free camera, and a smaller UI ── */
+#gyro-pill{display:none}
+@media(pointer:coarse){
+ body.free #touch-move{display:none!important}
+ #gyro-pill{display:block;position:fixed;z-index:13;right:12px;bottom:110px;isolation:isolate;padding:8px 14px 10px;background:transparent;border:0;color:var(--j-ink);font:700 18px/1 var(--j-hand);cursor:pointer;transition:opacity .9s}
+ #gyro-pill::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--j-paper);border:2px solid var(--j-ink);border-radius:14px 5px 12px 6px/6px 12px 5px 14px;filter:url(#paint);transform:rotate(1deg)}
+ #gyro-pill[aria-pressed=true]{color:var(--j-paper)}#gyro-pill[aria-pressed=true]::before{background:var(--j-ink)}
+ body.ui-idle #gyro-pill{opacity:0;pointer-events:none}
+ body.journal-open #gyro-pill{visibility:hidden}
+ #gyro-pill:focus-visible{outline:3px solid var(--j-red);outline-offset:4px}
+}
+@media(max-width:700px){
+ #lived-ui{left:50%!important;right:auto!important;width:auto!important;max-width:calc(100vw - 24px);transform:translateX(-50%)!important;bottom:158px!important;gap:8px!important;padding:6px 12px 7px!important}
+ #lived-ui span{font-size:16px!important;line-height:1!important}
+ #lived-ui small{display:none!important}
+ #lived-ui input[type=range]{width:96px!important;height:22px}
+ body.free #gyro-pill,body.walking #gyro-pill{bottom:24px}
+ #memory-ui.folded{padding:7px 12px 8px 10px!important}
+ #memory-ui #memory-lab{font-size:18px!important}
+ .mem-now{font-size:16px!important}
+ #progress-text{font-size:18px!important}
+ .journey button{width:40px!important;height:38px!important}
+ .toolbar button{font-size:16px!important;padding:5px 9px 7px!important;min-height:38px}
+ .wordmark{font-size:26px!important}
+}
+@media(max-width:700px){#lived-ui span{white-space:nowrap}}
 .notes-cols{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin:34px 0 10px}.notes-cols h3{font:600 26px/1 var(--display);margin:0 0 14px;text-transform:uppercase}.log,.why{margin:0;padding-left:18px;font-size:12px;line-height:1.75}.log li,.why li{margin-bottom:12px}.log b,.why b{font-weight:600}@media(max-width:700px){.notes-cols{grid-template-columns:1fr;gap:18px}}
 </style>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/","three-mesh-bvh":"https://cdn.jsdelivr.net/npm/three-mesh-bvh@0.8.3/build/index.module.js"}}</script>
@@ -677,7 +703,7 @@ body.journal-open header,body.journal-open footer,body.journal-open #type-layer,
 <canvas id="view" tabindex="0" aria-label="Interactive three dimensional apartment block. Scroll to travel, or select Free camera to navigate yourself."></canvas><div class="vignette"></div><div class="grain"></div>
 <header><button class="wordmark" id="home" aria-label="ДОМА — return to the beginning">ДОМА<small>a journal of someone else’s home</small></button><div class="toolbar"><button id="archive">Journal</button><button id="season-btn" aria-expanded="false" aria-controls="atmos-panel">Settings</button></div></header>
 <div id="atmos-panel" hidden><div class="ap-title">Season / Сезон</div><div class="ap-seg" role="group" aria-label="Season"><button data-season="winter">Зима<small>Winter</small></button><button data-season="spring">Весна<small>Spring</small></button><button data-season="summer">Лето<small>Summer</small></button><button data-season="autumn">Осень<small>Autumn</small></button></div><div class="ap-title">Sound / Звук</div><button id="sound" class="ap-btn" aria-pressed="false">Sound off</button>
-<div class="ap-title">Explore on your own</div><div class="ap-two"><button id="walk" class="ap-btn" aria-pressed="false">Walk around</button><button id="explore" class="ap-btn" aria-pressed="false">Fly around</button></div>
+<div class="ap-title">Explore on your own</div><div class="ap-two"><button id="walk" class="ap-btn" aria-pressed="false">Walk around</button><button id="explore" class="ap-btn" aria-pressed="false">Fly around</button></div><button class="ap-btn gyro-btn" type="button" aria-pressed="false">Tilt to look</button>
 <details class="ap-more"><summary>Look &amp; atmosphere</summary><label class="ap-row" for="haze"><span>Indoor haze &amp; dust · Пыль</span><output id="haze-val">100%</output></label><input type="range" id="haze" min="0" max="2" step="0.05" value="1"><div class="ap-title" style="margin-top:4px">Gaussian paint / Живопись</div>
 <label class="ap-row" for="paint"><span>Splat level</span><output id="paint-val">70%</output></label><input type="range" id="paint" min="0" max="1" step="0.01" value="0.7">
 <label class="ap-row" for="strokes"><span>Brush strokes</span><output id="strokes-val">75%</output></label><input type="range" id="strokes" min="0" max="1" step="0.01" value="0.75">
@@ -688,6 +714,7 @@ body.journal-open header,body.journal-open footer,body.journal-open #type-layer,
 <div id="walk-hint"></div>
 <div id="memory-ui" class="folded"><button id="memory-lab" type="button" aria-expanded="false" aria-controls="memory">Memory<small lang="ru">Память</small><span class="mem-now" aria-hidden="true">Now</span><span class="mem-chev" aria-hidden="true">▴</span></button><div id="memory" class="mem-track" role="slider" tabindex="0" aria-orientation="vertical" aria-label="Memory" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-valuetext="Now"><span class="mem-line" aria-hidden="true"></span><span class="mem-fill" aria-hidden="true"></span><ol class="mem-marks" aria-hidden="true"><li>Only the shape</li><li>Faded</li><li>Fading</li><li>Recalled</li><li>Now</li></ol><span class="mem-thumb" aria-hidden="true"></span></div><output id="memory-val" class="sr">Now</output></div>
 <div id="lived-ui"><span>As designed<small>как построено</small></span><input type="range" id="lived" min="0" max="1" step="0.01" value="1" aria-label="From the flat as designed to the flat as lived in"><span>As lived<small>как жили</small></span></div>
+<button id="gyro-pill" class="gyro-btn" type="button" aria-pressed="false">Tilt to look</button>
 <button id="walk-in" type="button">Walk around the flat</button>
 <button id="resume" type="button">Back to the journey</button>
 <div id="hero"><div class="eyebrow">Behind the concrete</div><h1>ДОМА<span>A BUILDING. A THOUSAND LIVES.</span></h1><p>From the repeated window<br>to the room that is entirely yours.<br>A journey through prefabricated living.</p><div class="intro-foot"><b>↓</b><span>Scroll to enter<br>Листайте, чтобы войти</span></div></div>
@@ -2071,7 +2098,7 @@ function tick(ms){const dt=Math.min(Math.max((ms-last)/1000,0)||.016,.05);last=m
   // a neck, not a gimbal: never tip past ~70° up or down, so the head can't flip over when the path turns
   {const h=Math.hypot(workLook.x,workLook.z);if(h<.34&&h>1e-5){const k=.34/h;workLook.x*=k;workLook.z*=k;workLook.y=Math.sign(workLook.y)*.94}}
   const inT=smooth(progress,tOf('door')-.03,tOf('door')+.01);camera.fov=lerp(mobile?60:44,mobile?80:68,inT);camera.updateProjectionMatrix();camera.position.copy(workPos);
-  right.crossVectors(workLook,_up).normalize();workLook.addScaledVector(right,lookOffset.x*1.6).addScaledVector(_up,lookOffset.y*1.4).normalize();controls.target.copy(workPos).addScaledVector(workLook,3);camera.lookAt(controls.target)}
+  right.crossVectors(workLook,_up).normalize();const gyo=MOBILE.gyro.off;workLook.addScaledVector(right,(lookOffset.x+gyo.x)*1.6).addScaledVector(_up,(lookOffset.y+gyo.y)*1.4).normalize();controls.target.copy(workPos).addScaledVector(workLook,3);camera.lookAt(controls.target)}
  else if(free){const z=zoneOf(camera.position),speed=(z==='out'?14:1.7)*dt;camera.getWorldDirection(forward);right.crossVectors(forward,camera.up).normalize();const delta=new THREE.Vector3();if(keys.has('w')||keys.has('arrowup'))delta.addScaledVector(forward,speed);if(keys.has('s')||keys.has('arrowdown'))delta.addScaledVector(forward,-speed);if(keys.has('a')||keys.has('arrowleft'))delta.addScaledVector(right,-speed);if(keys.has('d')||keys.has('arrowright'))delta.addScaledVector(right,speed);if(keys.has('q'))delta.y-=speed;if(keys.has('e'))delta.y+=speed;camera.position.add(delta);controls.target.add(delta);controls.update()}
  // eye adaptation between the bright courtyard, the dim stairwell and the lamp-lit flat
  zone=zoneOf(camera.position);const inside=zone==='stair'||zone==='flat';const k=1-Math.exp(-dt*2.2);
@@ -2087,7 +2114,7 @@ function tick(ms){const dt=Math.min(Math.max((ms-last)/1000,0)||.016,.05);last=m
  if(current===-1||frames%3===0){const idx=stops.reduce((best,s,i)=>progress>=(i===0?0:(stops[i-1]+s)/2)?i:best,0);if(idx!==current){current=idx;const ch=chapters[idx];$('#stage-no').textContent=`0${idx+1} / ${ch.ru}`;$('#stage-title').innerHTML=ch.title;$('#stage-copy').textContent=ch.copy;$('#stage-context').textContent=ch.ctx;$('#place').textContent=ch.place;$('#progress-text').innerHTML=`<b>${String(idx+1).padStart(2,'0')}</b> ${ch.title.replace('<br>',' ')} <span>${ch.ru}</span>`;document.querySelectorAll('[data-stop]').forEach((b,i)=>{b.classList.toggle('active',i===idx);if(i===idx)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current')});$('#prev').disabled=idx===0;$('#next').disabled=idx===stops.length-1}}
  $('#hero').style.opacity=clamp(1-progress*14,0,1);$('#hero').style.transform=`translateY(${-progress*260}px)`;$('#stage-caption').classList.toggle('hidden',progress<.045||free||walking);$('#progress-bar').style.width=(progress*100).toFixed(2)+'%';
  MEMORY.v=lerp(MEMORY.v,MEMORY.target,1-Math.exp(-dt*2.5));if(grade)grade.uniforms.uFade.value=MEMORY.v;
- updateLabels();updateFocus(dt);siteUpdate(free||walking?1:siteProgress(progress));homeUpdate(free||walking?1:homeProgress(progress));livedUpdate(dt);soundUpdate(dt);
+ updateLabels();updateFocus(dt);siteUpdate(free||walking?1:siteProgress(progress));homeUpdate(free||walking?1:homeProgress(progress));livedUpdate(dt);soundUpdate(dt);MOBILE.update(dt);
  if(composer)composer.render(dt);else renderer.render(scene,camera);typeUpdate();frames++;
  // adaptive resolution keeps the walk smooth on smaller GPUs
  if(frames>30){frameAcc+=dt;frameCount++;if(frameCount===75){const avg=frameAcc/frameCount;frameAcc=0;frameCount=0;if(avg>.026){if(pixelRatio>1){pixelRatio=Math.max(1,pixelRatio-.25);resize()}else if(gtao&&gtao.enabled){gtao.enabled=false}else if(pixelRatio>.75){pixelRatio-=.125;resize()}}}}
@@ -2288,6 +2315,59 @@ const JOURNAL=(()=>{
  function repaginate(){paginate();clearTex();setBase();showView()}
  addEventListener('resize',()=>{if(dlg.open)resize()});
  return{open,close,frame:draw,repaginate,go}})();
+
+// ───────────────────────── ON A PHONE — scroll with your thumb, look with your hands, fly with gestures ─────────────────────────
+// • Scroll mode: a finger anywhere on the scene scrolls the journey (the canvas lets vertical pans through).
+// • Tilt to look: with the gyroscope on, turning the phone turns your head — around the rail while scrolling, freely
+//   while flying. iOS asks permission the first time.
+// • Free camera on touch: drag to look, pinch to move forward and back, two fingers to slide, double-tap to go there.
+const MOBILE=(()=>{
+ const coarse=matchMedia('(pointer: coarse)').matches;
+ // ── scrolling vs. gesturing on the canvas
+ function touchMode(){canvas.style.touchAction=free||walking?'none':'pan-y'}
+ touchMode();
+
+ // ── gyroscope
+ const G={on:false,has:false,q:new THREE.Quaternion(),base:null,prev:null,off:{x:0,y:0}};
+ const _e=new THREE.Euler(),_q0=new THREE.Quaternion(),_q1=new THREE.Quaternion(-Math.sqrt(.5),0,0,Math.sqrt(.5)),_z=new THREE.Vector3(0,0,1),_d=new THREE.Quaternion(),_de=new THREE.Euler();
+ function onOri(e){if(e.alpha==null&&e.beta==null)return;const a=THREE.MathUtils.degToRad(e.alpha||0),b=THREE.MathUtils.degToRad(e.beta||0),g=THREE.MathUtils.degToRad(e.gamma||0),o=THREE.MathUtils.degToRad((screen.orientation&&screen.orientation.angle)||window.orientation||0);
+  _e.set(b,a,-g,'YXZ');G.q.setFromEuler(_e).multiply(_q1).multiply(_q0.setFromAxisAngle(_z,-o));G.has=true;if(!G.base){G.base=G.q.clone();G.prev=G.q.clone()}}
+ const btns=[...document.querySelectorAll('.gyro-btn')];
+ function label(){for(const b of btns){b.setAttribute('aria-pressed',G.on);b.textContent=G.on?'Tilt to look: on':'Tilt to look'}}
+ async function setGyro(on){if(on){try{if(typeof DeviceOrientationEvent!=='undefined'&&typeof DeviceOrientationEvent.requestPermission==='function'){const r=await DeviceOrientationEvent.requestPermission();if(r!=='granted')return}}catch{return}
+   G.base=G.prev=null;addEventListener('deviceorientation',onOri);G.on=true}else{removeEventListener('deviceorientation',onOri);G.on=false;G.off.x=G.off.y=0}label()}
+ for(const b of btns)b.onclick=()=>setGyro(!G.on);
+ if(!('DeviceOrientationEvent' in window)||!coarse)for(const b of btns)b.hidden=true;
+ label();
+
+ // ── free camera by touch: first-person gestures
+ const pts=new Map();let g0=null,lastTap=0,glide=null;const _dir=new THREE.Vector3(),_rt=new THREE.Vector3(),_up=new THREE.Vector3(0,1,0),_rq=new THREE.Quaternion(),_ray=new THREE.Raycaster(),_ndc=new THREE.Vector2();
+ const speed=()=>zoneOf(camera.position)==='out'?1:.25;
+ function look(dx,dy){_dir.subVectors(controls.target,camera.position).normalize();_rq.setFromAxisAngle(_up,dx);_dir.applyQuaternion(_rq);_rt.crossVectors(_dir,_up).normalize();const pitch=Math.asin(clamp(_dir.y,-1,1));const np=clamp(pitch+dy,-1.35,1.35);_rq.setFromAxisAngle(_rt,np-pitch);_dir.applyQuaternion(_rq).normalize();controls.target.copy(camera.position).addScaledVector(_dir,3)}
+ function move(v){camera.position.add(v);controls.target.add(v)}
+ const centroid=()=>{let x=0,y=0;for(const p of pts.values()){x+=p.x;y+=p.y}return{x:x/pts.size,y:y/pts.size}};
+ const spread=()=>{const a=[...pts.values()];return a.length<2?0:Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y)};
+ canvas.addEventListener('pointerdown',e=>{if(!free||e.pointerType!=='touch')return;controls.enabled=false;glide&&glide.kill();glide=null;pts.set(e.pointerId,{x:e.clientX,y:e.clientY});try{canvas.setPointerCapture(e.pointerId)}catch{}g0={c:centroid(),s:spread(),n:pts.size};
+  if(pts.size===1){const now=performance.now();if(now-lastTap<300)goThere(e);lastTap=now}},true);
+ canvas.addEventListener('pointermove',e=>{if(!free||!pts.has(e.pointerId))return;pts.set(e.pointerId,{x:e.clientX,y:e.clientY});const c=centroid();
+  if(pts.size===1&&g0.n===1){look((c.x-g0.c.x)*.0055,(c.y-g0.c.y)*.0055)}
+  else if(pts.size>=2){const s=spread(),k=speed();_dir.subVectors(controls.target,camera.position).normalize();move(_dir.multiplyScalar((s-g0.s)*.03*k));_rt.crossVectors(_dir.set(0,0,0).subVectors(controls.target,camera.position).normalize(),_up).normalize();move(_rt.multiplyScalar(-(c.x-g0.c.x)*.02*k).addScaledVector(_up,(c.y-g0.c.y)*.02*k));g0.s=s}
+  g0.c=c;g0.n=pts.size},true);
+ const up=e=>{if(!pts.has(e.pointerId))return;pts.delete(e.pointerId);g0=pts.size?{c:centroid(),s:spread(),n:pts.size}:null};
+ canvas.addEventListener('pointerup',up,true);canvas.addEventListener('pointercancel',up,true);
+ // double-tap: glide towards what you tapped, stopping short of it
+ function goThere(e){_ndc.set(e.clientX/innerWidth*2-1,-(e.clientY/innerHeight)*2+1);_ray.setFromCamera(_ndc,camera);const h=_ray.intersectObjects(SOLIDS.filter(o=>o.visible&&o.parent.visible),false)[0];
+  _dir.copy(_ray.ray.direction);const dist=h?Math.max(0,h.distance-(zoneOf(camera.position)==='out'?3:.8)):6*speed();if(dist<.05)return;const from=camera.position.clone(),to=from.clone().addScaledVector(_dir,dist),lookTo=to.clone().addScaledVector(_dir,3);const p={t:0},lf=controls.target.clone();
+  glide=gsap.to(p,{t:1,duration:reduced?0:1.1,ease:'power2.inOut',onUpdate:()=>{camera.position.lerpVectors(from,to,p.t);controls.target.lerpVectors(lf,lookTo,p.t)},onComplete:()=>{glide=null}})}
+
+ // ── per frame: the gyroscope turns the head
+ function update(dt){touchMode();if(!G.on||!G.has||!G.base)return;
+  if(free){_d.copy(G.prev).invert().multiply(G.q);_de.setFromQuaternion(_d,'YXZ');if(Math.abs(_de.y)<.5&&Math.abs(_de.x)<.5)look(_de.y,_de.x);G.prev.copy(G.q);G.off.x=G.off.y=0}
+  else{_d.copy(G.base).invert().multiply(G.q);_de.setFromQuaternion(_d,'YXZ');G.off.x=lerp(G.off.x,clamp(-Math.tan(clamp(_de.y,-1.2,1.2))/1.6,-.9,.9),1-Math.exp(-dt*10));G.off.y=lerp(G.off.y,clamp(Math.tan(clamp(_de.x,-1.1,1.1))/1.4,-.75,.75),1-Math.exp(-dt*10));
+   G.base.slerp(G.q,1-Math.exp(-dt*.08));G.prev.copy(G.q)}}
+ // the free-camera hint speaks the right language for the device
+ if(coarse){const h=document.getElementById('free-hint');if(h)h.textContent='Drag to look · Pinch to move · Two fingers to slide · Double-tap to go there · tap Back to the journey'}
+ return{update,gyro:G,touchMode,coarse}})();
 
 // ───────────────────────── TYPE IN THE SCENE — a museum walk ─────────────────────────
 // Short fragments float beside the route, like placards in a gallery: a few on the approach, several up the stairs,

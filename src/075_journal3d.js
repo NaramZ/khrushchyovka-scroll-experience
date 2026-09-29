@@ -70,8 +70,8 @@ const JOURNAL=(()=>{
 
  // ── 3 · the desk, the lamp, the book
  const scene=new THREE.Scene();scene.background=new THREE.Color('#120d09');scene.fog=new THREE.FogExp2('#120d09',.16);
- const cam=new THREE.PerspectiveCamera(30,1,.05,40);cam.up.set(0,0,-1);
- const lamp=new THREE.SpotLight('#ffd3a0',26,14,.66,.75,1.4);lamp.position.set(-1.9,3.4,-1.2);lamp.castShadow=true;lamp.shadow.mapSize.set(2048,2048);lamp.shadow.bias=-.0004;lamp.shadow.normalBias=.02;lamp.shadow.radius=4;scene.add(lamp,lamp.target);
+ const cam=new THREE.PerspectiveCamera(30,1,.4,30);cam.up.set(0,0,-1);
+ const lamp=new THREE.SpotLight('#ffd3a0',26,14,.66,.75,1.4);lamp.position.set(-1.9,3.4,-1.2);lamp.castShadow=true;lamp.shadow.mapSize.set(2048,2048);lamp.shadow.bias=-.0012;lamp.shadow.normalBias=.04;lamp.shadow.radius=4;scene.add(lamp,lamp.target);
  scene.add(new THREE.HemisphereLight('#5b6878','#20150e',.42));const rim=new THREE.DirectionalLight('#9fb4d0',.35);rim.position.set(3,2,-3);scene.add(rim);
  const deskC=woodC('#3b2416',22,30,1024);const desk=new THREE.Mesh(new THREE.PlaneGeometry(14,14),new THREE.MeshStandardMaterial({map:T(deskC,1.6),roughness:.55,metalness:0,color:'#b89880'}));desk.rotation.x=-Math.PI/2;desk.receiveShadow=true;scene.add(desk);
  // leather: oxblood, mottled, worn paler at the edges
@@ -79,23 +79,23 @@ const JOURNAL=(()=>{
   x.strokeStyle='rgba(180,120,90,.08)';for(let k=0;k<160;k++){x.lineWidth=rnd()*1.5;x.beginPath();const a=rnd()*6.28,px=rnd()*1024,py=rnd()*1024;x.moveTo(px,py);x.lineTo(px+Math.cos(a)*rand(10,60),py+Math.sin(a)*rand(10,60));x.stroke()}
   const g=x.createRadialGradient(512,512,300,512,512,720);g.addColorStop(0,'rgba(0,0,0,0)');g.addColorStop(1,'rgba(150,95,60,.35)');x.fillStyle=g;x.fillRect(0,0,1024,1024);return c})();
  const leather=new THREE.MeshStandardMaterial({map:T(leatherC),bumpMap:T(leatherC,0,{srgb:false}),bumpScale:1.4,roughness:.5,metalness:.05});
- const W=1,H=W*PH/PW,COVER=.024,SEG=160,SEGZ=24,prof=d=>.085*(1-Math.exp(-d/.09))-.03*Math.pow(d/W,1.6)+.004;
+ const W=1,H=W*PH/PW,COVER=.024,SEG=160,SEGZ=24,prof=d=>.085*(1-Math.exp(-d/.09))-.03*Math.pow(d/W,1.6)+.009;
  const book=new THREE.Group();scene.add(book);
  for(const s of[-1,1]){const cv=new THREE.Mesh(new RoundedBoxGeometry(W+.075,COVER,H+.085,8,.011),leather);cv.position.set(s*(W+.075)/2+s*.004,COVER/2,0);cv.castShadow=cv.receiveShadow=true;book.add(cv)}
  // marbled endpapers inside the covers, showing as a thin border around the pages
  const marbleC=(()=>{const[c,x]=cnv(1024);x.fillStyle='#2f3a44';x.fillRect(0,0,1024,1024);const cols=['#7a3528','#c9a86a','#3f5a6c','#e3d6b4','#5b2a24','#8a9a8a'];for(let k=0;k<900;k++){x.strokeStyle=cols[k%cols.length];x.globalAlpha=.25+rnd()*.35;x.lineWidth=2+rnd()*7;x.beginPath();let px=rnd()*1024,py=rnd()*1024;x.moveTo(px,py);for(let j=0;j<18;j++){px+=Math.sin(py*.012+k)*14+rand(-4,4);py+=Math.cos(px*.011)*14+rand(-4,4);x.lineTo(px,py)}x.stroke()}x.globalAlpha=1;return c})();
- const endMat=new THREE.MeshStandardMaterial({map:T(marbleC,.8),roughness:.7});for(const s of[-1,1]){const e=new THREE.Mesh(new THREE.PlaneGeometry(W+.045,H+.055),endMat);e.rotation.x=-Math.PI/2;e.position.set(s*(W+.045)/2,COVER+.0008,0);e.receiveShadow=true;book.add(e)}
+ const endMat=new THREE.MeshStandardMaterial({map:T(marbleC,.8),roughness:.7});for(const s of[-1,1]){const e=new THREE.Mesh(new THREE.PlaneGeometry(W+.045,H+.055),endMat);e.rotation.x=-Math.PI/2;e.position.set(s*(W+.045)/2,COVER+.003,0);e.receiveShadow=true;book.add(e)}
  // headbands at the top and bottom of the spine: striped silk
  {const hbC=(()=>{const[c,x]=cnv(128,16);for(let i=0;i<32;i++){x.fillStyle=i%2?'#8a2a20':'#e8dcc0';x.fillRect(i*4,0,4,16)}return c})();const hbm=new THREE.MeshStandardMaterial({map:T(hbC),roughness:.5});for(const z of[-1,1]){const hb=new THREE.Mesh(new THREE.CylinderGeometry(.009,.009,.06,24),hbm);hb.rotation.z=Math.PI/2;hb.position.set(0,COVER+.012,z*(H/2+.002));book.add(hb)}}
  const spine=new THREE.Mesh(new THREE.CylinderGeometry(.034,.034,H+.085,48,1,false,Math.PI/2,Math.PI),leather);spine.rotation.x=Math.PI/2;spine.rotation.z=Math.PI;spine.position.set(0,.012,0);book.add(spine);
  // the page block: the edges of all the other pages, visible along each side
  const edgeC=(()=>{const[c,x]=cnv(64,256);x.fillStyle='#d9c69c';x.fillRect(0,0,64,256);for(let y=0;y<256;y+=2){x.fillStyle=`rgba(${rnd()<.5?'120,90,50':'250,240,215'},${.15+rnd()*.25})`;x.fillRect(0,y,64,1)}return c})();
  const edgeMat=new THREE.MeshStandardMaterial({map:T(edgeC),roughness:.9,side:THREE.DoubleSide});
- function blockGeo(s){const shape=new THREE.Shape();shape.moveTo(0,COVER);for(let i=0;i<=SEG;i++){const d=i/SEG*W;shape.lineTo(s*d,COVER+prof(d)-.009)}shape.lineTo(s*W,COVER);shape.lineTo(0,COVER);return new THREE.ExtrudeGeometry(shape,{depth:H-.01,bevelEnabled:false,steps:1})}
+ function blockGeo(s){const shape=new THREE.Shape();shape.moveTo(0,COVER);for(let i=0;i<=SEG;i++){const d=i/SEG*W;shape.lineTo(s*d,Math.max(COVER+.0015,COVER+prof(d)-.022))}shape.lineTo(s*W,COVER);shape.lineTo(0,COVER);return new THREE.ExtrudeGeometry(shape,{depth:H-.01,bevelEnabled:false,steps:1})}
  for(const s of[-1,1]){const g=blockGeo(s);g.translate(0,0,-(H-.01)/2);const m=new THREE.Mesh(g,edgeMat);m.castShadow=m.receiveShadow=true;book.add(m)}
  function pageGeo(s){const g=new THREE.PlaneGeometry(W,H,SEG,SEGZ);g.rotateX(-Math.PI/2);const p=g.attributes.position,uv=g.attributes.uv;for(let i=0;i<p.count;i++){const u=uv.getX(i),d=s>0?u*W:(1-u)*W;p.setX(i,s>0?d:-d);p.setY(i,COVER+prof(d)+Math.sin(d*7.3+s)*.0025*(d/W))}p.needsUpdate=true;g.computeVertexNormals();return g}
  const pageMat=()=>new THREE.MeshStandardMaterial({roughness:.93,metalness:0,color:'#ffffff'});
- const pageL=new THREE.Mesh(pageGeo(-1),pageMat()),pageR=new THREE.Mesh(pageGeo(1),pageMat());for(const m of[pageL,pageR]){m.receiveShadow=true;m.castShadow=true;book.add(m)}
+ const pageL=new THREE.Mesh(pageGeo(-1),pageMat()),pageR=new THREE.Mesh(pageGeo(1),pageMat());for(const m of[pageL,pageR]){m.receiveShadow=true;m.castShadow=false;book.add(m)}
  // the sheet that turns: a front and a back, bent a little as it goes over
  const sheetGeo=[pageGeo(1),pageGeo(1)];{const uv=sheetGeo[1].attributes.uv;for(let i=0;i<uv.count;i++)uv.setX(i,1-uv.getX(i));uv.needsUpdate=true}
  const sheetF=new THREE.Mesh(sheetGeo[0],new THREE.MeshStandardMaterial({roughness:.93,side:THREE.FrontSide})),sheetB=new THREE.Mesh(sheetGeo[1],new THREE.MeshStandardMaterial({roughness:.93,side:THREE.BackSide}));

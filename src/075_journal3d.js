@@ -30,12 +30,15 @@ const JOURNAL=(()=>{
   const outer=i%2===0?0:PW;let g=x.createLinearGradient(outer,0,PW-outer,0);g.addColorStop(0,'rgba(110,70,25,.26)');g.addColorStop(.12,'rgba(110,70,25,.07)');g.addColorStop(1,'rgba(110,70,25,0)');x.fillStyle=g;x.fillRect(0,0,PW,PH);
   g=x.createLinearGradient(0,0,0,PH);g.addColorStop(0,'rgba(110,70,25,.18)');g.addColorStop(.07,'rgba(110,70,25,0)');g.addColorStop(.93,'rgba(110,70,25,0)');g.addColorStop(1,'rgba(110,70,25,.2)');x.fillStyle=g;x.fillRect(0,0,PW,PH);
   for(let k=0;k<22;k++){const px=r()*PW,py=r()*PH,rr=.5+r()*1.8;x.fillStyle=`rgba(125,80,38,${.08+r()*.14})`;x.beginPath();x.arc(px,py,rr,0,7);x.fill()}
-  x.strokeStyle='rgba(86,104,132,.26)';x.lineWidth=1;for(let y=TOP+RULE;y<PH-40;y+=RULE){x.beginPath();x.moveTo(22,y+.5);for(let xx=22;xx<=PW-18;xx+=60)x.lineTo(xx,y+.5+(r()-.5)*.6);x.stroke()}
-  x.strokeStyle='rgba(168,58,40,.3)';x.beginPath();x.moveTo(MARG,20);x.lineTo(MARG+1,PH-20);x.stroke()}
+}
+ // the ruled lines and the margin are printed, fine and sharp: they live with the ink, so the paint never breaks them into shards
+ function rules(x,i){let s=(i+11)*104729;const r=()=>(s=(s*16807)%2147483647)/2147483647;
+  x.strokeStyle='rgba(86,104,132,.24)';x.lineWidth=1;for(let y=TOP+RULE;y<PH-40;y+=RULE){x.beginPath();x.moveTo(22,y+.5);for(let xx=22;xx<=PW-18;xx+=60)x.lineTo(xx,y+.5+(r()-.5)*.6);x.stroke()}
+  x.strokeStyle='rgba(168,58,40,.28)';x.beginPath();x.moveTo(MARG,20);x.lineTo(MARG+1,PH-20);x.stroke()}
  const hand=w=>`${w} ${'var(--j-hand)'}`;
  function scribble(x,r){x.save();x.strokeStyle='rgba(44,30,18,.9)';x.lineWidth=2.4;x.lineCap='round';x.lineJoin='round';for(let k=0;k<3;k++){x.beginPath();const y0=r.y+r.h*(.35+k*.14);x.moveTo(r.x-4,y0);for(let xx=r.x-4;xx<=r.x+r.w+4;xx+=5)x.lineTo(xx,y0+Math.sin(xx*.9+k*2)*r.h*.16+(k-1)*2);x.stroke()}x.restore()}
  function coverImg(x,im,r){const ar=im.naturalWidth/im.naturalHeight,br=r.w/r.h;let sw=im.naturalWidth,sh=im.naturalHeight,sx=0,sy=0;if(ar>br){sw=sh*br;sx=(im.naturalWidth-sw)/2}else{sh=sw/br;sy=(im.naturalHeight-sh)/2}x.drawImage(im,sx,sy,sw,sh,r.x,r.y,r.w,r.h)}
- function drawPage(i,focusEl,hoverEl){const mk=()=>{const c=document.createElement('canvas');c.width=PW*S;c.height=PH*S;const k=c.getContext('2d');k.scale(S,S);return[c,k]};const[cp,xp]=mk(),[c,x]=mk();paper(xp,i);const out={paper:cp,ink:c};
+ function drawPage(i,focusEl,hoverEl){const mk=()=>{const c=document.createElement('canvas');c.width=PW*S;c.height=PH*S;const k=c.getContext('2d');k.scale(S,S);return[c,k]};const[cp,xp]=mk(),[c,x]=mk();paper(xp,i);rules(x,i);const out={paper:cp,ink:c};
   const fam=getComputedStyle(pressBox).getPropertyValue('--j-hand')||'Caveat';
   x.font=`600 19px ${fam}`;x.fillStyle='rgba(110,80,50,.8)';x.textAlign='center';x.fillText(i%2===0?'ДОМА':'Someone else’s home',PW/2,34);x.textAlign=i%2===0?'left':'right';x.font=`700 21px ${fam}`;x.fillText(String(i+1),i%2===0?26:PW-26,PH-18);x.textAlign='left';
   const blocksHere=pages[i]||[];if(!blocksHere.length)return out;

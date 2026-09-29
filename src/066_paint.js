@@ -50,12 +50,12 @@ class PaintPass extends Pass{constructor(opts={}){super();this.needsSwap=true;th
  //     coloured from the painted layer, with bristle streaks and a slight per-stroke tone shift; layered, most-covering wins
  this.mComp=new THREE.ShaderMaterial({uniforms:{tDiffuse:{value:null},tPaint:{value:null},tTensor:{value:null},uRes:{value:new THREE.Vector2()},uCell:{value:10},uStroke:{value:.75}},vertexShader:quadVS,depthTest:false,depthWrite:false,
   fragmentShader:`uniform sampler2D tDiffuse,tPaint,tTensor;uniform vec2 uRes;uniform float uCell,uStroke;varying vec2 vUv;
-  vec3 h3(vec2 p){vec3 q=vec3(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3)),dot(p,vec2(419.2,371.9)));return fract(sin(q)*43758.5453);}
+  vec3 h3(vec2 p){vec3 p3=fract(vec3(p.xyx)*vec3(.1031,.1030,.0973));p3+=dot(p3,p3.yxz+33.33);return fract((p3.xxy+p3.yzz)*p3.zyx);}
   vec4 strokes(vec2 px,float cell,vec3 pc){vec3 spc=sqrt(max(pc,0.));vec2 g=floor(px/cell);vec3 acc=vec3(0.);float ws=0.,cv=0.;
    for(int j=-1;j<=1;j++)for(int i=-1;i<=1;i++){vec2 c=g+vec2(float(i),float(j));vec3 h=h3(c);vec2 seed=(c+.15+h.xy*.7)*cell;vec2 suv=seed/uRes;
     vec3 t=texture2D(tTensor,suv).xyz;float E=t.x,F=t.y,G=t.z,Dd=sqrt((E-F)*(E-F)+4.*G*G),l1=.5*(E+F+Dd),l2=.5*(E+F-Dd);vec2 v=vec2(l1-E,-G);
     vec2 dir=length(v)>1e-7?normalize(v):vec2(0.,1.);float A=(l1+l2>1e-7)?(l1-l2)/(l1+l2):0.;float ang=(h.z-.5)*.5*(1.-A);dir=vec2(dir.x*cos(ang)-dir.y*sin(ang),dir.x*sin(ang)+dir.y*cos(ang));
-    vec2 d=px-seed;float al=dot(d,dir),ac=dot(d,vec2(-dir.y,dir.x));float L=cell*(1.05+A*1.4)*(.8+.45*h.x),W=cell*.5*(.75+.5*h.y);
+    vec2 d=px-seed;float al=dot(d,dir),ac=dot(d,vec2(-dir.y,dir.x));float L=min(cell*(.62+A*.7)*(.8+.45*h.x),cell*1.1),W=min(cell*.3*(.75+.5*h.y),cell*.5);
     float e=al*al/(L*L)+ac*ac/(W*W);float cov=1.-smoothstep(.45,1.,e);if(cov<=0.)continue;
     vec3 col=texture2D(tPaint,suv).rgb;float br=sin(ac/W*10.+h.x*31.)*.5+.5;br*=.6+.4*sin(al/L*3.1+h.y*17.);float tip=smoothstep(1.,.3,abs(al)/L);
     col*=1.+uStroke*((br-.5)*.16*tip+(h.z-.5)*.1);
@@ -71,7 +71,7 @@ class PaintPass extends Pass{constructor(opts={}){super();this.needsSwap=true;th
   this.mBlur.uniforms.tDiffuse.value=this.tA.texture;this.fs.material=this.mBlur;renderer.setRenderTarget(this.tB);this.fs.render(renderer);
   const hasD=!F&&!!(gtao&&gtao.enabled);P.uHasDepth.value=hasD?1:0;if(hasD){P.tDepth.value=gtao.depthTexture;P.uNear.value=camera.near;P.uFar.value=camera.far;P.uFocusD.value=paintFocus}
   P.tDiffuse.value=readBuffer.texture;P.tTensor.value=this.tB.texture;this.fs.material=this.mPaint;renderer.setRenderTarget(this.tP);this.fs.render(renderer);
-  const C=this.mComp.uniforms;C.tDiffuse.value=readBuffer.texture;C.tPaint.value=this.tP.texture;C.tTensor.value=this.tB.texture;C.uCell.value=6+mBrush*mLevel*9;C.uStroke.value=F?F.strokes:memMix(PAINT.strokes,.9);this.fs.material=this.mComp;renderer.setRenderTarget(this.renderToScreen?null:writeBuffer);this.fs.render(renderer)}}
+  const C=this.mComp.uniforms;C.tDiffuse.value=readBuffer.texture;C.tPaint.value=this.tP.texture;C.tTensor.value=this.tB.texture;C.uCell.value=(6+mBrush*mLevel*9)*1.75;C.uStroke.value=F?F.strokes:memMix(PAINT.strokes,.9);this.fs.material=this.mComp;renderer.setRenderTarget(this.renderToScreen?null:writeBuffer);this.fs.render(renderer)}}
 const copyMat=new THREE.ShaderMaterial({uniforms:{tDiffuse:{value:null}},vertexShader:quadVS,fragmentShader:'uniform sampler2D tDiffuse;varying vec2 vUv;void main(){gl_FragColor=texture2D(tDiffuse,vUv);}',depthTest:false,depthWrite:false});
 // autofocus: follow the distance of whatever sits in the middle of the frame (a ray, smoothed like a lens)
 let paintFocus=12;const _fr=new THREE.Raycaster();_fr.firstHitOnly=true;const _fc=new THREE.Vector2(0,.04);let _ft=0;

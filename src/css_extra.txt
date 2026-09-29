@@ -302,7 +302,7 @@ body.ui-idle #walk-in{opacity:0;pointer-events:none}
 /* one recipe for every painted surface: a ::before behind the content carries the wash, the wobbly ink edge and the dry brush */
 .toolbar button,.ap-btn,.ap-seg button,.journey button,#chapters-pop button,.n-close-end{position:relative;isolation:isolate}
 #walk-in,#resume{isolation:isolate}
-.toolbar button::before,.ap-btn::before,.ap-seg button::before,#walk-in::before,#resume::before,.journey button::before,#atmos-panel::before,#chapters-pop::before,#memory-ui::before,#lived-ui::before,.journey::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--j-paper);border:2px solid var(--j-ink);border-radius:14px 5px 12px 6px/6px 12px 5px 14px;filter:url(#paint);pointer-events:none}
+.toolbar button::before,.ap-btn::before,.ap-seg button::before,#walk-in::before,#resume::before,.journey button::before,#atmos-panel::before,#chapters-pop::before,#memory-ui::before,#lived-ui::before,.journey::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--j-paper);border:2px solid var(--j-ink);border-radius:14px 5px 12px 6px/6px 12px 5px 14px;filter:url(#paint-fx);pointer-events:none}
 /* top bar: three handwritten words in painted boxes, each a little crooked */
 .toolbar{gap:12px}
 .toolbar button{background:transparent!important;border:0!important;backdrop-filter:none!important;color:var(--j-ink)!important;font:700 23px/1 var(--j-hand)!important;letter-spacing:.01em!important;text-transform:none!important;padding:8px 18px 10px!important;min-height:44px}
@@ -317,7 +317,7 @@ body.ui-idle #walk-in{opacity:0;pointer-events:none}
 /* panels: a sheet of paper, pinned with a strip of masking tape */
 #atmos-panel,#chapters-pop{background:transparent!important;border:0!important;backdrop-filter:none!important;color:var(--j-ink)!important;padding:26px 24px 20px!important;isolation:isolate;overflow:visible!important;max-height:none!important}
 #atmos-panel::before,#chapters-pop::before{border-radius:4px 10px 6px 12px/12px 5px 10px 4px;transform:rotate(-.5deg);box-shadow:none}
-#atmos-panel::after,#chapters-pop::after{content:"";position:absolute;top:-12px;left:50%;width:92px;height:26px;margin-left:-46px;background:#d9c9a0cc;transform:rotate(-3deg);filter:url(#paint);pointer-events:none}
+#atmos-panel::after,#chapters-pop::after{content:"";position:absolute;top:-12px;left:50%;width:92px;height:26px;margin-left:-46px;background:#d9c9a0cc;transform:rotate(-3deg);filter:url(#paint-fx);pointer-events:none}
 .ap-title,#chapters-pop .ap-title{font:700 22px/1.1 var(--j-hand)!important;letter-spacing:0!important;text-transform:none!important;color:var(--j-red)!important;margin:6px 0 8px!important}
 .ap-seg{gap:8px!important}
 .ap-seg button{background:transparent!important;border:0!important;font:700 22px/1 var(--j-hand)!important;color:var(--j-ink)!important;padding:10px 4px 8px!important;text-transform:none!important}
@@ -426,7 +426,7 @@ body.ui-idle #walk-in{opacity:0;pointer-events:none}
 #notes h2{font:700 clamp(40px,5vw,62px)/1 var(--j-hand)!important;letter-spacing:0!important;color:var(--pg-ink)}
 #notes .n-tools{grid-column:2;grid-row:1/3;align-self:center;display:flex;gap:10px}
 #notes .n-tools button,#notes .n-close-end{position:relative;isolation:isolate;min-height:44px;padding:8px 16px 10px!important;background:transparent!important;border:0!important;color:var(--pg-ink)!important;font:700 22px/1 var(--j-hand)!important;letter-spacing:0!important;text-transform:none!important;cursor:pointer}
-#notes .n-tools button::before,#notes .n-close-end::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--pg);border:2px solid var(--pg-ink);border-radius:14px 5px 12px 6px/6px 12px 5px 14px;filter:url(#paint);transform:rotate(-1deg)}
+#notes .n-tools button::before,#notes .n-close-end::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--pg);border:2px solid var(--pg-ink);border-radius:14px 5px 12px 6px/6px 12px 5px 14px;filter:url(#paint-fx);transform:rotate(-1deg)}
 #notes .n-tools button:hover::before,#notes .n-close-end:hover::before{background:#eadfc4}
 #notes .n-tools .n-print[aria-pressed=true]{color:var(--pg)!important}#notes .n-tools .n-print[aria-pressed=true]::before{background:var(--pg-ink)}
 #notes .n-body{position:relative;display:grid;grid-template-columns:230px minmax(0,1fr);gap:44px;padding:36px 44px 72px 110px;box-shadow:0 30px 60px #0000006b;background-image:linear-gradient(90deg,transparent 86px,#c6493055 86px,#c6493055 88px,transparent 88px),repeating-linear-gradient(180deg,transparent 0 calc(var(--rule) - 1px),var(--pg-blue) calc(var(--rule) - 1px) var(--rule));background-position:0 0,0 12px}
@@ -461,7 +461,7 @@ body.ui-idle #walk-in{opacity:0;pointer-events:none}
 #notes .n-figs{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:34px 30px!important;margin:var(--rule) 0!important;width:auto!important}
 #notes .n-figs figure{position:relative;margin:0;padding:10px 10px 6px;background:#fffdf7;box-shadow:0 6px 14px #0000002e}
 #notes .n-figs figure:nth-child(1){transform:rotate(-2deg)}#notes .n-figs figure:nth-child(2){transform:rotate(1.6deg)}#notes .n-figs figure:nth-child(3){transform:rotate(1deg)}#notes .n-figs figure:nth-child(4){transform:rotate(-1.4deg)}
-#notes .n-figs figure::before{content:"";position:absolute;top:-12px;left:50%;width:84px;height:24px;margin-left:-42px;background:#dccb9ecc;transform:rotate(-4deg);filter:url(#paint);z-index:1}
+#notes .n-figs figure::before{content:"";position:absolute;top:-12px;left:50%;width:84px;height:24px;margin-left:-42px;background:#dccb9ecc;transform:rotate(-4deg);filter:url(#paint-fx);z-index:1}
 #notes .n-figs img{aspect-ratio:4/5!important;filter:saturate(.75) sepia(.12)!important}
 #notes .n-figs figcaption{margin:6px 0 0!important;font:600 22px/1.2 var(--j-hand)!important;text-transform:none!important;letter-spacing:0!important;color:var(--pg-ink)!important;text-align:center}
 /* controls, as a hand-ruled table */
@@ -513,7 +513,7 @@ body.ui-idle #walk-in{opacity:0;pointer-events:none}
 #notes[open]{display:flex}
 #notes .book-tools{position:fixed;top:14px;right:18px;z-index:4;display:flex;gap:10px}
 #notes .book-tools button{position:relative;isolation:isolate;min-height:44px;padding:8px 16px 10px;background:transparent;border:0;color:var(--ink2);font:700 22px/1 var(--j-hand);cursor:pointer}
-#notes .book-tools button::before{content:"";position:absolute;inset:0;z-index:-1;background:#f3ecdc;border:2px solid var(--ink2);border-radius:14px 5px 12px 6px/6px 12px 5px 14px;filter:url(#paint);transform:rotate(-1deg)}
+#notes .book-tools button::before{content:"";position:absolute;inset:0;z-index:-1;background:#f3ecdc;border:2px solid var(--ink2);border-radius:14px 5px 12px 6px/6px 12px 5px 14px;filter:url(#paint-fx);transform:rotate(-1deg)}
 #notes .book-tools button:hover::before{background:#e5d9bb}
 #notes .book-tools .n-print[aria-pressed=true]{color:#f3ecdc}#notes .book-tools .n-print[aria-pressed=true]::before{background:var(--ink2)}
 /* the cover shows around the pages; page edges stack on the outside */
@@ -545,7 +545,7 @@ body.ui-idle #walk-in{opacity:0;pointer-events:none}
 /* turning the pages */
 #notes .book-nav{display:flex;align-items:center;gap:16px;margin-top:6px}
 #notes .book-nav button{position:relative;isolation:isolate;width:48px;height:44px;background:transparent;border:0;color:#f3ecdc;font:700 30px/1 var(--j-hand);cursor:pointer}
-#notes .book-nav button::before{content:"";position:absolute;inset:0;z-index:-1;border:2px solid #f3ecdcbb;border-radius:50% 45% 55% 40%/45% 55% 40% 50%;filter:url(#paint)}
+#notes .book-nav button::before{content:"";position:absolute;inset:0;z-index:-1;border:2px solid #f3ecdcbb;border-radius:50% 45% 55% 40%/45% 55% 40% 50%;filter:url(#paint-fx)}
 #notes .book-nav button:hover:not(:disabled)::before{background:#f3ecdc22}
 #notes .book-nav button:disabled{opacity:.3;cursor:default}
 #notes .bk-where{min-width:12em;text-align:center;font:600 22px/1 var(--j-hand);color:#f3ecdc}
@@ -577,7 +577,7 @@ body.ui-idle #walk-in{opacity:0;pointer-events:none}
 /* photographs taped in, two to a row */
 #notes .page-in .snap{display:inline-block;vertical-align:top;position:relative;width:calc(50% - 14px);margin:6px 6px 22px;padding:8px 8px 4px;background:#fffdf5;box-shadow:0 5px 12px #0000002e}
 #notes .page-in .snap:nth-of-type(odd){transform:rotate(-1.8deg)}#notes .page-in .snap:nth-of-type(even){transform:rotate(1.4deg)}
-#notes .page-in .snap::before{content:"";position:absolute;top:-10px;left:50%;width:70px;height:20px;margin-left:-35px;background:#dccb9ecc;transform:rotate(-4deg);filter:url(#paint)}
+#notes .page-in .snap::before{content:"";position:absolute;top:-10px;left:50%;width:70px;height:20px;margin-left:-35px;background:#dccb9ecc;transform:rotate(-4deg);filter:url(#paint-fx)}
 #notes .page-in .snap img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;filter:saturate(.7) sepia(.18)}
 #notes .page-in .snap figcaption{margin:4px 0 0;font:600 19px/1.2 var(--j-hand);text-align:center;color:var(--ink2)}
 /* the controls, hand-ruled */
@@ -656,7 +656,7 @@ body.journal-open header,body.journal-open footer,body.journal-open #type-layer,
 @media(pointer:coarse){
  body.free #touch-move{display:none!important}
  #gyro-pill{display:block;position:fixed;z-index:13;right:12px;bottom:110px;isolation:isolate;padding:8px 14px 10px;background:transparent;border:0;color:var(--j-ink);font:700 18px/1 var(--j-hand);cursor:pointer;transition:opacity .9s}
- #gyro-pill::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--j-paper);border:2px solid var(--j-ink);border-radius:14px 5px 12px 6px/6px 12px 5px 14px;filter:url(#paint);transform:rotate(1deg)}
+ #gyro-pill::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--j-paper);border:2px solid var(--j-ink);border-radius:14px 5px 12px 6px/6px 12px 5px 14px;filter:url(#paint-fx);transform:rotate(1deg)}
  #gyro-pill[aria-pressed=true]{color:var(--j-paper)}#gyro-pill[aria-pressed=true]::before{background:var(--j-ink)}
  body.ui-idle #gyro-pill{opacity:0;pointer-events:none}
  body.journal-open #gyro-pill{visibility:hidden}
@@ -677,3 +677,6 @@ body.journal-open header,body.journal-open footer,body.journal-open #type-layer,
  .wordmark{font-size:26px!important}
 }
 @media(max-width:700px){#lived-ui span{white-space:nowrap}}
+/* the settings sheet scrolls inside its painted paper when it is taller than the screen */
+#atmos-panel .ap-scroll{max-height:calc(100vh - 130px);max-height:calc(100dvh - 130px);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y;margin:-6px -8px;padding:6px 8px}
+@media(max-width:700px){#atmos-panel .ap-scroll{max-height:calc(100dvh - 190px)}}

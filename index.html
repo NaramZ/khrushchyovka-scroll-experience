@@ -314,7 +314,7 @@ body.ui-idle #walk-in{opacity:0;pointer-events:none}
 /* one recipe for every painted surface: a ::before behind the content carries the wash, the wobbly ink edge and the dry brush */
 .toolbar button,.ap-btn,.ap-seg button,.journey button,#chapters-pop button,.n-close-end{position:relative;isolation:isolate}
 #walk-in,#resume{isolation:isolate}
-.toolbar button::before,.ap-btn::before,.ap-seg button::before,#walk-in::before,#resume::before,.journey button::before,#atmos-panel::before,#chapters-pop::before,#memory-ui::before,#lived-ui::before,.journey::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--j-paper);border:2px solid var(--j-ink);border-radius:14px 5px 12px 6px/6px 12px 5px 14px;filter:url(#paint);pointer-events:none}
+.toolbar button::before,.ap-btn::before,.ap-seg button::before,#walk-in::before,#resume::before,.journey button::before,#atmos-panel::before,#chapters-pop::before,#memory-ui::before,#lived-ui::before,.journey::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--j-paper);border:2px solid var(--j-ink);border-radius:14px 5px 12px 6px/6px 12px 5px 14px;filter:url(#paint-fx);pointer-events:none}
 /* top bar: three handwritten words in painted boxes, each a little crooked */
 .toolbar{gap:12px}
 .toolbar button{background:transparent!important;border:0!important;backdrop-filter:none!important;color:var(--j-ink)!important;font:700 23px/1 var(--j-hand)!important;letter-spacing:.01em!important;text-transform:none!important;padding:8px 18px 10px!important;min-height:44px}
@@ -329,7 +329,7 @@ body.ui-idle #walk-in{opacity:0;pointer-events:none}
 /* panels: a sheet of paper, pinned with a strip of masking tape */
 #atmos-panel,#chapters-pop{background:transparent!important;border:0!important;backdrop-filter:none!important;color:var(--j-ink)!important;padding:26px 24px 20px!important;isolation:isolate;overflow:visible!important;max-height:none!important}
 #atmos-panel::before,#chapters-pop::before{border-radius:4px 10px 6px 12px/12px 5px 10px 4px;transform:rotate(-.5deg);box-shadow:none}
-#atmos-panel::after,#chapters-pop::after{content:"";position:absolute;top:-12px;left:50%;width:92px;height:26px;margin-left:-46px;background:#d9c9a0cc;transform:rotate(-3deg);filter:url(#paint);pointer-events:none}
+#atmos-panel::after,#chapters-pop::after{content:"";position:absolute;top:-12px;left:50%;width:92px;height:26px;margin-left:-46px;background:#d9c9a0cc;transform:rotate(-3deg);filter:url(#paint-fx);pointer-events:none}
 .ap-title,#chapters-pop .ap-title{font:700 22px/1.1 var(--j-hand)!important;letter-spacing:0!important;text-transform:none!important;color:var(--j-red)!important;margin:6px 0 8px!important}
 .ap-seg{gap:8px!important}
 .ap-seg button{background:transparent!important;border:0!important;font:700 22px/1 var(--j-hand)!important;color:var(--j-ink)!important;padding:10px 4px 8px!important;text-transform:none!important}
@@ -438,7 +438,7 @@ body.ui-idle #walk-in{opacity:0;pointer-events:none}
 #notes h2{font:700 clamp(40px,5vw,62px)/1 var(--j-hand)!important;letter-spacing:0!important;color:var(--pg-ink)}
 #notes .n-tools{grid-column:2;grid-row:1/3;align-self:center;display:flex;gap:10px}
 #notes .n-tools button,#notes .n-close-end{position:relative;isolation:isolate;min-height:44px;padding:8px 16px 10px!important;background:transparent!important;border:0!important;color:var(--pg-ink)!important;font:700 22px/1 var(--j-hand)!important;letter-spacing:0!important;text-transform:none!important;cursor:pointer}
-#notes .n-tools button::before,#notes .n-close-end::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--pg);border:2px solid var(--pg-ink);border-radius:14px 5px 12px 6px/6px 12px 5px 14px;filter:url(#paint);transform:rotate(-1deg)}
+#notes .n-tools button::before,#notes .n-close-end::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--pg);border:2px solid var(--pg-ink);border-radius:14px 5px 12px 6px/6px 12px 5px 14px;filter:url(#paint-fx);transform:rotate(-1deg)}
 #notes .n-tools button:hover::before,#notes .n-close-end:hover::before{background:#eadfc4}
 #notes .n-tools .n-print[aria-pressed=true]{color:var(--pg)!important}#notes .n-tools .n-print[aria-pressed=true]::before{background:var(--pg-ink)}
 #notes .n-body{position:relative;display:grid;grid-template-columns:230px minmax(0,1fr);gap:44px;padding:36px 44px 72px 110px;box-shadow:0 30px 60px #0000006b;background-image:linear-gradient(90deg,transparent 86px,#c6493055 86px,#c6493055 88px,transparent 88px),repeating-linear-gradient(180deg,transparent 0 calc(var(--rule) - 1px),var(--pg-blue) calc(var(--rule) - 1px) var(--rule));background-position:0 0,0 12px}
@@ -473,7 +473,7 @@ body.ui-idle #walk-in{opacity:0;pointer-events:none}
 #notes .n-figs{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:34px 30px!important;margin:var(--rule) 0!important;width:auto!important}
 #notes .n-figs figure{position:relative;margin:0;padding:10px 10px 6px;background:#fffdf7;box-shadow:0 6px 14px #0000002e}
 #notes .n-figs figure:nth-child(1){transform:rotate(-2deg)}#notes .n-figs figure:nth-child(2){transform:rotate(1.6deg)}#notes .n-figs figure:nth-child(3){transform:rotate(1deg)}#notes .n-figs figure:nth-child(4){transform:rotate(-1.4deg)}
-#notes .n-figs figure::before{content:"";position:absolute;top:-12px;left:50%;width:84px;height:24px;margin-left:-42px;background:#dccb9ecc;transform:rotate(-4deg);filter:url(#paint);z-index:1}
+#notes .n-figs figure::before{content:"";position:absolute;top:-12px;left:50%;width:84px;height:24px;margin-left:-42px;background:#dccb9ecc;transform:rotate(-4deg);filter:url(#paint-fx);z-index:1}
 #notes .n-figs img{aspect-ratio:4/5!important;filter:saturate(.75) sepia(.12)!important}
 #notes .n-figs figcaption{margin:6px 0 0!important;font:600 22px/1.2 var(--j-hand)!important;text-transform:none!important;letter-spacing:0!important;color:var(--pg-ink)!important;text-align:center}
 /* controls, as a hand-ruled table */
@@ -525,7 +525,7 @@ body.ui-idle #walk-in{opacity:0;pointer-events:none}
 #notes[open]{display:flex}
 #notes .book-tools{position:fixed;top:14px;right:18px;z-index:4;display:flex;gap:10px}
 #notes .book-tools button{position:relative;isolation:isolate;min-height:44px;padding:8px 16px 10px;background:transparent;border:0;color:var(--ink2);font:700 22px/1 var(--j-hand);cursor:pointer}
-#notes .book-tools button::before{content:"";position:absolute;inset:0;z-index:-1;background:#f3ecdc;border:2px solid var(--ink2);border-radius:14px 5px 12px 6px/6px 12px 5px 14px;filter:url(#paint);transform:rotate(-1deg)}
+#notes .book-tools button::before{content:"";position:absolute;inset:0;z-index:-1;background:#f3ecdc;border:2px solid var(--ink2);border-radius:14px 5px 12px 6px/6px 12px 5px 14px;filter:url(#paint-fx);transform:rotate(-1deg)}
 #notes .book-tools button:hover::before{background:#e5d9bb}
 #notes .book-tools .n-print[aria-pressed=true]{color:#f3ecdc}#notes .book-tools .n-print[aria-pressed=true]::before{background:var(--ink2)}
 /* the cover shows around the pages; page edges stack on the outside */
@@ -557,7 +557,7 @@ body.ui-idle #walk-in{opacity:0;pointer-events:none}
 /* turning the pages */
 #notes .book-nav{display:flex;align-items:center;gap:16px;margin-top:6px}
 #notes .book-nav button{position:relative;isolation:isolate;width:48px;height:44px;background:transparent;border:0;color:#f3ecdc;font:700 30px/1 var(--j-hand);cursor:pointer}
-#notes .book-nav button::before{content:"";position:absolute;inset:0;z-index:-1;border:2px solid #f3ecdcbb;border-radius:50% 45% 55% 40%/45% 55% 40% 50%;filter:url(#paint)}
+#notes .book-nav button::before{content:"";position:absolute;inset:0;z-index:-1;border:2px solid #f3ecdcbb;border-radius:50% 45% 55% 40%/45% 55% 40% 50%;filter:url(#paint-fx)}
 #notes .book-nav button:hover:not(:disabled)::before{background:#f3ecdc22}
 #notes .book-nav button:disabled{opacity:.3;cursor:default}
 #notes .bk-where{min-width:12em;text-align:center;font:600 22px/1 var(--j-hand);color:#f3ecdc}
@@ -589,7 +589,7 @@ body.ui-idle #walk-in{opacity:0;pointer-events:none}
 /* photographs taped in, two to a row */
 #notes .page-in .snap{display:inline-block;vertical-align:top;position:relative;width:calc(50% - 14px);margin:6px 6px 22px;padding:8px 8px 4px;background:#fffdf5;box-shadow:0 5px 12px #0000002e}
 #notes .page-in .snap:nth-of-type(odd){transform:rotate(-1.8deg)}#notes .page-in .snap:nth-of-type(even){transform:rotate(1.4deg)}
-#notes .page-in .snap::before{content:"";position:absolute;top:-10px;left:50%;width:70px;height:20px;margin-left:-35px;background:#dccb9ecc;transform:rotate(-4deg);filter:url(#paint)}
+#notes .page-in .snap::before{content:"";position:absolute;top:-10px;left:50%;width:70px;height:20px;margin-left:-35px;background:#dccb9ecc;transform:rotate(-4deg);filter:url(#paint-fx)}
 #notes .page-in .snap img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;filter:saturate(.7) sepia(.18)}
 #notes .page-in .snap figcaption{margin:4px 0 0;font:600 19px/1.2 var(--j-hand);text-align:center;color:var(--ink2)}
 /* the controls, hand-ruled */
@@ -668,7 +668,7 @@ body.journal-open header,body.journal-open footer,body.journal-open #type-layer,
 @media(pointer:coarse){
  body.free #touch-move{display:none!important}
  #gyro-pill{display:block;position:fixed;z-index:13;right:12px;bottom:110px;isolation:isolate;padding:8px 14px 10px;background:transparent;border:0;color:var(--j-ink);font:700 18px/1 var(--j-hand);cursor:pointer;transition:opacity .9s}
- #gyro-pill::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--j-paper);border:2px solid var(--j-ink);border-radius:14px 5px 12px 6px/6px 12px 5px 14px;filter:url(#paint);transform:rotate(1deg)}
+ #gyro-pill::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--j-paper);border:2px solid var(--j-ink);border-radius:14px 5px 12px 6px/6px 12px 5px 14px;filter:url(#paint-fx);transform:rotate(1deg)}
  #gyro-pill[aria-pressed=true]{color:var(--j-paper)}#gyro-pill[aria-pressed=true]::before{background:var(--j-ink)}
  body.ui-idle #gyro-pill{opacity:0;pointer-events:none}
  body.journal-open #gyro-pill{visibility:hidden}
@@ -689,6 +689,9 @@ body.journal-open header,body.journal-open footer,body.journal-open #type-layer,
  .wordmark{font-size:26px!important}
 }
 @media(max-width:700px){#lived-ui span{white-space:nowrap}}
+/* the settings sheet scrolls inside its painted paper when it is taller than the screen */
+#atmos-panel .ap-scroll{max-height:calc(100vh - 130px);max-height:calc(100dvh - 130px);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y;margin:-6px -8px;padding:6px 8px}
+@media(max-width:700px){#atmos-panel .ap-scroll{max-height:calc(100dvh - 190px)}}
 .notes-cols{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin:34px 0 10px}.notes-cols h3{font:600 26px/1 var(--display);margin:0 0 14px;text-transform:uppercase}.log,.why{margin:0;padding-left:18px;font-size:12px;line-height:1.75}.log li,.why li{margin-bottom:12px}.log b,.why b{font-weight:600}@media(max-width:700px){.notes-cols{grid-template-columns:1fr;gap:18px}}
 </style>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/","three-mesh-bvh":"https://cdn.jsdelivr.net/npm/three-mesh-bvh@0.8.3/build/index.module.js"}}</script>
@@ -696,20 +699,20 @@ body.journal-open header,body.journal-open footer,body.journal-open #type-layer,
 <body>
 <svg class="paint-defs" width="0" height="0" aria-hidden="true" focusable="false"><defs>
 <!-- the interface is painted: edges wobble like a brush, and the fill is dry-brushed (tiny gaps where the paint didn't take) -->
-<filter id="paint" x="-6%" y="-12%" width="112%" height="124%"><feTurbulence type="fractalNoise" baseFrequency="0.03 0.06" numOctaves="3" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="7" xChannelSelector="R" yChannelSelector="G" result="d"/><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="9" result="g"/><feColorMatrix in="g" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.2 1.75" result="ga"/><feComposite in="d" in2="ga" operator="in"/></filter>
+<filter id="paint-fx" x="-6%" y="-12%" width="112%" height="124%"><feTurbulence type="fractalNoise" baseFrequency="0.03 0.06" numOctaves="3" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="7" xChannelSelector="R" yChannelSelector="G" result="d"/><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="9" result="g"/><feColorMatrix in="g" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.2 1.75" result="ga"/><feComposite in="d" in2="ga" operator="in"/></filter>
 <filter id="paint-soft" x="-4%" y="-6%" width="108%" height="112%"><feTurbulence type="fractalNoise" baseFrequency="0.02 0.04" numOctaves="3" seed="6" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="8" xChannelSelector="R" yChannelSelector="G" result="d"/><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" seed="3" result="g"/><feColorMatrix in="g" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -1.1 1.55" result="ga"/><feComposite in="d" in2="ga" operator="in"/></filter>
 <filter id="ink" x="-8%" y="-20%" width="116%" height="140%"><feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="2" seed="11" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="3.5" xChannelSelector="R" yChannelSelector="G"/></filter>
 </defs></svg>
 <canvas id="view" tabindex="0" aria-label="Interactive three dimensional apartment block. Scroll to travel, or select Free camera to navigate yourself."></canvas><div class="vignette"></div><div class="grain"></div>
 <header><button class="wordmark" id="home" aria-label="ДОМА — return to the beginning">ДОМА<small>a journal of someone else’s home</small></button><div class="toolbar"><button id="archive">Journal</button><button id="season-btn" aria-expanded="false" aria-controls="atmos-panel">Settings</button></div></header>
-<div id="atmos-panel" hidden><div class="ap-title">Season / Сезон</div><div class="ap-seg" role="group" aria-label="Season"><button data-season="winter">Зима<small>Winter</small></button><button data-season="spring">Весна<small>Spring</small></button><button data-season="summer">Лето<small>Summer</small></button><button data-season="autumn">Осень<small>Autumn</small></button></div><div class="ap-title">Sound / Звук</div><button id="sound" class="ap-btn" aria-pressed="false">Sound off</button>
+<div id="atmos-panel" hidden><div class="ap-scroll"><div class="ap-title">Season / Сезон</div><div class="ap-seg" role="group" aria-label="Season"><button data-season="winter">Зима<small>Winter</small></button><button data-season="spring">Весна<small>Spring</small></button><button data-season="summer">Лето<small>Summer</small></button><button data-season="autumn">Осень<small>Autumn</small></button></div><div class="ap-title">Sound / Звук</div><button id="sound" class="ap-btn" aria-pressed="false">Sound off</button>
 <div class="ap-title">Explore on your own</div><div class="ap-two"><button id="walk" class="ap-btn" aria-pressed="false">Walk around</button><button id="explore" class="ap-btn" aria-pressed="false">Fly around</button></div><button class="ap-btn gyro-btn" type="button" aria-pressed="false">Tilt to look</button>
 <details class="ap-more"><summary>Look &amp; atmosphere</summary><label class="ap-row" for="haze"><span>Indoor haze &amp; dust · Пыль</span><output id="haze-val">100%</output></label><input type="range" id="haze" min="0" max="2" step="0.05" value="1"><div class="ap-title" style="margin-top:4px">Gaussian paint / Живопись</div>
 <label class="ap-row" for="paint"><span>Splat level</span><output id="paint-val">70%</output></label><input type="range" id="paint" min="0" max="1" step="0.01" value="0.7">
 <label class="ap-row" for="strokes"><span>Brush strokes</span><output id="strokes-val">75%</output></label><input type="range" id="strokes" min="0" max="1" step="0.01" value="0.75">
 <label class="ap-row" for="brush"><span>Brush size</span><output id="brush-val">1.2×</output></label><input type="range" id="brush" min="0.4" max="2.6" step="0.05" value="1.2">
 <label class="ap-row" for="focus"><span>Focus — keep the subject sharp</span><output id="focus-val">60%</output></label><input type="range" id="focus" min="0" max="1" step="0.01" value="0.6">
-<label class="ap-check"><input type="checkbox" id="outdoor-splats" checked> Outdoor atmosphere (leaves, haze, snow)</label></details></div>
+<label class="ap-check"><input type="checkbox" id="outdoor-splats" checked> Outdoor atmosphere (leaves, haze, snow)</label></details></div></div>
 <div id="chapters-pop" hidden><div class="ap-title">Chapters / Главы</div><ol></ol></div>
 <div id="walk-hint"></div>
 <div id="memory-ui" class="folded"><button id="memory-lab" type="button" aria-expanded="false" aria-controls="memory">Memory<small lang="ru">Память</small><span class="mem-now" aria-hidden="true">Now</span><span class="mem-chev" aria-hidden="true">▴</span></button><div id="memory" class="mem-track" role="slider" tabindex="0" aria-orientation="vertical" aria-label="Memory" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-valuetext="Now"><span class="mem-line" aria-hidden="true"></span><span class="mem-fill" aria-hidden="true"></span><ol class="mem-marks" aria-hidden="true"><li>Only the shape</li><li>Faded</li><li>Fading</li><li>Recalled</li><li>Now</li></ol><span class="mem-thumb" aria-hidden="true"></span></div><output id="memory-val" class="sr">Now</output></div>
@@ -1920,12 +1923,12 @@ class PaintPass extends Pass{constructor(opts={}){super();this.needsSwap=true;th
  //     coloured from the painted layer, with bristle streaks and a slight per-stroke tone shift; layered, most-covering wins
  this.mComp=new THREE.ShaderMaterial({uniforms:{tDiffuse:{value:null},tPaint:{value:null},tTensor:{value:null},uRes:{value:new THREE.Vector2()},uCell:{value:10},uStroke:{value:.75}},vertexShader:quadVS,depthTest:false,depthWrite:false,
   fragmentShader:`uniform sampler2D tDiffuse,tPaint,tTensor;uniform vec2 uRes;uniform float uCell,uStroke;varying vec2 vUv;
-  vec3 h3(vec2 p){vec3 q=vec3(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3)),dot(p,vec2(419.2,371.9)));return fract(sin(q)*43758.5453);}
+  vec3 h3(vec2 p){vec3 p3=fract(vec3(p.xyx)*vec3(.1031,.1030,.0973));p3+=dot(p3,p3.yxz+33.33);return fract((p3.xxy+p3.yzz)*p3.zyx);}
   vec4 strokes(vec2 px,float cell,vec3 pc){vec3 spc=sqrt(max(pc,0.));vec2 g=floor(px/cell);vec3 acc=vec3(0.);float ws=0.,cv=0.;
    for(int j=-1;j<=1;j++)for(int i=-1;i<=1;i++){vec2 c=g+vec2(float(i),float(j));vec3 h=h3(c);vec2 seed=(c+.15+h.xy*.7)*cell;vec2 suv=seed/uRes;
     vec3 t=texture2D(tTensor,suv).xyz;float E=t.x,F=t.y,G=t.z,Dd=sqrt((E-F)*(E-F)+4.*G*G),l1=.5*(E+F+Dd),l2=.5*(E+F-Dd);vec2 v=vec2(l1-E,-G);
     vec2 dir=length(v)>1e-7?normalize(v):vec2(0.,1.);float A=(l1+l2>1e-7)?(l1-l2)/(l1+l2):0.;float ang=(h.z-.5)*.5*(1.-A);dir=vec2(dir.x*cos(ang)-dir.y*sin(ang),dir.x*sin(ang)+dir.y*cos(ang));
-    vec2 d=px-seed;float al=dot(d,dir),ac=dot(d,vec2(-dir.y,dir.x));float L=cell*(1.05+A*1.4)*(.8+.45*h.x),W=cell*.5*(.75+.5*h.y);
+    vec2 d=px-seed;float al=dot(d,dir),ac=dot(d,vec2(-dir.y,dir.x));float L=min(cell*(.62+A*.7)*(.8+.45*h.x),cell*1.1),W=min(cell*.3*(.75+.5*h.y),cell*.5);
     float e=al*al/(L*L)+ac*ac/(W*W);float cov=1.-smoothstep(.45,1.,e);if(cov<=0.)continue;
     vec3 col=texture2D(tPaint,suv).rgb;float br=sin(ac/W*10.+h.x*31.)*.5+.5;br*=.6+.4*sin(al/L*3.1+h.y*17.);float tip=smoothstep(1.,.3,abs(al)/L);
     col*=1.+uStroke*((br-.5)*.16*tip+(h.z-.5)*.1);
@@ -1941,7 +1944,7 @@ class PaintPass extends Pass{constructor(opts={}){super();this.needsSwap=true;th
   this.mBlur.uniforms.tDiffuse.value=this.tA.texture;this.fs.material=this.mBlur;renderer.setRenderTarget(this.tB);this.fs.render(renderer);
   const hasD=!F&&!!(gtao&&gtao.enabled);P.uHasDepth.value=hasD?1:0;if(hasD){P.tDepth.value=gtao.depthTexture;P.uNear.value=camera.near;P.uFar.value=camera.far;P.uFocusD.value=paintFocus}
   P.tDiffuse.value=readBuffer.texture;P.tTensor.value=this.tB.texture;this.fs.material=this.mPaint;renderer.setRenderTarget(this.tP);this.fs.render(renderer);
-  const C=this.mComp.uniforms;C.tDiffuse.value=readBuffer.texture;C.tPaint.value=this.tP.texture;C.tTensor.value=this.tB.texture;C.uCell.value=6+mBrush*mLevel*9;C.uStroke.value=F?F.strokes:memMix(PAINT.strokes,.9);this.fs.material=this.mComp;renderer.setRenderTarget(this.renderToScreen?null:writeBuffer);this.fs.render(renderer)}}
+  const C=this.mComp.uniforms;C.tDiffuse.value=readBuffer.texture;C.tPaint.value=this.tP.texture;C.tTensor.value=this.tB.texture;C.uCell.value=(6+mBrush*mLevel*9)*1.75;C.uStroke.value=F?F.strokes:memMix(PAINT.strokes,.9);this.fs.material=this.mComp;renderer.setRenderTarget(this.renderToScreen?null:writeBuffer);this.fs.render(renderer)}}
 const copyMat=new THREE.ShaderMaterial({uniforms:{tDiffuse:{value:null}},vertexShader:quadVS,fragmentShader:'uniform sampler2D tDiffuse;varying vec2 vUv;void main(){gl_FragColor=texture2D(tDiffuse,vUv);}',depthTest:false,depthWrite:false});
 // autofocus: follow the distance of whatever sits in the middle of the frame (a ray, smoothed like a lens)
 let paintFocus=12;const _fr=new THREE.Raycaster();_fr.firstHitOnly=true;const _fc=new THREE.Vector2(0,.04);let _ft=0;
@@ -2156,12 +2159,15 @@ const JOURNAL=(()=>{
   const outer=i%2===0?0:PW;let g=x.createLinearGradient(outer,0,PW-outer,0);g.addColorStop(0,'rgba(110,70,25,.26)');g.addColorStop(.12,'rgba(110,70,25,.07)');g.addColorStop(1,'rgba(110,70,25,0)');x.fillStyle=g;x.fillRect(0,0,PW,PH);
   g=x.createLinearGradient(0,0,0,PH);g.addColorStop(0,'rgba(110,70,25,.18)');g.addColorStop(.07,'rgba(110,70,25,0)');g.addColorStop(.93,'rgba(110,70,25,0)');g.addColorStop(1,'rgba(110,70,25,.2)');x.fillStyle=g;x.fillRect(0,0,PW,PH);
   for(let k=0;k<22;k++){const px=r()*PW,py=r()*PH,rr=.5+r()*1.8;x.fillStyle=`rgba(125,80,38,${.08+r()*.14})`;x.beginPath();x.arc(px,py,rr,0,7);x.fill()}
-  x.strokeStyle='rgba(86,104,132,.26)';x.lineWidth=1;for(let y=TOP+RULE;y<PH-40;y+=RULE){x.beginPath();x.moveTo(22,y+.5);for(let xx=22;xx<=PW-18;xx+=60)x.lineTo(xx,y+.5+(r()-.5)*.6);x.stroke()}
-  x.strokeStyle='rgba(168,58,40,.3)';x.beginPath();x.moveTo(MARG,20);x.lineTo(MARG+1,PH-20);x.stroke()}
+}
+ // the ruled lines and the margin are printed, fine and sharp: they live with the ink, so the paint never breaks them into shards
+ function rules(x,i){let s=(i+11)*104729;const r=()=>(s=(s*16807)%2147483647)/2147483647;
+  x.strokeStyle='rgba(86,104,132,.24)';x.lineWidth=1;for(let y=TOP+RULE;y<PH-40;y+=RULE){x.beginPath();x.moveTo(22,y+.5);for(let xx=22;xx<=PW-18;xx+=60)x.lineTo(xx,y+.5+(r()-.5)*.6);x.stroke()}
+  x.strokeStyle='rgba(168,58,40,.28)';x.beginPath();x.moveTo(MARG,20);x.lineTo(MARG+1,PH-20);x.stroke()}
  const hand=w=>`${w} ${'var(--j-hand)'}`;
  function scribble(x,r){x.save();x.strokeStyle='rgba(44,30,18,.9)';x.lineWidth=2.4;x.lineCap='round';x.lineJoin='round';for(let k=0;k<3;k++){x.beginPath();const y0=r.y+r.h*(.35+k*.14);x.moveTo(r.x-4,y0);for(let xx=r.x-4;xx<=r.x+r.w+4;xx+=5)x.lineTo(xx,y0+Math.sin(xx*.9+k*2)*r.h*.16+(k-1)*2);x.stroke()}x.restore()}
  function coverImg(x,im,r){const ar=im.naturalWidth/im.naturalHeight,br=r.w/r.h;let sw=im.naturalWidth,sh=im.naturalHeight,sx=0,sy=0;if(ar>br){sw=sh*br;sx=(im.naturalWidth-sw)/2}else{sh=sw/br;sy=(im.naturalHeight-sh)/2}x.drawImage(im,sx,sy,sw,sh,r.x,r.y,r.w,r.h)}
- function drawPage(i,focusEl,hoverEl){const mk=()=>{const c=document.createElement('canvas');c.width=PW*S;c.height=PH*S;const k=c.getContext('2d');k.scale(S,S);return[c,k]};const[cp,xp]=mk(),[c,x]=mk();paper(xp,i);const out={paper:cp,ink:c};
+ function drawPage(i,focusEl,hoverEl){const mk=()=>{const c=document.createElement('canvas');c.width=PW*S;c.height=PH*S;const k=c.getContext('2d');k.scale(S,S);return[c,k]};const[cp,xp]=mk(),[c,x]=mk();paper(xp,i);rules(x,i);const out={paper:cp,ink:c};
   const fam=getComputedStyle(pressBox).getPropertyValue('--j-hand')||'Caveat';
   x.font=`600 19px ${fam}`;x.fillStyle='rgba(110,80,50,.8)';x.textAlign='center';x.fillText(i%2===0?'ДОМА':'Someone else’s home',PW/2,34);x.textAlign=i%2===0?'left':'right';x.font=`700 21px ${fam}`;x.fillText(String(i+1),i%2===0?26:PW-26,PH-18);x.textAlign='left';
   const blocksHere=pages[i]||[];if(!blocksHere.length)return out;

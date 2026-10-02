@@ -47,7 +47,7 @@ python3 -m http.server 8000
 The first load takes a few seconds while the city is built.
 
 ## Controls
-The top bar has two buttons: **Journal** and **Settings**.
+The top bar has three buttons: **Journal**, **Settings** and **Hide**. Hide clears the screen down to the scene; **Show** (top right) or the `H` key brings the controls back.
 - **Scroll** to travel through nine chapters (about five minutes). The bar at the bottom turns the page; click its title to open the list of chapters.
 - **Settings**: season (summer by default), sound, walking and flying, and, folded under *Look & atmosphere*, indoor haze and the gaussian paint. Settings are remembered.
 - **Walk around the flat** (bottom right, inside the flat, or `G`): first person. Click to look around, `W A S D` to move, `Shift` to run, `Esc` frees the mouse; **Back to the journey** at the top returns you to the scroll.

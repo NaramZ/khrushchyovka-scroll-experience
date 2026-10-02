@@ -680,3 +680,14 @@ body.journal-open header,body.journal-open footer,body.journal-open #type-layer,
 /* the settings sheet scrolls inside its painted paper when it is taller than the screen */
 #atmos-panel .ap-scroll{max-height:calc(100vh - 130px);max-height:calc(100dvh - 130px);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y;margin:-6px -8px;padding:6px 8px}
 @media(max-width:700px){#atmos-panel .ap-scroll{max-height:calc(100dvh - 190px)}}
+/* ── hide the interface: only the scene (and its words) stay; a small Show button waits in the corner ── */
+.toolbar button:nth-child(3)::before{transform:rotate(1.1deg)}
+#ui-show{display:none;position:fixed;z-index:13;top:18px;right:24px;isolation:isolate;min-height:40px;padding:7px 16px 9px;background:transparent;border:0;color:var(--j-ink);font:700 21px/1 var(--j-hand);cursor:pointer;opacity:.7;transition:opacity .6s}
+#ui-show::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--j-paper);border:2px solid var(--j-ink);border-radius:14px 5px 12px 6px/6px 12px 5px 14px;filter:url(#paint-fx);transform:rotate(-1deg)}
+#ui-show:hover,#ui-show:focus-visible{opacity:1}
+#ui-show:focus-visible{outline:3px solid var(--j-red);outline-offset:4px}
+body.ui-hidden #ui-show{display:block}
+body.ui-hidden.ui-idle #ui-show{opacity:.28}
+body.ui-hidden header,body.ui-hidden footer,body.ui-hidden #memory-ui,body.ui-hidden #lived-ui,body.ui-hidden #walk-in,body.ui-hidden #gyro-pill,body.ui-hidden #atmos-panel,body.ui-hidden #chapters-pop{display:none!important}
+body.journal-open #ui-show,body.walking #ui-show,body.free #ui-show{display:none!important}
+@media(max-width:700px){#ui-show{top:12px;right:12px;font-size:17px;padding:5px 11px 7px}.toolbar button{padding:5px 8px 7px!important}}

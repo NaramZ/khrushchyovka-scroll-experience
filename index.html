@@ -692,6 +692,17 @@ body.journal-open header,body.journal-open footer,body.journal-open #type-layer,
 /* the settings sheet scrolls inside its painted paper when it is taller than the screen */
 #atmos-panel .ap-scroll{max-height:calc(100vh - 130px);max-height:calc(100dvh - 130px);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y;margin:-6px -8px;padding:6px 8px}
 @media(max-width:700px){#atmos-panel .ap-scroll{max-height:calc(100dvh - 190px)}}
+/* ── hide the interface: only the scene (and its words) stay; a small Show button waits in the corner ── */
+.toolbar button:nth-child(3)::before{transform:rotate(1.1deg)}
+#ui-show{display:none;position:fixed;z-index:13;top:18px;right:24px;isolation:isolate;min-height:40px;padding:7px 16px 9px;background:transparent;border:0;color:var(--j-ink);font:700 21px/1 var(--j-hand);cursor:pointer;opacity:.7;transition:opacity .6s}
+#ui-show::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--j-paper);border:2px solid var(--j-ink);border-radius:14px 5px 12px 6px/6px 12px 5px 14px;filter:url(#paint-fx);transform:rotate(-1deg)}
+#ui-show:hover,#ui-show:focus-visible{opacity:1}
+#ui-show:focus-visible{outline:3px solid var(--j-red);outline-offset:4px}
+body.ui-hidden #ui-show{display:block}
+body.ui-hidden.ui-idle #ui-show{opacity:.28}
+body.ui-hidden header,body.ui-hidden footer,body.ui-hidden #memory-ui,body.ui-hidden #lived-ui,body.ui-hidden #walk-in,body.ui-hidden #gyro-pill,body.ui-hidden #atmos-panel,body.ui-hidden #chapters-pop{display:none!important}
+body.journal-open #ui-show,body.walking #ui-show,body.free #ui-show{display:none!important}
+@media(max-width:700px){#ui-show{top:12px;right:12px;font-size:17px;padding:5px 11px 7px}.toolbar button{padding:5px 8px 7px!important}}
 .notes-cols{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin:34px 0 10px}.notes-cols h3{font:600 26px/1 var(--display);margin:0 0 14px;text-transform:uppercase}.log,.why{margin:0;padding-left:18px;font-size:12px;line-height:1.75}.log li,.why li{margin-bottom:12px}.log b,.why b{font-weight:600}@media(max-width:700px){.notes-cols{grid-template-columns:1fr;gap:18px}}
 </style>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/","three-mesh-bvh":"https://cdn.jsdelivr.net/npm/three-mesh-bvh@0.8.3/build/index.module.js"}}</script>
@@ -704,14 +715,15 @@ body.journal-open header,body.journal-open footer,body.journal-open #type-layer,
 <filter id="ink" x="-8%" y="-20%" width="116%" height="140%"><feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="2" seed="11" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="3.5" xChannelSelector="R" yChannelSelector="G"/></filter>
 </defs></svg>
 <canvas id="view" tabindex="0" aria-label="Interactive three dimensional apartment block. Scroll to travel, or select Free camera to navigate yourself."></canvas><div class="vignette"></div><div class="grain"></div>
-<header><button class="wordmark" id="home" aria-label="ДОМА — return to the beginning">ДОМА<small>a journal of someone else’s home</small></button><div class="toolbar"><button id="archive">Journal</button><button id="season-btn" aria-expanded="false" aria-controls="atmos-panel">Settings</button></div></header>
+<header><button class="wordmark" id="home" aria-label="ДОМА — return to the beginning">ДОМА<small>a journal of someone else’s home</small></button><div class="toolbar"><button id="archive">Journal</button><button id="season-btn" aria-expanded="false" aria-controls="atmos-panel">Settings</button><button id="ui-hide" type="button" aria-label="Hide the controls (H)">Hide</button></div></header>
+<button id="ui-show" type="button" aria-label="Show the controls (H)">Show</button>
 <div id="atmos-panel" hidden><div class="ap-scroll"><div class="ap-title">Season / Сезон</div><div class="ap-seg" role="group" aria-label="Season"><button data-season="winter">Зима<small>Winter</small></button><button data-season="spring">Весна<small>Spring</small></button><button data-season="summer">Лето<small>Summer</small></button><button data-season="autumn">Осень<small>Autumn</small></button></div><div class="ap-title">Sound / Звук</div><button id="sound" class="ap-btn" aria-pressed="false">Sound off</button>
 <div class="ap-title">Explore on your own</div><div class="ap-two"><button id="walk" class="ap-btn" aria-pressed="false">Walk around</button><button id="explore" class="ap-btn" aria-pressed="false">Fly around</button></div><button class="ap-btn gyro-btn" type="button" aria-pressed="false">Tilt to look</button>
 <details class="ap-more"><summary>Look &amp; atmosphere</summary><label class="ap-row" for="haze"><span>Indoor haze &amp; dust · Пыль</span><output id="haze-val">100%</output></label><input type="range" id="haze" min="0" max="2" step="0.05" value="1"><div class="ap-title" style="margin-top:4px">Gaussian paint / Живопись</div>
-<label class="ap-row" for="paint"><span>Splat level</span><output id="paint-val">70%</output></label><input type="range" id="paint" min="0" max="1" step="0.01" value="0.7">
-<label class="ap-row" for="strokes"><span>Brush strokes</span><output id="strokes-val">75%</output></label><input type="range" id="strokes" min="0" max="1" step="0.01" value="0.75">
-<label class="ap-row" for="brush"><span>Brush size</span><output id="brush-val">1.2×</output></label><input type="range" id="brush" min="0.4" max="2.6" step="0.05" value="1.2">
-<label class="ap-row" for="focus"><span>Focus — keep the subject sharp</span><output id="focus-val">60%</output></label><input type="range" id="focus" min="0" max="1" step="0.01" value="0.6">
+<label class="ap-row" for="paint"><span>Splat level</span><output id="paint-val">40%</output></label><input type="range" id="paint" min="0" max="1" step="0.01" value="0.4">
+<label class="ap-row" for="strokes"><span>Brush strokes</span><output id="strokes-val">40%</output></label><input type="range" id="strokes" min="0" max="1" step="0.01" value="0.4">
+<label class="ap-row" for="brush"><span>Brush size</span><output id="brush-val">1.4×</output></label><input type="range" id="brush" min="0.4" max="2.6" step="0.05" value="1.4">
+<label class="ap-row" for="focus"><span>Focus — keep the subject sharp</span><output id="focus-val">67%</output></label><input type="range" id="focus" min="0" max="1" step="0.01" value="0.67">
 <label class="ap-check"><input type="checkbox" id="outdoor-splats" checked> Outdoor atmosphere (leaves, haze, snow)</label></details></div></div>
 <div id="chapters-pop" hidden><div class="ap-title">Chapters / Главы</div><ol></ol></div>
 <div id="walk-hint"></div>
@@ -1877,7 +1889,7 @@ function applySeason(name){const S=SEASONS[name];season=name;seasonK=S;FOG.set(S
 // strokes follow the image's own structure — along edges, along the road towards you — so colour stays coherent
 // and forms stay readable, while flat areas melt into painted patches. An autofocus keeps what you look at crisp
 // and lets the foreground, the far distance and the frame edges dissolve into larger, looser strokes.
-const PAINT={level:.7,brush:1.2,focus:.6,strokes:.75};
+const PAINT={level:.4,brush:1.4,focus:.67,strokes:.4};
 // the memory dial: 0 is the scene as set above, 1 is a faded memory — full paint, huge brushes, nothing held in focus
 const MEMORY={v:0,target:0};const memMix=(a,b)=>a+(b-a)*MEMORY.v;
 const quadVS='varying vec2 vUv;void main(){vUv=uv;gl_Position=vec4(position.xy,0.,1.);}';
@@ -2029,7 +2041,7 @@ $('#explore').onclick=()=>setFree(!free);
 const panel=$('#atmos-panel');
 function openPanel(on){panel.hidden=!on;$('#season-btn').setAttribute('aria-expanded',on)}
 $('#season-btn').onclick=e=>{e.stopPropagation();openPanel(panel.hidden)};addEventListener('pointerdown',e=>{if(!panel.hidden&&!panel.contains(e.target)&&e.target!==$('#season-btn'))openPanel(false)});
-function chooseSeason(name){applySeason(name);const S=SEASONS[name];document.querySelectorAll('[data-season]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.season===name));try{localStorage.setItem('doma-season',name)}catch{}}
+function chooseSeason(name){applySeason(name);const S=SEASONS[name];document.querySelectorAll('[data-season]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.season===name));try{localStorage.setItem('doma2-season',name)}catch{}}
 document.querySelectorAll('[data-season]').forEach(b=>b.onclick=()=>chooseSeason(b.dataset.season));
 $('#haze').oninput=e=>{const v=+e.target.value;setIndoorHaze(v);$('#haze-val').textContent=Math.round(v*100)+'%';try{localStorage.setItem('doma-haze',v)}catch{}};
 // the memory dial: from now to a faded memory in which only the shape of the building is left
@@ -2045,10 +2057,13 @@ $('#haze').oninput=e=>{const v=+e.target.value;setIndoorHaze(v);$('#haze-val').t
  // folded away by default: a small tab that says where you are; open it when you want it
  {const ui=$('#memory-ui'),tab=$('#memory-lab'),fold=on=>{ui.classList.toggle('folded',on);tab.setAttribute('aria-expanded',!on);try{localStorage.setItem('doma-memory-open',on?'0':'1')}catch{}};let open=false;try{open=localStorage.getItem('doma-memory-open')==='1'}catch{}fold(!open);tab.onclick=()=>fold(!ui.classList.contains('folded'))}
  let v0=0;try{v0=+(localStorage.getItem('doma-memory')||0)}catch{}MEMORY.v=v0;set(v0)}
+// hide everything but the scene; the small Show button (or H) brings it back
+{const setHidden=on=>{document.body.classList.toggle('ui-hidden',on);if(on){$('#atmos-panel').hidden=true;$('#season-btn').setAttribute('aria-expanded',false);$('#chapters-pop').hidden=true;$('#chapters-btn').setAttribute('aria-expanded',false);$('#ui-show').focus({preventScroll:true})}else $('#ui-hide').focus({preventScroll:true})};
+ $('#ui-hide').onclick=()=>setHidden(true);$('#ui-show').onclick=()=>setHidden(false);addEventListener('keydown',e=>{if($('#notes').open||/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)||e.metaKey||e.ctrlKey||e.altKey)return;if(e.key.toLowerCase()==='h')setHidden(!document.body.classList.contains('ui-hidden'))})}
 const paintUI=[['paint','level',v=>Math.round(v*100)+'%'],['brush','brush',v=>v.toFixed(1)+'×'],['focus','focus',v=>Math.round(v*100)+'%'],['strokes','strokes',v=>Math.round(v*100)+'%']];
-for(const[id,key,fmt]of paintUI){const el=$('#'+id);el.oninput=e=>{PAINT[key]=+e.target.value;$('#'+id+'-val').textContent=fmt(PAINT[key]);try{localStorage.setItem('doma-'+id,PAINT[key])}catch{}};try{const v=localStorage.getItem('doma-'+id);if(v!==null)PAINT[key]=+v}catch{}el.value=PAINT[key];$('#'+id+'-val').textContent=fmt(PAINT[key]);if(!paint)el.disabled=true}
+for(const[id,key,fmt]of paintUI){const el=$('#'+id);el.oninput=e=>{PAINT[key]=+e.target.value;$('#'+id+'-val').textContent=fmt(PAINT[key]);try{localStorage.setItem('doma2-'+id,PAINT[key])}catch{}};try{const v=localStorage.getItem('doma2-'+id);if(v!==null)PAINT[key]=+v}catch{}el.value=PAINT[key];$('#'+id+'-val').textContent=fmt(PAINT[key]);if(!paint)el.disabled=true}
 $('#outdoor-splats').onchange=e=>{atmosOn=e.target.checked;atmosphere.forEach(o=>o.visible=atmosOn)};
-{let sN='summer',hV=1;try{sN=localStorage.getItem('doma-season')||sN;hV=+(localStorage.getItem('doma-haze')??1);}catch{}if(!SEASONS[sN])sN='summer';chooseSeason(sN);$('#haze').value=hV;setIndoorHaze(hV);$('#haze-val').textContent=Math.round(hV*100)+'%'}
+{let sN='summer',hV=1;try{sN=localStorage.getItem('doma2-season')||sN;hV=+(localStorage.getItem('doma-haze')??1);}catch{}if(!SEASONS[sN])sN='summer';chooseSeason(sN);$('#haze').value=hV;setIndoorHaze(hV);$('#haze-val').textContent=Math.round(hV*100)+'%'}
 
 function lockPointer(){try{const r=canvas.requestPointerLock?.();r?.catch?.(()=>{})}catch{}}
 // ── WALK: first person on foot — mouse to look, W A S D to move, Shift to run; collides with walls, climbs stairs

@@ -4,7 +4,7 @@
 // strokes follow the image's own structure — along edges, along the road towards you — so colour stays coherent
 // and forms stay readable, while flat areas melt into painted patches. An autofocus keeps what you look at crisp
 // and lets the foreground, the far distance and the frame edges dissolve into larger, looser strokes.
-const PAINT={level:.7,brush:1.2,focus:.6,strokes:.75};
+const PAINT={level:.4,brush:1.4,focus:.67,strokes:.4};
 // the memory dial: 0 is the scene as set above, 1 is a faded memory — full paint, huge brushes, nothing held in focus
 const MEMORY={v:0,target:0};const memMix=(a,b)=>a+(b-a)*MEMORY.v;
 const quadVS='varying vec2 vUv;void main(){vUv=uv;gl_Position=vec4(position.xy,0.,1.);}';

@@ -77,7 +77,7 @@ $('#explore').onclick=()=>setFree(!free);
 const panel=$('#atmos-panel');
 function openPanel(on){panel.hidden=!on;$('#season-btn').setAttribute('aria-expanded',on)}
 $('#season-btn').onclick=e=>{e.stopPropagation();openPanel(panel.hidden)};addEventListener('pointerdown',e=>{if(!panel.hidden&&!panel.contains(e.target)&&e.target!==$('#season-btn'))openPanel(false)});
-function chooseSeason(name){applySeason(name);const S=SEASONS[name];document.querySelectorAll('[data-season]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.season===name));try{localStorage.setItem('doma-season',name)}catch{}}
+function chooseSeason(name){applySeason(name);const S=SEASONS[name];document.querySelectorAll('[data-season]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.season===name));try{localStorage.setItem('doma2-season',name)}catch{}}
 document.querySelectorAll('[data-season]').forEach(b=>b.onclick=()=>chooseSeason(b.dataset.season));
 $('#haze').oninput=e=>{const v=+e.target.value;setIndoorHaze(v);$('#haze-val').textContent=Math.round(v*100)+'%';try{localStorage.setItem('doma-haze',v)}catch{}};
 // the memory dial: from now to a faded memory in which only the shape of the building is left
@@ -93,10 +93,13 @@ $('#haze').oninput=e=>{const v=+e.target.value;setIndoorHaze(v);$('#haze-val').t
  // folded away by default: a small tab that says where you are; open it when you want it
  {const ui=$('#memory-ui'),tab=$('#memory-lab'),fold=on=>{ui.classList.toggle('folded',on);tab.setAttribute('aria-expanded',!on);try{localStorage.setItem('doma-memory-open',on?'0':'1')}catch{}};let open=false;try{open=localStorage.getItem('doma-memory-open')==='1'}catch{}fold(!open);tab.onclick=()=>fold(!ui.classList.contains('folded'))}
  let v0=0;try{v0=+(localStorage.getItem('doma-memory')||0)}catch{}MEMORY.v=v0;set(v0)}
+// hide everything but the scene; the small Show button (or H) brings it back
+{const setHidden=on=>{document.body.classList.toggle('ui-hidden',on);if(on){$('#atmos-panel').hidden=true;$('#season-btn').setAttribute('aria-expanded',false);$('#chapters-pop').hidden=true;$('#chapters-btn').setAttribute('aria-expanded',false);$('#ui-show').focus({preventScroll:true})}else $('#ui-hide').focus({preventScroll:true})};
+ $('#ui-hide').onclick=()=>setHidden(true);$('#ui-show').onclick=()=>setHidden(false);addEventListener('keydown',e=>{if($('#notes').open||/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)||e.metaKey||e.ctrlKey||e.altKey)return;if(e.key.toLowerCase()==='h')setHidden(!document.body.classList.contains('ui-hidden'))})}
 const paintUI=[['paint','level',v=>Math.round(v*100)+'%'],['brush','brush',v=>v.toFixed(1)+'×'],['focus','focus',v=>Math.round(v*100)+'%'],['strokes','strokes',v=>Math.round(v*100)+'%']];
-for(const[id,key,fmt]of paintUI){const el=$('#'+id);el.oninput=e=>{PAINT[key]=+e.target.value;$('#'+id+'-val').textContent=fmt(PAINT[key]);try{localStorage.setItem('doma-'+id,PAINT[key])}catch{}};try{const v=localStorage.getItem('doma-'+id);if(v!==null)PAINT[key]=+v}catch{}el.value=PAINT[key];$('#'+id+'-val').textContent=fmt(PAINT[key]);if(!paint)el.disabled=true}
+for(const[id,key,fmt]of paintUI){const el=$('#'+id);el.oninput=e=>{PAINT[key]=+e.target.value;$('#'+id+'-val').textContent=fmt(PAINT[key]);try{localStorage.setItem('doma2-'+id,PAINT[key])}catch{}};try{const v=localStorage.getItem('doma2-'+id);if(v!==null)PAINT[key]=+v}catch{}el.value=PAINT[key];$('#'+id+'-val').textContent=fmt(PAINT[key]);if(!paint)el.disabled=true}
 $('#outdoor-splats').onchange=e=>{atmosOn=e.target.checked;atmosphere.forEach(o=>o.visible=atmosOn)};
-{let sN='summer',hV=1;try{sN=localStorage.getItem('doma-season')||sN;hV=+(localStorage.getItem('doma-haze')??1);}catch{}if(!SEASONS[sN])sN='summer';chooseSeason(sN);$('#haze').value=hV;setIndoorHaze(hV);$('#haze-val').textContent=Math.round(hV*100)+'%'}
+{let sN='summer',hV=1;try{sN=localStorage.getItem('doma2-season')||sN;hV=+(localStorage.getItem('doma-haze')??1);}catch{}if(!SEASONS[sN])sN='summer';chooseSeason(sN);$('#haze').value=hV;setIndoorHaze(hV);$('#haze-val').textContent=Math.round(hV*100)+'%'}
 
 function lockPointer(){try{const r=canvas.requestPointerLock?.();r?.catch?.(()=>{})}catch{}}
 // ── WALK: first person on foot — mouse to look, W A S D to move, Shift to run; collides with walls, climbs stairs
